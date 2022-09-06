@@ -1,0 +1,25 @@
+{
+	"compilerOptions": {
+		"module": "CommonJS",
+		"rootDir": ".",
+		"baseUrl": ".",
+		"moduleResolution": "Node",
+		"typeRoots": ["@types", "./node_modules/@types"],
+		"outDir": "dist",
+		"target": "ES5",
+		"lib": ["es2015", "es2016"],
+		"allowJs": false,
+		"isolatedModules": true,
+		"strict": true,
+		"noFallthroughCasesInSwitch": true,
+		"allowSyntheticDefaultImports": true,
+		"esModuleInterop": true,
+		"skipLibCheck": true,
+		"forceConsistentCasingInFileNames": true,
+		"declaration": true,
+		"declarationMap": true,
+		"sourceMap": false
+	},
+	"include": ["src", "test", "@types", "./package.json", "./package-lock.json"]
+}
+
