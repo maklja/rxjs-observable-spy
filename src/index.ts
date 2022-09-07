@@ -1,5 +1,5 @@
 import { chaiObservableSpyPlugin } from './chai';
-import { ObservableSpy, SubscribeSpy, subscribeSpyTo, ObserverSpyConfig } from './verification';
+import { ObservableSpy, SubscribeSpy, subscribeSpyTo, ObserverSpyConfig } from './spy';
 
 export { chaiObservableSpyPlugin, ObservableSpy, subscribeSpyTo };
 

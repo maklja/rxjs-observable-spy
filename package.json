@@ -6,12 +6,12 @@
 	"types": "dist/src/index.d.ts",
 	"type": "commonjs",
 	"files": [
-		"dist/src",
-		"@types"
+		"dist"
 	],
 	"scripts": {
 		"clean": "rimraf dist/",
 		"build": "npm run clean && tsc",
+		"build-prod": "npm run clean && tsc --project tsconfig.prod.json",
 		"test": "mocha --trace-warnings --recursive ./dist/test/**/*.test.js --sort",
 		"lint": "eslint src/**/*.ts test/**/*.ts",
 		"format": "prettier --write src/**/*.ts test/**/*.ts --config .prettierrc"

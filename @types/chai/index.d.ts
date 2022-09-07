@@ -1,9 +1,11 @@
+/// <reference types="@types/chai" />
+
 declare namespace Chai {
-	export interface ObservableVarifyLanguageChains {
+	interface ObservableVarifyLanguageChains {
 		verify: <T = unknown>() => Promise<T[]>;
 	}
 
-	export interface ObservableLanguageChains extends ObservableVarifyLanguageChains {
+	interface ObservableLanguageChains extends ObservableVarifyLanguageChains {
 		next: <T = unknown>(val: T) => ObservableLanguageChains;
 		nextCount: (expectedCount: number) => ObservableLanguageChains;
 		nextMatches: <T = unknown>(
@@ -26,11 +28,7 @@ declare namespace Chai {
 		awaitComplete: <T = unknown>() => Promise<T[]>;
 	}
 
-	export interface Deep {
-		subscriber: ObservableLanguageChains;
-	}
-
-	export interface LanguageChains {
+	interface LanguageChains {
 		subscriber: ObservableLanguageChains;
 	}
 }

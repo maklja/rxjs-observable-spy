@@ -1,4 +1,4 @@
-import { SignalType } from '../verification';
+import { SignalType } from '../spy';
 
 const errorFormatMessage = (e: unknown) => {
 	if (e instanceof Error) {
