@@ -1,18 +1,17 @@
 name: deploy-production
 
 on:
-	push:
-		branches:
-			- 'master'
-
+  push:
+    branches:
+      - master
+			
 jobs:
-	build:
-		runs-on: ubuntu-latest
-
-		steps:
-			- uses: actions/checkout@v2
-			- run: npm install
-			- run: npm run build
-			- run: npm run test
-			- run: npm run build-prod
-
+  build:
+    runs-on: ubuntu-latest
+		
+    steps:
+      - uses: actions/checkout@v2
+      - run: npm install
+      - run: npm run build
+      - run: npm test
+      - run: npm run build-prod
