@@ -3,12 +3,10 @@ name: deploy-production
 on:
   push:
     branches:
-      - master
-			
+      - master			
 jobs:
   build:
     runs-on: ubuntu-latest
-		
     steps:
       - uses: actions/checkout@v2
       - run: npm install
