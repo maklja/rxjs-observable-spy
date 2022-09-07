@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import { SignalType, verify } from '../verification';
+import { SignalType, verifyObservable } from '../verification';
 import { expectedSignalActualError, expectedSignalActualNext } from '../messages';
 import { retrieveVerificationSteps } from './retrieveVerificationSteps';
 
@@ -40,5 +40,5 @@ export default function chaiVerifyComplete<T = unknown>(
 		complete: () => true,
 	});
 
-	return verify(observable, verificationSteps);
+	return verifyObservable(observable, verificationSteps);
 }

@@ -1,6 +1,12 @@
 import { SignalType } from '../verification';
 
-const errorFormatMessage = (e: Error) => `${e.name} - ${e.message} \n${e.stack}\n`;
+const errorFormatMessage = (e: unknown) => {
+	if (e instanceof Error) {
+		return `${e.name} - ${e.message} \n${e.stack}\n`;
+	}
+
+	return `${e}`;
+};
 
 const expectedSignalMessage = (
 	name: string,
@@ -19,7 +25,7 @@ const expectedSignalActualError = (
 	name: string,
 	expectedSignal: SignalType,
 	actualSignal: SignalType,
-	e: Error,
+	e: unknown,
 ) =>
 	`${expectedSignalMessage(
 		name,
@@ -32,7 +38,7 @@ const expectedNextActualOther = <T>(
 	expectedSignal: SignalType,
 	actualSignal: SignalType,
 	expectedValue: T,
-	e?: Error,
+	e?: unknown,
 ) => {
 	const errorMessage = e ? `, actual error: ${errorFormatMessage(e)}` : '';
 	return `${expectedSignalMessage(

@@ -25,23 +25,32 @@ export default function chaiError<T = unknown, E extends Error = Error>(
 		},
 		error: (errorValue) => {
 			const { error } = errorValue;
+
 			if (expectedErrorType !== undefined) {
 				this.assert(
 					error instanceof expectedErrorType,
 					'Expected error type: #{exp}, actual error type #{act}',
 					'Not supported',
 					expectedErrorType.name,
-					errorValue.error.name,
+					error instanceof Error ? error.name : error,
 				);
 			}
 
-			if (message !== undefined) {
+			if (message !== undefined && error instanceof Error) {
 				this.assert(
 					error.message === message,
 					'Expected error message: #{exp}, actual error message #{act}',
 					'Not supported',
 					message,
 					error.message,
+				);
+			} else if (message !== undefined) {
+				this.assert(
+					error === message,
+					'Expected error message: #{exp}, actual error message #{act}',
+					'Not supported',
+					message,
+					error,
 				);
 			}
 

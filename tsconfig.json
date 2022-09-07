@@ -2,8 +2,7 @@
 	"compilerOptions": {
 		"module": "CommonJS",
 		"rootDir": ".",
-		"baseUrl": ".",
-		"moduleResolution": "Node",
+		"moduleResolution": "Node16",
 		"typeRoots": ["@types", "./node_modules/@types"],
 		"outDir": "dist",
 		"target": "ES5",
@@ -19,7 +18,6 @@
 		"declaration": true,
 		"declarationMap": true,
 		"sourceMap": false
-	},
-	"include": ["src", "test", "@types", "./package.json", "./package-lock.json"]
+	}
 }
 

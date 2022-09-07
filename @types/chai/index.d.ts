@@ -23,6 +23,7 @@ declare namespace Chai {
 		) => ObservableVarifyLanguageChains;
 		errorMessage: (errorMessage: string) => ObservableVarifyLanguageChains;
 		verifyComplete: <T = unknown>() => Promise<T[]>;
+		awaitComplete: <T = unknown>() => Promise<T[]>;
 	}
 
 	export interface Deep {

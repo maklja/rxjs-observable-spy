@@ -6,6 +6,7 @@ import chaiSubscriberSpy from './chaiSubscriberSpy';
 import chaiNextCount from './chaiNextCount';
 import chaiError from './chaiError';
 import chaiVerify from './chaiVerify';
+import chaiAwaitComplete from './chaiAwaitComplete';
 import chaiPlugin from './chaiPlugin';
 
 export {
@@ -17,5 +18,6 @@ export {
 	chaiSubscriberSpy,
 	chaiError,
 	chaiVerify,
-	chaiPlugin,
+	chaiAwaitComplete,
+	chaiPlugin as chaiObservableSpyPlugin,
 };

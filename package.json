@@ -1,9 +1,10 @@
 {
-	"name": "@maklja/chai-rxjs-subscriber-spy",
+	"name": "@maklja/rxjs-observable-spy",
 	"version": "0.0.1",
 	"description": "",
 	"main": "dist/src/index.js",
 	"types": "dist/src/index.d.ts",
+	"type": "commonjs",
 	"files": [
 		"dist/src",
 		"@types"

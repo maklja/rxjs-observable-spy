@@ -1,15 +1,15 @@
 import chai, { expect } from 'chai';
 import { from, throwError } from 'rxjs';
-import { chaiPlugin } from '../src';
+import { chaiObservableSpyPlugin } from '../src';
 
-chai.use(chaiPlugin);
+chai.use(chaiObservableSpyPlugin);
 
 describe('Subscriber spy', function () {
 	it('Test sequence should success if all received values are as expected', async function () {
 		const string$ = from(['Tom', 'Tina', 'Ana']);
 
 		const values = await expect(string$)
-			.to.subscriber.next('Tom')
+			.subscriber.next('Tom')
 			.next('Tina')
 			.next('Ana')
 			.verifyComplete();
@@ -132,6 +132,13 @@ describe('Subscriber spy', function () {
 			.consumeNext<number>((val) => expect(val).to.be.a('number').and.to.be.equal(2))
 			.consumeNext<number>((val) => expect(val).to.be.a('number').and.to.be.equal(3))
 			.verifyComplete();
+		expect(values).to.deep.equals([2, 2, 3]);
+	});
+
+	it('Test sequence should complete with success', async function () {
+		const numbers$ = from([2, 2, 3]);
+
+		const values = await expect(numbers$).subscriber.awaitComplete();
 		expect(values).to.deep.equals([2, 2, 3]);
 	});
 });

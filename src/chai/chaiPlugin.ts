@@ -6,6 +6,7 @@ import chaiNextMatches from './chaiNextMatches';
 import chaiSubscriberSpy from './chaiSubscriberSpy';
 import chaiVerify from './chaiVerify';
 import chaiVerifyComplete from './chaiVerifyComplete';
+import chaiAwaitComplete from './chaiAwaitComplete';
 
 const chaiPlugin: Chai.ChaiPlugin = (chai: Chai.ChaiStatic, utils: Chai.ChaiUtils): void => {
 	const Assertion = chai.Assertion;
@@ -56,6 +57,10 @@ const chaiPlugin: Chai.ChaiPlugin = (chai: Chai.ChaiStatic, utils: Chai.ChaiUtil
 
 	Assertion.addMethod('verify', function () {
 		return chaiVerify.call(this, utils);
+	});
+
+	Assertion.addMethod('awaitComplete', function () {
+		return chaiAwaitComplete.call(this, utils);
 	});
 
 	Assertion.addProperty('subscriber', function () {
