@@ -15,8 +15,21 @@ import {
 	SubscribeSpy,
 	subscribeSpyTo,
 } from './observableSpy';
+import {
+	AlreadySubscribedError,
+	NotSubscribedError,
+	UnexpectedObservableCompleteError,
+} from './errors';
 
-export { verifyObservable, SignalType, subscribeSpyTo, ObservableSpy };
+export {
+	verifyObservable,
+	SignalType,
+	subscribeSpyTo,
+	ObservableSpy,
+	AlreadySubscribedError,
+	NotSubscribedError,
+	UnexpectedObservableCompleteError,
+};
 
 export type {
 	CompleteValue,

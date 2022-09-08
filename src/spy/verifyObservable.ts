@@ -26,7 +26,7 @@ export function verifyObservable<T>(
 	steps: VerificationStep<T>[],
 ): Promise<T[]> {
 	return new Promise((resolve, reject) => {
-		const observableSpy = new ObservableSpy(observable, { autoUnsubscribe: true });
+		const observableSpy = new ObservableSpy(observable);
 		observableSpy.addNextListener((value: T) => {
 			try {
 				const { next } = steps[0];

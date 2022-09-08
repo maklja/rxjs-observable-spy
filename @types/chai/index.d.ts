@@ -5,7 +5,7 @@ declare namespace Chai {
 		verify: <T = unknown>() => Promise<T[]>;
 	}
 
-	interface ObservableLanguageChains extends ObservableVarifyLanguageChains {
+	interface ObservableLanguageChains {
 		next: <T = unknown>(val: T) => ObservableLanguageChains;
 		nextCount: (expectedCount: number) => ObservableLanguageChains;
 		nextMatches: <T = unknown>(
@@ -28,7 +28,7 @@ declare namespace Chai {
 		awaitComplete: <T = unknown>() => Promise<T[]>;
 	}
 
-	interface LanguageChains {
+	interface Assertion {
 		subscriber: ObservableLanguageChains;
 	}
 }
