@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import { ObservableSpy } from './observableSpy';
+import { ObservableSpy, ObserverSpyConfig } from './observableSpy';
 import { SubscribedSpy } from './SubscribedSpy';
 
 /**
@@ -47,14 +47,17 @@ export interface VerificationStep<T> {
  *
  * @param observable - Observable that is tested.
  * @param steps - Verification  steps that will be used to verify behavior of the tested observable.
+ * @param config - Spy configuration.
+ *
  * @returns Promise with received values from observable if it's complete successfully, otherwise it returns an error.
  */
 export function verifyObservable<T>(
 	observable: Observable<T>,
 	steps: VerificationStep<T>[],
+	config?: ObserverSpyConfig,
 ): Promise<T[]> {
 	return new Promise((resolve, reject) => {
-		const observableSpy = new ObservableSpy(observable);
+		const observableSpy = new ObservableSpy(observable, config);
 		observableSpy.addNextListener((value, index, o) => {
 			try {
 				const { next } = steps[0];

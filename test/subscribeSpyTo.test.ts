@@ -19,23 +19,23 @@ describe('subscribeSpyTo test', function () {
 			expect(receivedValues).to.be.deep.equal(targetValues);
 		});
 
-		it('will receive all number in expected sequence', async function () {
+		it('will receive all number in expected sequence', function () {
 			expect(observableSpy.getValues()).to.be.deep.equal(targetValues);
 		});
 
-		it('will have expected number of elements as target values', async function () {
+		it('will have expected number of elements as target values', function () {
 			expect(observableSpy.getValuesLength()).to.be.equal(targetValues.length);
 		});
 
-		it('will not have any error', async function () {
+		it('will not have any error', function () {
 			expect(observableSpy.getError()).to.be.null;
 		});
 
-		it('will not have received error flag set', async function () {
+		it('will not have received error flag set', function () {
 			expect(observableSpy.receivedError()).to.be.false;
 		});
 
-		it('will have received complete flag set', async function () {
+		it('will have received complete flag set', function () {
 			expect(observableSpy.receivedComplete()).to.be.true;
 		});
 
@@ -59,21 +59,21 @@ describe('subscribeSpyTo test', function () {
 			expect(recievedError.message).to.be.equal('Mock error message');
 		});
 
-		it('will receive error', async function () {
+		it('will receive error', function () {
 			expect(observableSpy.getError<MockError>()?.name).to.be.equal(MockError.name);
 			expect(observableSpy.getError<MockError>()?.message).to.be.equal('Mock error message');
 		});
 
-		it('will not have any next values', async function () {
+		it('will not have any next values', function () {
 			expect(observableSpy.getValues()).to.be.empty;
 			expect(observableSpy.getValuesLength()).to.be.equal(0);
 		});
 
-		it('will have received error flag set', async function () {
+		it('will have received error flag set', function () {
 			expect(observableSpy.receivedError()).to.be.true;
 		});
 
-		it('will not have received complete flag set', async function () {
+		it('will not have received complete flag set', function () {
 			expect(observableSpy.receivedComplete()).to.be.false;
 		});
 
@@ -111,21 +111,21 @@ describe('subscribeSpyTo test', function () {
 			expect(recievedError.message).to.be.equal('Mock error message');
 		});
 
-		it('will receive error', async function () {
+		it('will receive error', function () {
 			expect(observableSpy.getError<MockError>()?.name).to.be.equal(MockError.name);
 			expect(observableSpy.getError<MockError>()?.message).to.be.equal('Mock error message');
 		});
 
-		it('will have values before error occurred', async function () {
+		it('will have values before error occurred', function () {
 			expect(observableSpy.getValues()).to.be.deep.equal(targetValues);
 			expect(observableSpy.getValuesLength()).to.be.equal(targetValues.length);
 		});
 
-		it('will have received error flag set', async function () {
+		it('will have received error flag set', function () {
 			expect(observableSpy.receivedError()).to.be.true;
 		});
 
-		it('will not have received complete flag set', async function () {
+		it('will not have received complete flag set', function () {
 			expect(observableSpy.receivedComplete()).to.be.false;
 		});
 

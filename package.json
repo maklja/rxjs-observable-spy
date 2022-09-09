@@ -1,7 +1,7 @@
 {
 	"name": "@maklja/rxjs-observable-spy",
 	"version": "0.0.1",
-	"description": "A simple little class that helps testing Observables",
+	"description": "A simple little library that helps testing RxJS observables",
 	"main": "dist/index.js",
 	"types": "dist/index.d.ts",
 	"type": "commonjs",
