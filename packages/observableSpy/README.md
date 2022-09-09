@@ -2,6 +2,8 @@
 
 A simple little library that helps testing RxJS observables.
 
+[![Build](https://github.com/maklja/rxjs-observable-spy/actions/workflows/observable-spy-release.yml/badge.svg?branch=master)](https://github.com/maklja/rxjs-observable-spy/actions/workflows/observable-spy-release.yml)
+
 ## Installation
 
 ```console
@@ -233,3 +235,4 @@ it('will fail with error if any value is not a number', async function () {
 ## License
 
 MIT
+
