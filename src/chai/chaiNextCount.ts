@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import { EventType } from './EventType';
+import { EventType } from '../spy';
 import { expectedNextActualOther } from '../messages';
 import { retrieveVerificationSteps } from './retrieveVerificationSteps';
 

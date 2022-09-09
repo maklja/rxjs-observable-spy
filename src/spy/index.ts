@@ -4,8 +4,15 @@ import {
 	AlreadySubscribedError,
 	NotSubscribedError,
 	UnexpectedObservableCompleteError,
+	MissingVerificationStepError,
 } from './errors';
-import { CompleteListener, ErrorListener, NextListener, SubscribedSpy } from './SubscribedSpy';
+import {
+	CompleteListener,
+	ErrorListener,
+	NextListener,
+	SubscribedSpy,
+	EventType,
+} from './SubscribedSpy';
 
 export {
 	verifyObservable,
@@ -14,6 +21,8 @@ export {
 	AlreadySubscribedError,
 	NotSubscribedError,
 	UnexpectedObservableCompleteError,
+	MissingVerificationStepError,
+	EventType,
 };
 
 export type {

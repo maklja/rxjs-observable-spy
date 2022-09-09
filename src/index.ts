@@ -9,6 +9,7 @@ import {
 	AlreadySubscribedError,
 	NotSubscribedError,
 	UnexpectedObservableCompleteError,
+	MissingVerificationStepError,
 	CompleteListener,
 	ErrorListener,
 	NextListener,
@@ -22,6 +23,7 @@ export {
 	AlreadySubscribedError,
 	NotSubscribedError,
 	UnexpectedObservableCompleteError,
+	MissingVerificationStepError,
 };
 
 export type {

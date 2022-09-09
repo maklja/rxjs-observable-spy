@@ -1,3 +1,9 @@
+export enum EventType {
+	Next = 'next',
+	Error = 'error',
+	Complete = 'complete',
+}
+
 /**
  * Function signature for the listener that will be invoked when the next event is received from the observable.
  *

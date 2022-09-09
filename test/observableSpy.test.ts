@@ -53,7 +53,7 @@ describe('ObservableSpy test', function () {
 			} catch (e) {
 				const error = e as Error;
 				expect(error).to.be.instanceOf(Error);
-				expect(error.message).to.be.equal('Unexpected observable complete signal received');
+				expect(error.message).to.be.equal('Unexpected observable complete event received');
 			}
 		});
 	});

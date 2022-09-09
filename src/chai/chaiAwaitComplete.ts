@@ -2,7 +2,7 @@ import { Observable } from 'rxjs';
 import { verifyObservable } from '../spy';
 import { expectedSignalActualError } from '../messages';
 import { retrieveVerificationSteps } from './retrieveVerificationSteps';
-import { EventType } from './EventType';
+import { EventType } from '../spy';
 
 export default function chaiAwaitComplete<T = unknown>(
 	this: Chai.AssertionStatic,

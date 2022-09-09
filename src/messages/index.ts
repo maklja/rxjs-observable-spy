@@ -1,4 +1,4 @@
-import { EventType } from '../chai';
+import { EventType } from '../spy';
 
 const errorFormatMessage = (e: unknown) => {
 	if (e instanceof Error) {

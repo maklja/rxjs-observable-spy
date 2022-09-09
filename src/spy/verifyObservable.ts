@@ -1,6 +1,7 @@
 import { Observable } from 'rxjs';
+import { MissingVerificationStepError } from './errors';
 import { ObservableSpy, ObserverSpyConfig } from './observableSpy';
-import { SubscribedSpy } from './SubscribedSpy';
+import { SubscribedSpy, EventType } from './SubscribedSpy';
 
 /**
  * Verification step signature that is used to verify received values from the tested observable.
@@ -40,6 +41,18 @@ export interface VerificationStep<T> {
 	complete(observableSpy: SubscribedSpy<T>): boolean;
 }
 
+const failAssertVefificationStep: VerificationStep<unknown> = {
+	next(): boolean {
+		throw new MissingVerificationStepError(EventType.Next);
+	},
+	error(): boolean {
+		throw new MissingVerificationStepError(EventType.Error);
+	},
+	complete(): boolean {
+		throw new MissingVerificationStepError(EventType.Complete);
+	},
+};
+
 /**
  * Helper function that is used to verify if observables behave as expected.
  *
@@ -60,7 +73,7 @@ export function verifyObservable<T>(
 		const observableSpy = new ObservableSpy(observable, config);
 		observableSpy.addNextListener((value, index, o) => {
 			try {
-				const { next } = steps[0];
+				const { next } = steps[0] ?? failAssertVefificationStep;
 				const isDone = next(value, index, o);
 				isDone && steps.splice(0, 1);
 			} catch (e) {
@@ -71,7 +84,7 @@ export function verifyObservable<T>(
 
 		observableSpy.addErrorListener((e, o) => {
 			try {
-				const { error } = steps[0];
+				const { error } = steps[0] ?? failAssertVefificationStep;
 				const isDone = error(e, o);
 				isDone && steps.splice(0, 1);
 				resolve(o.getValues());
@@ -83,7 +96,7 @@ export function verifyObservable<T>(
 
 		observableSpy.addCompleteListener((o) => {
 			try {
-				const { complete } = steps[0];
+				const { complete } = steps[0] ?? failAssertVefificationStep;
 				const isDone = complete(o);
 				isDone && steps.splice(0, 1);
 				resolve(o.getValues());

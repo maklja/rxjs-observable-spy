@@ -1,3 +1,5 @@
+import { EventType } from './SubscribedSpy';
+
 /**
  * This error is thrown in case an observable spy is already subscribed to the tested observable.
  * Because an observable spy is immutable there is no way to subscribe a spy to the tested observable again,
@@ -27,8 +29,19 @@ export class NotSubscribedError extends Error {
  */
 export class UnexpectedObservableCompleteError extends Error {
 	constructor() {
-		super('Unexpected observable complete signal received');
+		super('Unexpected observable complete event received');
 		this.name = UnexpectedObservableCompleteError.name;
+	}
+}
+
+/**
+ * This error is thrown when an event is received but there aren't any
+ * user defined verifications steps to process it.
+ */
+export class MissingVerificationStepError extends Error {
+	constructor(eventType: EventType) {
+		super(`Missing verification step to process received event: '${eventType}'`);
+		this.name = MissingVerificationStepError.name;
 	}
 }
 
