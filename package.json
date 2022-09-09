@@ -23,6 +23,8 @@
 		"clean": "lerna run clean",
 		"test": "lerna run test",
 		"format": "lerna run format",
-		"lint": "lerna run lint"
+		"lint": "lerna run lint",
+		"version": "lerna version --no-private"
 	}
 }
+
