@@ -1,29 +1,14 @@
-import {
-	verifyObservable,
-	CompleteValue,
-	ErrorValue,
-	NextValue,
-	VerificationStep,
-} from './verifyObservable';
-import { SignalType } from './SignalType';
-import {
-	CompleteListener,
-	ErrorListener,
-	NextListener,
-	ObservableSpy,
-	ObserverSpyConfig,
-	SubscribeSpy,
-	subscribeSpyTo,
-} from './observableSpy';
+import { verifyObservable, VerificationStep } from './verifyObservable';
+import { ObservableSpy, ObserverSpyConfig, subscribeSpyTo } from './observableSpy';
 import {
 	AlreadySubscribedError,
 	NotSubscribedError,
 	UnexpectedObservableCompleteError,
 } from './errors';
+import { CompleteListener, ErrorListener, NextListener, SubscribedSpy } from './SubscribedSpy';
 
 export {
 	verifyObservable,
-	SignalType,
 	subscribeSpyTo,
 	ObservableSpy,
 	AlreadySubscribedError,
@@ -32,13 +17,10 @@ export {
 };
 
 export type {
-	CompleteValue,
-	ErrorValue,
-	NextValue,
 	VerificationStep,
 	CompleteListener,
 	ErrorListener,
 	NextListener,
 	ObserverSpyConfig,
-	SubscribeSpy,
+	SubscribedSpy as SubscribeSpy,
 };

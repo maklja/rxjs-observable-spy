@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import { SignalType } from '../spy';
+import { EventType } from './EventType';
 import { expectedSignalActualError, expectedSignalMessage } from '../messages';
 import { retrieveVerificationSteps } from './retrieveVerificationSteps';
 
@@ -12,31 +12,31 @@ export default function chaiNextMatches<T = unknown>(
 	const verificationSteps = retrieveVerificationSteps(observable, utils);
 
 	verificationSteps.push({
-		next: ({ value, count }) => {
-			const matchResult = expectedCallback(value, count);
+		next: (value, index) => {
+			const matchResult = expectedCallback(value, index);
 			const errorMessage = `[nextMatches] - match failed for value ${value}`;
 			this.assert(matchResult, errorMessage, errorMessage, null);
 
 			return true;
 		},
-		error: (errorValue) => {
+		error: (error) => {
 			const errorMessage = expectedSignalActualError(
 				'nextMatches',
-				SignalType.Next,
-				SignalType.Error,
-				errorValue.error,
+				EventType.Next,
+				EventType.Error,
+				error,
 			);
-			this.assert(false, errorMessage, 'Not supported', SignalType.Next, SignalType.Error);
+			this.assert(false, errorMessage, 'Not supported', EventType.Next, EventType.Error);
 
 			return true;
 		},
 		complete: () => {
 			const errorMessage = expectedSignalMessage(
 				'nextMatches',
-				SignalType.Next,
-				SignalType.Complete,
+				EventType.Next,
+				EventType.Complete,
 			);
-			this.assert(false, errorMessage, 'Not supported', SignalType.Next, SignalType.Complete);
+			this.assert(false, errorMessage, 'Not supported', EventType.Next, EventType.Complete);
 
 			return true;
 		},

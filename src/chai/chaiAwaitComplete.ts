@@ -1,7 +1,8 @@
 import { Observable } from 'rxjs';
-import { SignalType, verifyObservable } from '../spy';
+import { verifyObservable } from '../spy';
 import { expectedSignalActualError } from '../messages';
 import { retrieveVerificationSteps } from './retrieveVerificationSteps';
+import { EventType } from './EventType';
 
 export default function chaiAwaitComplete<T = unknown>(
 	this: Chai.AssertionStatic,
@@ -12,20 +13,14 @@ export default function chaiAwaitComplete<T = unknown>(
 
 	verificationSteps.push({
 		next: () => false,
-		error: (errorValue) => {
+		error: (error) => {
 			const errorMessage = expectedSignalActualError(
 				'complete',
-				SignalType.Complete,
-				SignalType.Error,
-				errorValue.error,
+				EventType.Complete,
+				EventType.Error,
+				error,
 			);
-			this.assert(
-				false,
-				errorMessage,
-				'Not supported',
-				SignalType.Complete,
-				SignalType.Error,
-			);
+			this.assert(false, errorMessage, 'Not supported', EventType.Complete, EventType.Error);
 			return true;
 		},
 		complete: () => true,

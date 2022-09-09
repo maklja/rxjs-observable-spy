@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import { SignalType } from '../spy';
+import { EventType } from './EventType';
 import { expectedNextActualOther } from '../messages';
 import { retrieveVerificationSteps } from './retrieveVerificationSteps';
 
@@ -12,35 +12,35 @@ export default function chaiNext<T = unknown>(
 	const verificationSteps = retrieveVerificationSteps(observable, utils);
 
 	verificationSteps.push({
-		next: (nextValue) => {
+		next: (value) => {
 			this.assert(
-				expectedNextValue === nextValue.value,
+				expectedNextValue === value,
 				'Expected next value: #{exp}, actual value #{act}',
 				'Not supported',
 				expectedNextValue,
-				nextValue.value,
+				value,
 			);
 			return true;
 		},
-		error: (errorValue) => {
+		error: (error) => {
 			const errorMessage = expectedNextActualOther(
 				'next',
-				SignalType.Next,
-				SignalType.Error,
+				EventType.Next,
+				EventType.Error,
 				expectedNextValue,
-				errorValue.error,
+				error,
 			);
-			this.assert(false, errorMessage, 'Not supported', SignalType.Next, SignalType.Error);
+			this.assert(false, errorMessage, 'Not supported', EventType.Next, EventType.Error);
 			return true;
 		},
 		complete: () => {
 			const errorMessage = expectedNextActualOther(
 				'next',
-				SignalType.Next,
-				SignalType.Complete,
+				EventType.Next,
+				EventType.Complete,
 				expectedNextValue,
 			);
-			this.assert(false, errorMessage, 'Not supported', SignalType.Next, SignalType.Complete);
+			this.assert(false, errorMessage, 'Not supported', EventType.Next, EventType.Complete);
 			return true;
 		},
 	});

@@ -1,4 +1,4 @@
-import { SignalType } from '../spy';
+import { EventType } from '../chai';
 
 const errorFormatMessage = (e: unknown) => {
 	if (e instanceof Error) {
@@ -8,23 +8,20 @@ const errorFormatMessage = (e: unknown) => {
 	return `${e}`;
 };
 
-const expectedSignalMessage = (
-	name: string,
-	expectedSignal: SignalType,
-	actualSignal: SignalType,
-) => `[${name}] - expected signal: ${expectedSignal}, actual signal: ${actualSignal}`;
+const expectedSignalMessage = (name: string, expectedSignal: EventType, actualSignal: EventType) =>
+	`[${name}] - expected signal: ${expectedSignal}, actual signal: ${actualSignal}`;
 
 const expectedSignalActualNext = <T>(
 	name: string,
-	expectedSignal: SignalType,
-	actualSignal: SignalType,
+	expectedSignal: EventType,
+	actualSignal: EventType,
 	actualValue: T,
 ) => `${expectedSignalMessage(name, expectedSignal, actualSignal)}, actual value: ${actualValue}`;
 
 const expectedSignalActualError = (
 	name: string,
-	expectedSignal: SignalType,
-	actualSignal: SignalType,
+	expectedSignal: EventType,
+	actualSignal: EventType,
 	e: unknown,
 ) =>
 	`${expectedSignalMessage(
@@ -35,8 +32,8 @@ const expectedSignalActualError = (
 
 const expectedNextActualOther = <T>(
 	name: string,
-	expectedSignal: SignalType,
-	actualSignal: SignalType,
+	expectedSignal: EventType,
+	actualSignal: EventType,
 	expectedValue: T,
 	e?: unknown,
 ) => {
@@ -50,8 +47,8 @@ const expectedNextActualOther = <T>(
 
 const expectedNextValueActualOther = <T>(
 	name: string,
-	expectedSignal: SignalType,
-	actualSignal: SignalType,
+	expectedSignal: EventType,
+	actualSignal: EventType,
 	expectedValue: T,
 	actualValue: T,
 ) => {

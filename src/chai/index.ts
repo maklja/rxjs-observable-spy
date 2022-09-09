@@ -8,6 +8,7 @@ import chaiError from './chaiError';
 import chaiVerify from './chaiVerify';
 import chaiAwaitComplete from './chaiAwaitComplete';
 import chaiPlugin from './chaiPlugin';
+import { EventType } from './EventType';
 
 export {
 	chaiNext,
@@ -20,4 +21,5 @@ export {
 	chaiVerify,
 	chaiAwaitComplete,
 	chaiPlugin as chaiObservableSpyPlugin,
+	EventType,
 };

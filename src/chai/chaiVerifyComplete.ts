@@ -1,7 +1,8 @@
 import { Observable } from 'rxjs';
-import { SignalType, verifyObservable } from '../spy';
+import { verifyObservable } from '../spy';
 import { expectedSignalActualError, expectedSignalActualNext } from '../messages';
 import { retrieveVerificationSteps } from './retrieveVerificationSteps';
+import { EventType } from './EventType';
 
 export default function chaiVerifyComplete<T = unknown>(
 	this: Chai.AssertionStatic,
@@ -11,30 +12,24 @@ export default function chaiVerifyComplete<T = unknown>(
 	const verificationSteps = retrieveVerificationSteps(observable, utils);
 
 	verificationSteps.push({
-		next: (nextValue) => {
+		next: (value) => {
 			const errorMessage = expectedSignalActualNext(
 				'complete',
-				SignalType.Complete,
-				SignalType.Error,
-				nextValue.value,
+				EventType.Complete,
+				EventType.Error,
+				value,
 			);
-			this.assert(false, errorMessage, 'Not supported', SignalType.Complete, SignalType.Next);
+			this.assert(false, errorMessage, 'Not supported', EventType.Complete, EventType.Next);
 			return true;
 		},
-		error: (errorValue) => {
+		error: (error) => {
 			const errorMessage = expectedSignalActualError(
 				'complete',
-				SignalType.Complete,
-				SignalType.Error,
-				errorValue.error,
+				EventType.Complete,
+				EventType.Error,
+				error,
 			);
-			this.assert(
-				false,
-				errorMessage,
-				'Not supported',
-				SignalType.Complete,
-				SignalType.Error,
-			);
+			this.assert(false, errorMessage, 'Not supported', EventType.Complete, EventType.Error);
 			return true;
 		},
 		complete: () => true,

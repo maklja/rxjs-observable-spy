@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import { SignalType } from '../spy';
+import { EventType } from './EventType';
 import { expectedNextActualOther } from '../messages';
 import { retrieveVerificationSteps } from './retrieveVerificationSteps';
 
@@ -14,26 +14,26 @@ export default function chaiNextCount<T>(
 	let currentCount = 0;
 	verificationSteps.push({
 		next: () => (++currentCount < expectedCount ? false : true),
-		error: (errorValue) => {
+		error: (error) => {
 			const errorMessage = expectedNextActualOther(
 				'nextCount',
-				SignalType.Next,
-				SignalType.Error,
+				EventType.Next,
+				EventType.Error,
 				currentCount + 1,
-				errorValue.error,
+				error,
 			);
-			this.assert(false, errorMessage, 'Not supported', SignalType.Next, SignalType.Error);
+			this.assert(false, errorMessage, 'Not supported', EventType.Next, EventType.Error);
 
 			return true;
 		},
 		complete: () => {
 			const errorMessage = expectedNextActualOther(
 				'nextCount',
-				SignalType.Next,
-				SignalType.Complete,
+				EventType.Next,
+				EventType.Complete,
 				currentCount + 1,
 			);
-			this.assert(false, errorMessage, 'Not supported', SignalType.Next, SignalType.Complete);
+			this.assert(false, errorMessage, 'Not supported', EventType.Next, EventType.Complete);
 
 			return true;
 		},
