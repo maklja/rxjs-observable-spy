@@ -3,7 +3,7 @@ name: deploy-production
 on:
   push:
     branches:
-      - master			
+      - master
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -16,3 +16,4 @@ jobs:
       - run: mv -v dist/src/* dist/
       - run: rm -rf dist/src
       - run: ls dist
+
