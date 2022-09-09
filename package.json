@@ -24,7 +24,8 @@
 		"test": "lerna run test",
 		"format": "lerna run format",
 		"lint": "lerna run lint",
-		"version": "lerna version --no-private"
+		"version": "lerna version --no-private",
+    "publish": "lerna publish --no-private"
 	}
 }
 
