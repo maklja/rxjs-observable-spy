@@ -25,7 +25,7 @@ describe('ObservableSpy test', function () {
 		});
 
 		it('will have expected number of elements as target values', async function () {
-			expect(observableSpy.getValuesLength()).to.be.equal(targetValues.length + 1);
+			expect(observableSpy.getValuesLength()).to.be.equal(targetValues.length);
 		});
 
 		it('will not have any error', async function () {
