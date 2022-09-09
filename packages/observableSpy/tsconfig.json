@@ -2,7 +2,7 @@
 	"compilerOptions": {
 		"module": "CommonJS",
 		"rootDir": ".",
-		"typeRoots": ["@types", "./node_modules/@types"],
+		"typeRoots": ["../../@types", "./node_modules/@types", "../../node_modules/@types"],
 		"outDir": "dist",
 		"target": "ES5",
 		"lib": ["es2015", "es2016"],
