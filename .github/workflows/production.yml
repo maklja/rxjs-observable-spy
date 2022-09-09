@@ -9,11 +9,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - run: npm install
-      - run: npm run build
-      - run: npm test
-      - run: rm -rf dist/test
-      - run: mv -v dist/src/* dist/
-      - run: rm -rf dist/src
-      - run: ls dist
+      - run: sh ./scripts/core-publish-prod.sh
 
