@@ -1,5 +1,5 @@
 {
-	"name": "@maklja/observable-spy",
+	"name": "@maklja90/observable-spy",
 	"private": true,
 	"workspaces": [
 		"packages/*"

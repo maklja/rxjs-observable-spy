@@ -1,5 +1,5 @@
 {
-	"name": "@maklja/chaijs-rxjs-observable-spy",
+	"name": "@maklja90/chaijs-rxjs-observable-spy",
 	"version": "0.0.2",
 	"description": "ChaiJS extension for testing RxJS observables",
 	"main": "dist/index.js",
@@ -44,3 +44,4 @@
 		"typescript": ">=4.0.0"
 	}
 }
+
