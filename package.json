@@ -5,7 +5,17 @@
 		"packages/*"
 	],
 	"devDependencies": {
-		"lerna": "^5.4.2"
+		"@types/mocha": "^9.0.0",
+		"@typescript-eslint/eslint-plugin": "^5.23.0",
+		"@typescript-eslint/parser": "^5.23.0",
+		"eslint": "^8.15.0",
+		"eslint-config-prettier": "^8.5.0",
+		"eslint-plugin-chai-expect": "^3.0.0",
+		"eslint-plugin-prettier": "^4.0.0",
+		"lerna": "^5.4.2",
+		"mocha": "^9.0.3",
+		"prettier": "^2.7.1",
+		"rimraf": "^3.0.2"
 	},
 	"scripts": {
 		"bootstrap": "lerna bootstrap",
@@ -16,4 +26,3 @@
 		"lint": "lerna run lint"
 	}
 }
-

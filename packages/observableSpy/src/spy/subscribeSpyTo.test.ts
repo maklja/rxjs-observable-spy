@@ -1,13 +1,19 @@
 import { expect } from 'chai';
 import { filter, from, interval, map, Observable, tap, throwError } from 'rxjs';
-import { ObservableSpy } from '../src';
-import { MockError } from './mocks';
+import { subscribeSpyTo } from './subscribeSpyTo';
 
-describe('ObservableSpy test', function () {
+class MockError extends Error {
+	constructor() {
+		super('Mock error message');
+		this.name = MockError.name;
+	}
+}
+
+describe('subscribeSpyTo test', function () {
 	describe('Test numbers sequence with observable spy', function () {
 		const sourceValues = [1, 2, 3, 4, 5];
 		const targetValues = [2, 6, 10];
-		const observableSpy = new ObservableSpy(
+		const observableSpy = subscribeSpyTo(
 			from(sourceValues).pipe(
 				filter((val) => val % 2 != 0),
 				map((val) => val * 2),
@@ -15,7 +21,6 @@ describe('ObservableSpy test', function () {
 		);
 
 		before(async function () {
-			observableSpy.subscribe();
 			const receivedValues = await observableSpy.onComplete();
 			expect(receivedValues).to.be.deep.equal(targetValues);
 		});
@@ -40,13 +45,6 @@ describe('ObservableSpy test', function () {
 			expect(observableSpy.receivedComplete()).to.be.true;
 		});
 
-		it('will throw and error if subscribed second time', function () {
-			expect(() => observableSpy.subscribe()).to.throw(
-				Error,
-				'Observable spy already subscribed',
-			);
-		});
-
 		it('will throw and error if we try to await onError', async function () {
 			try {
 				await observableSpy.onError();
@@ -59,10 +57,9 @@ describe('ObservableSpy test', function () {
 	});
 
 	describe('Test error sequence with observable spy', function () {
-		const observableSpy = new ObservableSpy(throwError(() => new MockError()));
+		const observableSpy = subscribeSpyTo(throwError(() => new MockError()));
 
 		before(async function () {
-			observableSpy.subscribe();
 			const recievedError = await observableSpy.onError<MockError>();
 			expect(recievedError.name).to.be.equal(MockError.name);
 			expect(recievedError.message).to.be.equal('Mock error message');
@@ -86,13 +83,6 @@ describe('ObservableSpy test', function () {
 			expect(observableSpy.receivedComplete()).to.be.false;
 		});
 
-		it('will throw and error if subscribed second time', function () {
-			expect(() => observableSpy.subscribe()).to.throw(
-				Error,
-				'Observable spy already subscribed',
-			);
-		});
-
 		it('will throw and error if we try to await onComplete', async function () {
 			try {
 				await observableSpy.onComplete();
@@ -101,52 +91,6 @@ describe('ObservableSpy test', function () {
 				expect(error).to.be.instanceOf(Error);
 				expect(error.message).to.be.equal('Mock error message');
 			}
-		});
-	});
-
-	describe('Test interval sequence with observable spy', function () {
-		const targetValues = [1, 3, 5, 7];
-		const observableSpy = new ObservableSpy(
-			interval(1_000).pipe(filter((val) => val % 2 === 1)),
-			{ useTestScheduler: true },
-		);
-
-		before(function (done) {
-			observableSpy.addNextListener((_, index) => {
-				if (index > 2) {
-					observableSpy.unsubscribe();
-					done();
-				}
-			});
-
-			observableSpy.subscribe();
-		});
-
-		it('will receive all interval number in expected sequence', function () {
-			expect(observableSpy.getValues()).to.be.deep.equal(targetValues);
-		});
-
-		it('will have expected number of elements as target values', function () {
-			expect(observableSpy.getValuesLength()).to.be.equal(targetValues.length);
-		});
-
-		it('will not have any error', function () {
-			expect(observableSpy.getError()).to.be.null;
-		});
-
-		it('will not have received error flag set', function () {
-			expect(observableSpy.receivedError()).to.be.false;
-		});
-
-		it('will not have received complete flag set', function () {
-			expect(observableSpy.receivedComplete()).to.be.false;
-		});
-
-		it('will throw and error if subscribed second time', function () {
-			expect(() => observableSpy.subscribe()).to.throw(
-				Error,
-				'Observable spy already subscribed',
-			);
 		});
 	});
 
@@ -165,10 +109,9 @@ describe('ObservableSpy test', function () {
 				)
 				.subscribe();
 		});
-		const observableSpy = new ObservableSpy(observable$, { useTestScheduler: true });
+		const observableSpy = subscribeSpyTo(observable$, { useTestScheduler: true });
 
 		before(async function () {
-			observableSpy.subscribe();
 			const recievedError = await observableSpy.onError<MockError>();
 			expect(recievedError.name).to.be.equal(MockError.name);
 			expect(recievedError.message).to.be.equal('Mock error message');
@@ -190,13 +133,6 @@ describe('ObservableSpy test', function () {
 
 		it('will not have received complete flag set', function () {
 			expect(observableSpy.receivedComplete()).to.be.false;
-		});
-
-		it('will throw and error if subscribed second time', function () {
-			expect(() => observableSpy.subscribe()).to.throw(
-				Error,
-				'Observable spy already subscribed',
-			);
 		});
 
 		it('will throw and error if we try to await onComplete', async function () {

@@ -1,26 +1,25 @@
 import { Observable } from 'rxjs';
-import { EventType } from '../spy';
-import { expectedSignalActualError, expectedSignalMessage } from '../messages';
+import { EventType } from '@maklja/rxjs-observable-spy';
+import { expectedNextActualOther } from '../messages';
 import { retrieveVerificationSteps } from './retrieveVerificationSteps';
 
-export default function chaiConsumeNext<T = unknown>(
+export default function chaiNextCount<T>(
 	this: Chai.AssertionStatic,
 	utils: Chai.ChaiUtils,
-	expectedCallback: (value: T, count: number) => void,
+	expectedCount: number,
 ) {
 	const observable: Observable<T> = this._obj;
 	const verificationSteps = retrieveVerificationSteps(observable, utils);
 
+	let currentCount = 0;
 	verificationSteps.push({
-		next: (value, index) => {
-			expectedCallback(value, index);
-			return true;
-		},
+		next: () => (++currentCount < expectedCount ? false : true),
 		error: (error) => {
-			const errorMessage = expectedSignalActualError(
-				'consumeNext',
+			const errorMessage = expectedNextActualOther(
+				'nextCount',
 				EventType.Next,
 				EventType.Error,
+				currentCount + 1,
 				error,
 			);
 			this.assert(false, errorMessage, 'Not supported', EventType.Next, EventType.Error);
@@ -28,10 +27,11 @@ export default function chaiConsumeNext<T = unknown>(
 			return true;
 		},
 		complete: () => {
-			const errorMessage = expectedSignalMessage(
-				'consumeNext',
+			const errorMessage = expectedNextActualOther(
+				'nextCount',
 				EventType.Next,
 				EventType.Complete,
+				currentCount + 1,
 			);
 			this.assert(false, errorMessage, 'Not supported', EventType.Next, EventType.Complete);
 

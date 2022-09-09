@@ -1,10 +1,10 @@
 import chai, { expect } from 'chai';
 import { from, throwError } from 'rxjs';
-import { chaiObservableSpyPlugin } from '../src';
+import { chaiObservableSpyPlugin } from '..';
 
 chai.use(chaiObservableSpyPlugin);
 
-describe('Subscriber spy', function () {
+describe('ChaiJS observable spy plugin test', function () {
 	it('Test sequence should success if all received values are as expected', async function () {
 		const string$ = from(['Tom', 'Tina', 'Ana']);
 

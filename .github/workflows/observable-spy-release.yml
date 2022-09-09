@@ -16,7 +16,4 @@ jobs:
       - run: npm run bootstrap
       - run: npm run build
       - run: npm test
-      - run: rm -rf packages/observableSpy/dist/test
-      - run: mv -v packages/observableSpy/dist/src/* packages/observableSpy/dist/
-      - run: rm -rf packages/observableSpy/dist/src
 

@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import { VerificationStep } from '../spy';
+import { VerificationStep } from '@maklja/rxjs-observable-spy';
 
 const VERIFICATION_STEP_FLAG_KEY = 'verificationSteps';
 

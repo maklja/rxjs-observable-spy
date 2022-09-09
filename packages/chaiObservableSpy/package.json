@@ -1,7 +1,7 @@
 {
-	"name": "@maklja/rxjs-observable-spy",
+	"name": "@maklja/chaijs-rxjs-observable-spy",
 	"version": "0.0.1",
-	"description": "A simple little library that helps testing RxJS observables",
+	"description": "ChaiJS extension for testing RxJS observables",
 	"main": "dist/index.js",
 	"types": "dist/index.d.ts",
 	"type": "commonjs",
@@ -16,6 +16,8 @@
 		"format": "prettier --write src/**/*.ts --config .prettierrc"
 	},
 	"keywords": [
+		"chaijs",
+		"chaijs extension",
 		"rxjs",
 		"observable",
 		"mocks",
@@ -26,19 +28,20 @@
 	"license": "MIT",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/maklja/rxjs-observable-spy/tree/master/packages/observableSpy"
+		"url": "https://github.com/maklja/rxjs-observable-spy"
 	},
 	"publishConfig": {
 		"access": "public",
 		"registry": "https://registry.npmjs.com"
 	},
-	"devDependencies": {
-		"@types/chai": "^4.3.0",
-		"chai": "^4.3.4"
+	"dependencies": {
+		"@maklja/rxjs-observable-spy": "*",
+		"@types/chai": "^4.3.0"
 	},
 	"peerDependencies": {
 		"rxjs": ">=6.0.0",
-		"typescript": ">=4.0.0"
+		"typescript": ">=4.0.0",
+		"chai": ">=4.0.0"
 	}
 }
 

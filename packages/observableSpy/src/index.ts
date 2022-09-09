@@ -1,4 +1,3 @@
-import { chaiObservableSpyPlugin } from './chai';
 import {
 	ObservableSpy,
 	SubscribeSpy,
@@ -13,10 +12,10 @@ import {
 	CompleteListener,
 	ErrorListener,
 	NextListener,
+	EventType,
 } from './spy';
 
 export {
-	chaiObservableSpyPlugin,
 	ObservableSpy,
 	verifyObservable,
 	subscribeSpyTo,
@@ -24,6 +23,7 @@ export {
 	NotSubscribedError,
 	UnexpectedObservableCompleteError,
 	MissingVerificationStepError,
+	EventType,
 };
 
 export type {

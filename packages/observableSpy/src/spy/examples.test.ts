@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { filter, from, interval, of, throwError } from 'rxjs';
-import { subscribeSpyTo, ObservableSpy, NextListener, verifyObservable, VerificationStep } from '../src';
+import { subscribeSpyTo, ObservableSpy, NextListener, verifyObservable, VerificationStep } from '..';
 
 describe('ObservableSpy example test', function () {
 	it('should immediately subscribe and spy on Observable ', () => {

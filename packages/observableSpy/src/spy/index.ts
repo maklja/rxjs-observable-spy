@@ -1,5 +1,6 @@
 import { verifyObservable, VerificationStep } from './verifyObservable';
-import { ObservableSpy, ObserverSpyConfig, subscribeSpyTo } from './observableSpy';
+import { ObservableSpy, ObserverSpyConfig } from './observableSpy';
+import { subscribeSpyTo } from './subscribeSpyTo';
 import {
 	AlreadySubscribedError,
 	NotSubscribedError,

@@ -1,25 +1,29 @@
 import { Observable } from 'rxjs';
-import { EventType } from '../spy';
-import { expectedNextActualOther } from '../messages';
+import { EventType } from '@maklja/rxjs-observable-spy';
+import { expectedSignalActualError, expectedSignalMessage } from '../messages';
 import { retrieveVerificationSteps } from './retrieveVerificationSteps';
 
-export default function chaiNextCount<T>(
+export default function chaiNextMatches<T = unknown>(
 	this: Chai.AssertionStatic,
 	utils: Chai.ChaiUtils,
-	expectedCount: number,
+	expectedCallback: (value: T, count: number) => boolean,
 ) {
 	const observable: Observable<T> = this._obj;
 	const verificationSteps = retrieveVerificationSteps(observable, utils);
 
-	let currentCount = 0;
 	verificationSteps.push({
-		next: () => (++currentCount < expectedCount ? false : true),
+		next: (value, index) => {
+			const matchResult = expectedCallback(value, index);
+			const errorMessage = `[nextMatches] - match failed for value ${value}`;
+			this.assert(matchResult, errorMessage, errorMessage, null);
+
+			return true;
+		},
 		error: (error) => {
-			const errorMessage = expectedNextActualOther(
-				'nextCount',
+			const errorMessage = expectedSignalActualError(
+				'nextMatches',
 				EventType.Next,
 				EventType.Error,
-				currentCount + 1,
 				error,
 			);
 			this.assert(false, errorMessage, 'Not supported', EventType.Next, EventType.Error);
@@ -27,11 +31,10 @@ export default function chaiNextCount<T>(
 			return true;
 		},
 		complete: () => {
-			const errorMessage = expectedNextActualOther(
-				'nextCount',
+			const errorMessage = expectedSignalMessage(
+				'nextMatches',
 				EventType.Next,
 				EventType.Complete,
-				currentCount + 1,
 			);
 			this.assert(false, errorMessage, 'Not supported', EventType.Next, EventType.Complete);
 
