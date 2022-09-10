@@ -25,7 +25,7 @@
 		"format": "lerna run format",
 		"lint": "lerna run lint",
 		"version": "lerna version --no-private",
-		"publish": "lerna publish --no-private"
+		"publish": "lerna publish --ignore-scripts --no-private"
 	},
 	"author": "Bojan Makljenovic",
 	"license": "MIT",
@@ -34,4 +34,3 @@
 		"url": "https://github.com/maklja/rxjs-observable-spy"
 	}
 }
-
