@@ -35,7 +35,7 @@
 		"registry": "https://registry.npmjs.org"
 	},
 	"dependencies": {
-		"@maklja/rxjs-observable-spy": "*",
+		"@maklja90/rxjs-observable-spy": "*",
 		"@types/chai": "^4.3.0"
 	},
 	"peerDependencies": {

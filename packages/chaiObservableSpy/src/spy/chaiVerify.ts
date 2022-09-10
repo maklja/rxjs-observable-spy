@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import { verifyObservable } from '@maklja/rxjs-observable-spy';
+import { verifyObservable } from '@maklja90/rxjs-observable-spy';
 import { retrieveVerificationSteps } from './retrieveVerificationSteps';
 
 export default function chaiVerify<T = unknown>(this: Chai.AssertionStatic, utils: Chai.ChaiUtils) {

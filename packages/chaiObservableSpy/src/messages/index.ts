@@ -1,4 +1,4 @@
-import { EventType } from '@maklja/rxjs-observable-spy';
+import { EventType } from '@maklja90/rxjs-observable-spy';
 
 const errorFormatMessage = (e: unknown) => {
 	if (e instanceof Error) {

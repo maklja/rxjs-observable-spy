@@ -1,4 +1,4 @@
-# @maklja/rxjs-observable-spy
+# @maklja90/rxjs-observable-spy
 
 A simple little library that helps testing RxJS observables.
 
@@ -7,13 +7,13 @@ A simple little library that helps testing RxJS observables.
 ## Installation
 
 ```console
-yarn add -D @maklja/rxjs-observable-spy
+yarn add -D @maklja90/rxjs-observable-spy
 ```
 
 or
 
 ```console
-npm install -D @maklja/rxjs-observable-spy
+npm install -D @maklja90/rxjs-observable-spy
 ```
 
 <br/>
@@ -38,7 +38,7 @@ define what values will be received or what error is expected to be thrown.
 Simplest way to use a spy is to import the helper `subscribeSpyTo` function.
 
 ```js
-import { subscribeSpyTo } from '@maklja/rxjs-observable-spy';
+import { subscribeSpyTo } from '@maklja90/rxjs-observable-spy';
 // other RxJS imports...
 
 it('should immediately subscribe and spy on Observable', () => {
@@ -118,7 +118,7 @@ it('should catch an error from observable', async () => {
 For some complicated tests you will need to manually create an instance of Observable spy.
 
 ```ts
-import { ObservableSpy } from '@maklja/rxjs-observable-spy';
+import { ObservableSpy } from '@maklja90/rxjs-observable-spy';
 // other RxJS imports...
 
 it('should spy on Observable', async () => {
@@ -153,7 +153,7 @@ it('should spy on Observable', async () => {
 Instance of ObservableSpy has support for registering event listeners in order to track next, error or complete events that are coming from observable.
 
 ```ts
-import { ObservableSpy, NextListener } from '@maklja/rxjs-observable-spy';
+import { ObservableSpy, NextListener } from '@maklja90/rxjs-observable-spy';
 
 const targetValues = [1, 3, 5, 7];
 const observableSpy = new ObservableSpy(interval(1_000).pipe(filter((val) => val % 2 === 1)), {
@@ -188,7 +188,7 @@ it('will receive first n interval numbers in expected sequence', function () {
 With a project that has a couple of hundred tests we will probably want to share some commonly used assertions between different tests. In that case we can use verification steps to “describe” what are expected values from tested observables.
 
 ```ts
-import { verifyObservable, VerificationStep } from '@maklja/rxjs-observable-spy';
+import { verifyObservable, VerificationStep } from '@maklja90/rxjs-observable-spy';
 
 const allNumbersVerificationStep: VerificationStep<number> = {
 	next(val) {
@@ -235,4 +235,3 @@ it('will fail with error if any value is not a number', async function () {
 ## License
 
 MIT
-
