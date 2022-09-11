@@ -15,6 +15,8 @@ import {
 	EventType,
 } from './spy';
 
+export const a = 10;
+
 export {
 	ObservableSpy,
 	verifyObservable,
@@ -34,4 +36,3 @@ export type {
 	ErrorListener,
 	NextListener,
 };
-

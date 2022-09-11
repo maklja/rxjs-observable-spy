@@ -24,8 +24,8 @@
 		"test": "lerna run test",
 		"format": "lerna run format",
 		"lint": "lerna run lint",
-		"version": "lerna version --no-private",
-		"publish": "lerna publish --ignore-scripts --no-private"
+		"version": "lerna version patch --no-private",
+		"publish": "lerna publish from-git --ignore-scripts --no-private"
 	},
 	"author": "Bojan Makljenovic",
 	"license": "MIT",
