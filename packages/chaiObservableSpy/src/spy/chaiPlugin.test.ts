@@ -1,42 +1,38 @@
 import chai, { expect } from 'chai';
 import { from, throwError } from 'rxjs';
-import { chaiObservableSpyPlugin } from '..';
+import createChaiObservableSpyPlugin from './chaiPlugin';
 
-chai.use(chaiObservableSpyPlugin);
+chai.use(createChaiObservableSpyPlugin());
 
-describe('ChaiJS observable spy plugin test', function () {
-	it('Test sequence should success if all received values are as expected', async function () {
+describe('ChaiJS expect observable spy plugin test', function () {
+	it('should receive all values in proper order', async function () {
 		const string$ = from(['Tom', 'Tina', 'Ana']);
 
 		const values = await expect(string$)
-			.subscriber.next('Tom')
+			.emit.next('Tom')
 			.next('Tina')
 			.next('Ana')
 			.verifyComplete();
 		expect(values).to.deep.equals(['Tom', 'Tina', 'Ana']);
 	});
 
-	it('Test sequence should fail if value does not match', async function () {
+	it('should fail if value does not match', async function () {
 		const string$ = from(['Tom', 'Ana']);
 
 		try {
-			await expect(string$)
-				.to.subscriber.next('Tom')
-				.next('Tina')
-				.next('Ana')
-				.verifyComplete();
+			await expect(string$).emit.next('Tom').next('Tina').next('Ana').verifyComplete();
 		} catch (e) {
 			const error = e as Chai.AssertionError;
 			expect(error.message).to.be.string("Expected next value: 'Tina', actual value 'Ana'");
 		}
 	});
 
-	it('Test sequence should fail if value does not exists', async function () {
+	it('should fail if value does not exists', async function () {
 		const string$ = from(['Tom', 'Tina', 'Ana']);
 
 		try {
 			await expect(string$)
-				.to.subscriber.next('Tom')
+				.emit.next('Tom')
 				.next('Tina')
 				.next('Ana')
 				.next('Jonh')
@@ -49,18 +45,25 @@ describe('ChaiJS observable spy plugin test', function () {
 		}
 	});
 
-	it('Test sequence should success if values count match', async function () {
+	it('should receive proper values count', async function () {
 		const string$ = from(['Tom', 'Ana']);
 
-		const values = await expect(string$).to.subscriber.nextCount(2).verifyComplete();
+		const values = await expect(string$).emit.nextCount(2).verifyComplete();
 		expect(values).to.deep.equals(['Tom', 'Ana']);
 	});
 
-	it('Test sequence should fail if values count mismatch', async function () {
+	it('should skip proper values count', async function () {
+		const string$ = from(['Tom', 'Ana']);
+
+		const values = await expect(string$).emit.skipCount(2).verifyComplete();
+		expect(values).to.deep.equals(['Tom', 'Ana']);
+	});
+
+	it('should fail if values count mismatch', async function () {
 		const string$ = from(['Tom', 'Ana']);
 
 		try {
-			await expect(string$).to.subscriber.nextCount(3).verifyComplete();
+			await expect(string$).emit.nextCount(3).verifyComplete();
 		} catch (e) {
 			const error = e as Chai.AssertionError;
 			expect(error.message).to.be.string(
@@ -69,15 +72,15 @@ describe('ChaiJS observable spy plugin test', function () {
 		}
 	});
 
-	it('Test sequence should success when expected error is thrown', async function () {
+	it('should catch expected error', async function () {
 		const error$ = throwError(() => new Error('This is an error'));
 
-		await expect(error$).to.subscriber.error(Error, 'This is an error').verify();
-		await expect(error$).to.subscriber.errorMessage('This is an error').verify();
-		await expect(error$).to.subscriber.errorType(Error).verify();
+		await expect(error$).emit.error(Error, 'This is an error').verify();
+		await expect(error$).emit.errorMessage('This is an error').verify();
+		await expect(error$).emit.errorType(Error).verify();
 	});
 
-	it('Test sequence should fail when unexpected error is thrown', async function () {
+	it('should fail when unexpected error is thrown', async function () {
 		class CustomError extends Error {
 			constructor() {
 				super('This is my custom error');
@@ -87,7 +90,7 @@ describe('ChaiJS observable spy plugin test', function () {
 		const error$ = throwError(() => new CustomError());
 
 		try {
-			await expect(error$).to.subscriber.error(CustomError, 'This is an error').verify();
+			await expect(error$).emit.error(CustomError, 'This is an error').verify();
 		} catch (e) {
 			const error = e as Chai.AssertionError;
 			expect(error.message).to.be.string(
@@ -96,49 +99,72 @@ describe('ChaiJS observable spy plugin test', function () {
 		}
 	});
 
-	it('Test sequence should success if all values satisfies match condition', async function () {
+	it('should next value match a condition', async function () {
 		const numbers$ = from([2, 2, 3]);
 
-		const conditionMatch = (val: number) => val > 1;
+		const conditionMatch = (val: number): boolean => val > 1;
 
 		const values = await expect(numbers$)
-			.subscriber.nextMatches(conditionMatch)
+			.emit.nextMatches(conditionMatch)
 			.nextMatches(conditionMatch)
 			.nextMatches(conditionMatch)
 			.verifyComplete();
 		expect(values).to.deep.equals([2, 2, 3]);
 	});
 
-	it('Test sequence should fail if some value does not satisfies match condition', async function () {
+	it('should next value match a condition until', async function () {
+		const sourceNumbers = [2, 2, 3];
+		const numbers$ = from(sourceNumbers);
+
+		const conditionMatch = (val: number): boolean => val > 1;
+
+		const values = await expect(numbers$)
+			.emit.nextMatchesUntil(conditionMatch, (_, index) => index < sourceNumbers.length - 1)
+			.verifyComplete();
+		expect(values).to.deep.equals([2, 2, 3]);
+	});
+
+	it('should fail if next value does not satisfies match condition', async function () {
 		const numbers$ = from([2, 2, 3]);
 
 		const conditionMatch = (val: number) => val >= 2;
 
 		const values = await expect(numbers$)
-			.subscriber.nextMatches(conditionMatch)
+			.emit.nextMatches(conditionMatch)
 			.nextMatches(conditionMatch)
 			.nextMatches(conditionMatch)
 			.verifyComplete();
 		expect(values).to.deep.equals([2, 2, 3]);
 	});
 
-	it('Test sequence should success when consume next value', async function () {
+	it('should consume next value', async function () {
 		const numbers$ = from([2, 2, 3]);
 
 		const values = await expect(numbers$)
-			.subscriber.consumeNext<number>((val) =>
-				expect(val).to.be.a('number').and.to.be.equal(2),
-			)
+			.emit.consumeNext<number>((val) => expect(val).to.be.a('number').and.to.be.equal(2))
 			.consumeNext<number>((val) => expect(val).to.be.a('number').and.to.be.equal(2))
 			.consumeNext<number>((val) => expect(val).to.be.a('number').and.to.be.equal(3))
 			.verifyComplete();
 		expect(values).to.deep.equals([2, 2, 3]);
 	});
 
-	it('Test sequence should complete with success', async function () {
+	it('should consume next value until satisfies condition', async function () {
+		const sourceValues = [2, 2, 3];
+		const numbers$ = from(sourceValues);
+
+		const values = await expect(numbers$)
+			.emit.consumeNextUntil<number>((val, index) => {
+				expect(val).to.be.a('number').and.to.be.equal(sourceValues[index]);
+				return index < 2;
+			})
+			.verifyComplete();
+		expect(values).to.deep.equals([2, 2, 3]);
+	});
+
+	it('should ignore all next values and await complete', async function () {
 		const numbers$ = from([2, 2, 3]);
 
-		const values = await expect(numbers$).subscriber.awaitComplete();
+		const values = await expect(numbers$).emit.awaitComplete();
 		expect(values).to.deep.equals([2, 2, 3]);
 	});
 });

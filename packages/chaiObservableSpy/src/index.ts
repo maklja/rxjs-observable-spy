@@ -1,3 +1,4 @@
-import { chaiObservableSpyPlugin } from './spy';
+import { createChaiObservableSpyPlugin } from './spy';
 
-export { chaiObservableSpyPlugin };
+export { createChaiObservableSpyPlugin };
+

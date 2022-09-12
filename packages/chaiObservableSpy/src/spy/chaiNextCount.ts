@@ -2,14 +2,18 @@ import { Observable } from 'rxjs';
 import { EventType } from '@maklja90/rxjs-observable-spy';
 import { expectedNextActualOther } from '../messages';
 import { retrieveVerificationSteps } from './retrieveVerificationSteps';
+import { refreshInvokeTimeout } from './subscribeInvokedTimeout';
 
 export default function chaiNextCount<T>(
 	this: Chai.AssertionStatic,
+	chai: Chai.ChaiStatic,
 	utils: Chai.ChaiUtils,
 	expectedCount: number,
 ) {
 	const observable: Observable<T> = this._obj;
 	const verificationSteps = retrieveVerificationSteps(observable, utils);
+
+	refreshInvokeTimeout.call(this, chai, this._obj, utils);
 
 	let currentCount = 0;
 	verificationSteps.push({
@@ -22,7 +26,7 @@ export default function chaiNextCount<T>(
 				currentCount + 1,
 				error,
 			);
-			this.assert(false, errorMessage, 'Not supported', EventType.Next, EventType.Error);
+			this.assert(false, errorMessage, '', EventType.Next, EventType.Error);
 
 			return true;
 		},
@@ -33,7 +37,7 @@ export default function chaiNextCount<T>(
 				EventType.Complete,
 				currentCount + 1,
 			);
-			this.assert(false, errorMessage, 'Not supported', EventType.Next, EventType.Complete);
+			this.assert(false, errorMessage, '', EventType.Next, EventType.Complete);
 
 			return true;
 		},

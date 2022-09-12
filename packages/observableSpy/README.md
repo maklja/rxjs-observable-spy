@@ -2,7 +2,7 @@
 
 A simple little library that helps testing RxJS observables.
 
-[![Build](https://github.com/maklja/rxjs-observable-spy/actions/workflows/observable-spy-release.yml/badge.svg?branch=master)](https://github.com/maklja/rxjs-observable-spy/actions/workflows/observable-spy-release.yml)
+[![release](https://github.com/maklja/rxjs-observable-spy/actions/workflows/release.yml/badge.svg?branch=master)](https://github.com/maklja/rxjs-observable-spy/actions/workflows/release.yml)
 
 ## Installation
 

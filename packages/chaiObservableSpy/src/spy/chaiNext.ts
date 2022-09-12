@@ -2,21 +2,25 @@ import { Observable } from 'rxjs';
 import { EventType } from '@maklja90/rxjs-observable-spy';
 import { expectedNextActualOther } from '../messages';
 import { retrieveVerificationSteps } from './retrieveVerificationSteps';
+import { refreshInvokeTimeout } from './subscribeInvokedTimeout';
 
 export default function chaiNext<T = unknown>(
 	this: Chai.AssertionStatic,
+	chai: Chai.ChaiStatic,
 	utils: Chai.ChaiUtils,
 	expectedNextValue: T,
 ) {
 	const observable: Observable<T> = this._obj;
 	const verificationSteps = retrieveVerificationSteps(observable, utils);
 
+	refreshInvokeTimeout.call(this, chai, this._obj, utils);
+
 	verificationSteps.push({
 		next: (value) => {
 			this.assert(
 				expectedNextValue === value,
 				'Expected next value: #{exp}, actual value #{act}',
-				'Not supported',
+				'',
 				expectedNextValue,
 				value,
 			);
@@ -30,7 +34,7 @@ export default function chaiNext<T = unknown>(
 				expectedNextValue,
 				error,
 			);
-			this.assert(false, errorMessage, 'Not supported', EventType.Next, EventType.Error);
+			this.assert(false, errorMessage, '', EventType.Next, EventType.Error);
 			return true;
 		},
 		complete: () => {
@@ -40,7 +44,7 @@ export default function chaiNext<T = unknown>(
 				EventType.Complete,
 				expectedNextValue,
 			);
-			this.assert(false, errorMessage, 'Not supported', EventType.Next, EventType.Complete);
+			this.assert(false, errorMessage, '', EventType.Next, EventType.Complete);
 			return true;
 		},
 	});

@@ -8,11 +8,19 @@ declare namespace Chai {
 	interface ObservableLanguageChains {
 		next: <T = unknown>(val: T) => ObservableLanguageChains;
 		nextCount: (expectedCount: number) => ObservableLanguageChains;
+		skipCount: (skipCount: number) => ObservableLanguageChains;
 		nextMatches: <T = unknown>(
-			callback: (value: T, count: number) => boolean,
+			callback: (value: T, index: number) => boolean,
+		) => ObservableLanguageChains;
+		nextMatchesUntil: <T = unknown>(
+			callback: (value: T, index: number) => boolean,
+			untilCondition: (value: T, index: number) => boolean,
 		) => ObservableLanguageChains;
 		consumeNext: <T = unknown>(
-			callback: (value: T, count: number) => void,
+			callback: (value: T, index: number) => void,
+		) => ObservableLanguageChains;
+		consumeNextUntil: <T = unknown>(
+			callback: (value: T, index: number) => boolean,
 		) => ObservableLanguageChains;
 		error: <E extends Error = Error>(
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -29,7 +37,8 @@ declare namespace Chai {
 	}
 
 	interface Assertion {
-		subscriber: ObservableLanguageChains;
+		observableSpy: ObservableLanguageChains;
+		emit: ObservableLanguageChains;
 	}
 }
 

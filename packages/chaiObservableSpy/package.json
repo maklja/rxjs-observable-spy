@@ -38,6 +38,9 @@
 		"@maklja90/rxjs-observable-spy": "^0.0.7",
 		"@types/chai": "^4.3.0"
 	},
+	"devDependencies": {
+		"@types/node": "^18.7.16"
+	},
 	"peerDependencies": {
 		"chai": ">=4.0.0",
 		"rxjs": ">=6.0.0",

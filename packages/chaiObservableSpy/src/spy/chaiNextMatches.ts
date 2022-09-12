@@ -2,14 +2,18 @@ import { Observable } from 'rxjs';
 import { EventType } from '@maklja90/rxjs-observable-spy';
 import { expectedSignalActualError, expectedSignalMessage } from '../messages';
 import { retrieveVerificationSteps } from './retrieveVerificationSteps';
+import { refreshInvokeTimeout } from './subscribeInvokedTimeout';
 
 export default function chaiNextMatches<T = unknown>(
 	this: Chai.AssertionStatic,
+	chai: Chai.ChaiStatic,
 	utils: Chai.ChaiUtils,
-	expectedCallback: (value: T, count: number) => boolean,
+	expectedCallback: (value: T, index: number) => boolean,
 ) {
 	const observable: Observable<T> = this._obj;
 	const verificationSteps = retrieveVerificationSteps(observable, utils);
+
+	refreshInvokeTimeout.call(this, chai, this._obj, utils);
 
 	verificationSteps.push({
 		next: (value, index) => {
@@ -26,7 +30,7 @@ export default function chaiNextMatches<T = unknown>(
 				EventType.Error,
 				error,
 			);
-			this.assert(false, errorMessage, 'Not supported', EventType.Next, EventType.Error);
+			this.assert(false, errorMessage, '', EventType.Next, EventType.Error);
 
 			return true;
 		},
@@ -36,7 +40,7 @@ export default function chaiNextMatches<T = unknown>(
 				EventType.Next,
 				EventType.Complete,
 			);
-			this.assert(false, errorMessage, 'Not supported', EventType.Next, EventType.Complete);
+			this.assert(false, errorMessage, '', EventType.Next, EventType.Complete);
 
 			return true;
 		},

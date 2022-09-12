@@ -4,11 +4,12 @@ import { expectedSignalActualError, expectedSignalMessage } from '../messages';
 import { retrieveVerificationSteps } from './retrieveVerificationSteps';
 import { refreshInvokeTimeout } from './subscribeInvokedTimeout';
 
-export default function chaiConsumeNext<T = unknown>(
+export default function chaiNextMatchesUntil<T = unknown>(
 	this: Chai.AssertionStatic,
 	chai: Chai.ChaiStatic,
 	utils: Chai.ChaiUtils,
-	expectedCallback: (value: T, index: number) => void,
+	expectedCallback: (value: T, index: number) => boolean,
+	untilCondition: (value: T, index: number) => boolean,
 ) {
 	const observable: Observable<T> = this._obj;
 	const verificationSteps = retrieveVerificationSteps(observable, utils);
@@ -17,12 +18,15 @@ export default function chaiConsumeNext<T = unknown>(
 
 	verificationSteps.push({
 		next: (value, index) => {
-			expectedCallback(value, index);
-			return true;
+			const matchResult = expectedCallback(value, index);
+			const errorMessage = `[nextMatches] - match failed for value ${value}`;
+			this.assert(matchResult, errorMessage, errorMessage, null);
+
+			return !untilCondition(value, index);
 		},
 		error: (error) => {
 			const errorMessage = expectedSignalActualError(
-				'consumeNext',
+				'nextMatches',
 				EventType.Next,
 				EventType.Error,
 				error,
@@ -33,7 +37,7 @@ export default function chaiConsumeNext<T = unknown>(
 		},
 		complete: () => {
 			const errorMessage = expectedSignalMessage(
-				'consumeNext',
+				'nextMatches',
 				EventType.Next,
 				EventType.Complete,
 			);
