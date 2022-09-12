@@ -24,7 +24,7 @@
 		"test": "lerna run test",
 		"format": "lerna run format",
 		"lint": "lerna run lint",
-		"version": "lerna version --conventional-commits --changelog-preset --no-private --yes",
+		"version": "lerna version --conventional-commits --changelog-preset angular-bitbucket --no-private --yes",
 		"publish": "lerna publish from-git --ignore-scripts --no-private"
 	},
 	"author": "Bojan Makljenovic",
