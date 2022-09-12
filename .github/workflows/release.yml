@@ -1,11 +1,9 @@
-name: observable-spy-release
+name: release
 
 on:
   push:
     branches:
       - master
-    paths:
-      - 'packages/observableSpy/**'
 
 jobs:
   build:

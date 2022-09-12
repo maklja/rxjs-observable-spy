@@ -1,16 +1,24 @@
 import { expect } from 'chai';
 import { filter, from, interval, of, throwError } from 'rxjs';
-import { subscribeSpyTo, ObservableSpy, NextListener, verifyObservable, VerificationStep } from '..';
+import {
+	subscribeSpyTo,
+	ObservableSpy,
+	NextListener,
+	verifyObservable,
+	VerificationStep,
+} from '..';
 
 describe('ObservableSpy example test', function () {
-	it('should immediately subscribe and spy on Observable ', () => {
-		const cityObservable = of('San Francisco', 'Berlin', 'London');
+	it('should immediately subscribe and spy on Observable', () => {
+		const expectedCities = ['San Francisco', 'Berlin', 'London'];
+		const cityObservable = of(...expectedCities);
 
-		// the function will return an instance of SubscribedSpy and the “under a hood”
-		// function will automatically subscribe to the provided observable.
+		// the function will return an instance of SubscribedSpy
+		// and the “under a hood” function will automatically
+		// subscribe to the provided observable.
 		const observableSpy = subscribeSpyTo(cityObservable);
 
-		expect(observableSpy.getValues()).to.be.deep.equal(['San Francisco', 'Berlin', 'London']);
+		expect(observableSpy.getValues()).to.be.deep.equal(expectedCities);
 		expect(observableSpy.getValuesLength()).to.be.equal(3);
 		expect(observableSpy.receivedComplete()).to.be.true;
 		expect(observableSpy.receivedError()).to.be.false;
@@ -20,26 +28,29 @@ describe('ObservableSpy example test', function () {
 		observableSpy.unsubscribe();
 	});
 
-	it('should async/await complete event before checking observable values', async () => {
-		const cityObservable = of('San Francisco', 'Berlin', 'London');
+	it('should async/await complete event', async () => {
+		const expectedCities = ['San Francisco', 'Berlin', 'London'];
+		const cityObservable = of(...expectedCities);
 
 		const observableSpy = subscribeSpyTo(cityObservable);
 
+		// onComplete method will return an array of all values
+		// received from the next event
 		const receivedCityValues = await observableSpy.onComplete();
 
-		expect(receivedCityValues).to.be.deep.equal(['San Francisco', 'Berlin', 'London']);
+		expect(receivedCityValues).to.be.deep.equal(expectedCities);
 		expect(observableSpy.receivedComplete()).to.be.true;
 	});
 
-	it('should check observable values when onComplete callback is invoked', (done) => {
-		const cityObservable = of('San Francisco', 'Berlin', 'London');
-
+	it('should check values when onComplete callback is invoked', (done) => {
+		const expectedCities = ['San Francisco', 'Berlin', 'London'];
+		const cityObservable = of(...expectedCities);
 		const observableSpy = subscribeSpyTo(cityObservable);
 
 		observableSpy
 			.onComplete()
 			.then((receivedCityValues) => {
-				expect(receivedCityValues).to.be.deep.equal(['San Francisco', 'Berlin', 'London']);
+				expect(receivedCityValues).to.be.deep.equal(expectedCities);
 				expect(observableSpy.receivedComplete()).to.be.true;
 				done();
 			})
@@ -60,7 +71,8 @@ describe('ObservableSpy example test', function () {
 	});
 
 	it('should spy on Observable', async () => {
-		const cityObservable = of('San Francisco', 'Berlin', 'London');
+		const expectedCities = ['San Francisco', 'Berlin', 'London'];
+		const cityObservable = of(...expectedCities);
 
 		// observable spy is immutable, so there is no way of
 		// using same instance observable spy for different observables
@@ -78,7 +90,7 @@ describe('ObservableSpy example test', function () {
 
 		const receivedCityValues = await observableSpy.onComplete();
 
-		expect(receivedCityValues).to.be.deep.equal(['San Francisco', 'Berlin', 'London']);
+		expect(receivedCityValues).to.be.deep.equal(expectedCities);
 		expect(observableSpy.getValuesLength()).to.be.equal(3);
 		expect(observableSpy.receivedComplete()).to.be.true;
 		expect(observableSpy.receivedError()).to.be.false;
@@ -95,7 +107,7 @@ describe('ObservableSpy example test', function () {
 		);
 
 		before(function (done) {
-			const awaitNValuesListener: NextListener<number> = (_: number, index: number) => {
+			const nextListener: NextListener<number> = (val, index) => {
 				// after we receive 4 numbers from interval
 				if (index > 2) {
 					// unsubscribe spy and begin with tests
@@ -105,7 +117,7 @@ describe('ObservableSpy example test', function () {
 			};
 
 			// register listener on next event
-			observableSpy.addNextListener(awaitNValuesListener);
+			observableSpy.addNextListener(nextListener);
 			// to unregister a listener use
 			// observableSpy.removeNextListener(awaitNValuesListener);
 
@@ -117,47 +129,47 @@ describe('ObservableSpy example test', function () {
 		});
 	});
 
-    describe('ObservableSpy test', function () {
-        const allNumbersVerificationStep: VerificationStep<number> = {
-            next(val) {
-                if (isNaN(val)) {
-                    throw new Error(`Value ${val} is not a number`);
-                }
-    
-                // false value indicates that this verification step is not done
-                // when we return true, the next verification step will be able to proceed
-                return false;
-            },
-            error(e) {
-                throw e;
-            },
-            complete() {
-                // we received complete event from observable, so this verification step is finished
-                return true;
-            },
-        };
-    
-        it('will verify that all observable values are numbers', async function () {
-            const numbersObservable = from([1, 2, 3, 4]);
-            const receivedValues = await verifyObservable(numbersObservable, [
-                // register a single verification step that will check if all incoming values are numbers
-                allNumbersVerificationStep,
-            ]);
-    
-            expect(receivedValues).to.be.deep.equal([1, 2, 3, 4]);
-        });
-    
-        it('will fail with error if any value is not a number', async function () {
-            const numbersObservable = from([1, 2, 'three', 4]);
-    
-            try {
-                await verifyObservable(numbersObservable, [allNumbersVerificationStep]);
-            } catch (e) {
-                const error = e as Error;
-                expect(error).to.be.instanceof(Error);
-                expect(error.message).to.be.equal('Value three is not a number');
-            }
-        });
-    });
+	describe('ObservableSpy test', function () {
+		const allNumbersVerificationStep: VerificationStep<number> = {
+			next(val) {
+				if (isNaN(val)) {
+					throw new Error(`Value ${val} is not a number`);
+				}
+
+				// false value indicates that this verification step is not done
+				// when we return true, the next verification step will be able to proceed
+				return false;
+			},
+			error(e) {
+				throw e;
+			},
+			complete() {
+				// we received complete event from observable, so this verification step is finished
+				return true;
+			},
+		};
+
+		it('will verify that all observable values are numbers', async function () {
+			const numbersObservable = from([1, 2, 3, 4]);
+			const receivedValues = await verifyObservable(numbersObservable, [
+				// register a single verification step that will check if all incoming values are numbers
+				allNumbersVerificationStep,
+			]);
+
+			expect(receivedValues).to.be.deep.equal([1, 2, 3, 4]);
+		});
+
+		it('will fail with error if any value is not a number', async function () {
+			const numbersObservable = from([1, 2, 'three', 4]);
+
+			try {
+				await verifyObservable(numbersObservable, [allNumbersVerificationStep]);
+			} catch (e) {
+				const error = e as Error;
+				expect(error).to.be.instanceof(Error);
+				expect(error.message).to.be.equal('Value three is not a number');
+			}
+		});
+	});
 });
 
