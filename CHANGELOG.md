@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.1.1](https://github.com/maklja/rxjs-observable-spy/compare/v0.1.0...v0.1.1) (2022-09-12)
+
+
+### Bug Fixes
+
+* **chaijs:** Fix next to do a deep equals ([1d0f0b8](https://github.com/maklja/rxjs-observable-spy/commit/1d0f0b8fcb92266c30ec3e2b3b1f23726b09f50a))
+* Update README.md badges ([20a9e13](https://github.com/maklja/rxjs-observable-spy/commit/20a9e1360049bf1868ad0a8ff9756139181bcf1d))
+
+
+
+
+
 # [0.1.0](https://github.com/maklja/rxjs-observable-spy/compare/v0.0.7...v0.1.0) (2022-09-12)
 
 
