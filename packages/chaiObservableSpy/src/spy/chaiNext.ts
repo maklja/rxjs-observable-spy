@@ -1,3 +1,4 @@
+import deepEql from 'deep-eql';
 import { Observable } from 'rxjs';
 import { EventType } from '@maklja90/rxjs-observable-spy';
 import { expectedNextActualOther } from '../messages';
@@ -18,7 +19,7 @@ export default function chaiNext<T = unknown>(
 	verificationSteps.push({
 		next: (value) => {
 			this.assert(
-				expectedNextValue === value,
+				deepEql(expectedNextValue, value),
 				'Expected next value: #{exp}, actual value #{act}',
 				'',
 				expectedNextValue,

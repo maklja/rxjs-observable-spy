@@ -1,5 +1,5 @@
 import chai from 'chai';
-import { from, throwError } from 'rxjs';
+import { from, of, throwError } from 'rxjs';
 import createChaiObservableSpyPlugin from './chaiPlugin';
 
 chai.should();
@@ -7,6 +7,27 @@ chai.should();
 chai.use(createChaiObservableSpyPlugin());
 
 describe('ChaiJS should observable spy plugin test', function () {
+	it('should throw error if type is not Observable', function () {
+		try {
+			const obj = {};
+			obj.should.emit;
+		} catch (e) {
+			const error = e as Chai.AssertionError;
+			error.message.should.be.string('expected {} to be a Observable');
+		}
+	});
+
+	it('should be deep equal on next', async function () {
+		const string$ = of({ username: 'test@test.com', firstName: 'Test', lastName: 'Test' });
+
+		const values = await string$.should.emit
+			.next({ username: 'test@test.com', firstName: 'Test', lastName: 'Test' })
+			.verifyComplete();
+		values.should.to.deep.equals([
+			{ username: 'test@test.com', firstName: 'Test', lastName: 'Test' },
+		]);
+	});
+
 	it('should receive all values in proper order', async function () {
 		const string$ = from(['Tom', 'Tina', 'Ana']);
 
