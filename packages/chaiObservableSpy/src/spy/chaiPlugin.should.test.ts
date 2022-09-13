@@ -1,5 +1,5 @@
 import chai from 'chai';
-import { from, of, throwError } from 'rxjs';
+import { EMPTY, from, of, throwError } from 'rxjs';
 import createChaiObservableSpyPlugin from './chaiPlugin';
 
 chai.should();
@@ -189,6 +189,37 @@ describe('ChaiJS should observable spy plugin test', function () {
 
 		const values = await numbers$.should.emit.awaitComplete();
 		values.should.be.deep.equals([2, 2, 3]);
+	});
+
+	it('should receive a single next value and complete', async function () {
+		const string$ = of('John');
+
+		const singleString = await string$.should.emit.awaitSingle<string>();
+		singleString.should.be.equals('John');
+	});
+
+	it('should throw an error in case of more then one next value', async function () {
+		const string$ = of('John', 'Ana');
+
+		try {
+			await string$.should.emit.awaitSingle();
+		} catch (e) {
+			const error = e as Chai.AssertionError;
+			error.message.should.be.string(
+				'Received multiple values, when single one was expected.',
+			);
+		}
+	});
+
+	it('should throw an error in case no next values are received', async function () {
+		try {
+			await EMPTY.should.emit.awaitSingle();
+		} catch (e) {
+			const error = e as Chai.AssertionError;
+			error.message.should.be.string(
+				'Expected to receive a single value, but received zero.',
+			);
+		}
 	});
 });
 

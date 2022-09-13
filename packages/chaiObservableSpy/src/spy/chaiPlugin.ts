@@ -10,6 +10,7 @@ import chaiComplete from './chaiComplete';
 import chaiVerify from './chaiVerify';
 import chaiVerifyComplete from './chaiVerifyComplete';
 import chaiAwaitComplete from './chaiAwaitComplete';
+import chaiAwaitSingle from './chaiAwaitSingle';
 import { OBSERVABLE_SPY_CONFIG_KEY, ChaiObservableSpyPluginConfig } from './chaiPluginConfig';
 
 const defaultConfiguration: ChaiObservableSpyPluginConfig = {
@@ -98,6 +99,10 @@ export default (config: ChaiObservableSpyPluginConfig = defaultConfiguration): C
 
 		Assertion.addMethod('awaitComplete', function () {
 			return chaiAwaitComplete.call(this, utils);
+		});
+
+		Assertion.addMethod('awaitSingle', function () {
+			return chaiAwaitSingle.call(this, utils);
 		});
 
 		Assertion.addProperty('observableSpy', function () {

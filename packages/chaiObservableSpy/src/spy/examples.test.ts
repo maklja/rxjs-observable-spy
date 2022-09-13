@@ -125,5 +125,13 @@ describe('ChaiJS observable spy example test', function () {
 			.verifyComplete<string>();
 		values.should.be.deep.equals(['Tom', 'Tina', 'Ana']);
 	});
+
+	it('should receive a single next value and complete', async () => {
+		const string$ = of('John');
+
+		// result will be a single value instead of array of values
+		const singleString = await expect(string$).emit.awaitSingle<string>();
+		expect(singleString).to.be.equals('John');
+	});
 });
 

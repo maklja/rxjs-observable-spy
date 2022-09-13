@@ -193,6 +193,20 @@ it('should skip values', async () => {
 });
 ```
 
+### awaitSingle keyword
+
+Should be used when a single result from the tested observable.
+
+```ts
+it('should receive a single next value and complete', async () => {
+  const string$ = of('John');
+
+  // result will be a single value instead of array of values
+  const singleString = await expect(string$).emit.awaitSingle<string>();
+  expect(singleString).to.be.equals('John');
+});
+```
+
 ### error, errorType and errorMessage keywords
 
 Keywords `error`, `errorType` and `errorMessage` should be used when handling errors from observables.
