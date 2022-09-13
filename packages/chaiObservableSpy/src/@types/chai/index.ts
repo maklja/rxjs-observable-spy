@@ -1,7 +1,8 @@
 /// <reference types="@types/chai" />
 
+// eslint-disable-next-line @typescript-eslint/no-namespace, @typescript-eslint/no-unused-vars
 declare namespace Chai {
-	interface ObservableVarifyLanguageChains {
+	export interface ObservableVarifyLanguageChains {
 		/**
 		 * Starts a verification process of the tested observable.
 		 *
@@ -12,7 +13,7 @@ declare namespace Chai {
 		verify: <T = unknown>() => Promise<T[]>;
 	}
 
-	interface ObservableLanguageChains {
+	export interface ObservableLanguageChains {
 		/**
 		 * Next expected values from the observable.
 		 *
@@ -153,7 +154,7 @@ declare namespace Chai {
 		awaitComplete: <T = unknown>() => Promise<T[]>;
 	}
 
-	interface Assertion {
+	export interface Assertion {
 		/**
 		 * Usable only on RxJS Observables.
 		 * This property contains a language chain keywords that are required in order to test observables.

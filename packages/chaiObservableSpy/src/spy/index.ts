@@ -10,6 +10,7 @@ import chaiError from './chaiError';
 import chaiVerify from './chaiVerify';
 import chaiAwaitComplete from './chaiAwaitComplete';
 import createChaiObservableSpyPlugin from './chaiPlugin';
+import { ChaiObservableSpyPluginConfig } from './chaiPluginConfig';
 
 export {
 	chaiNext,
@@ -25,3 +26,5 @@ export {
 	chaiAwaitComplete,
 	createChaiObservableSpyPlugin,
 };
+
+export type { ChaiObservableSpyPluginConfig };
