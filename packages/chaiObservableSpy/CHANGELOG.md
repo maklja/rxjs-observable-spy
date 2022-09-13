@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.3.0](https://github.com/maklja/rxjs-observable-spy/compare/v0.2.3...v0.3.0) (2022-09-13)
+
+
+### Features
+
+* **chaijs:** Support awaitSingle keyword ([1b4bec0](https://github.com/maklja/rxjs-observable-spy/commit/1b4bec0ed5be47d0e5f81bdb1c6070fc20e84d61))
+
+
+
+
+
 ## [0.2.3](https://github.com/maklja/rxjs-observable-spy/compare/v0.2.2...v0.2.3) (2022-09-13)
 
 
