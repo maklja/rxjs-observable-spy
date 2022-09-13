@@ -1,4 +1,4 @@
-import './@types/chai';
+import '../@types/chai';
 import chai from 'chai';
 import { createChaiObservableSpyPlugin } from '../spy';
 
