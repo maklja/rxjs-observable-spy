@@ -25,7 +25,7 @@
 		"format": "lerna run format",
 		"lint": "lerna run lint",
 		"version": "lerna version --conventional-commits --changelog-preset angular --no-private --yes",
-		"publish": "lerna publish from-git --ignore-scripts --no-private"
+		"publish": "lerna publish from-git --ignore-scripts --no-private --yes"
 	},
 	"author": "Bojan Makljenovic",
 	"license": "MIT",
