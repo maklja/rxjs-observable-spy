@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.2.0](https://github.com/maklja/rxjs-observable-spy/compare/v0.1.1...v0.2.0) (2022-09-13)
+
+
+### Bug Fixes
+
+* **chaijs:** Include chaijs language chains types ([640d4c5](https://github.com/maklja/rxjs-observable-spy/commit/640d4c580f3e9dc71ce5ebdf21b3aba47f9d7771))
+* Fix lerna publish command ([3e20f6f](https://github.com/maklja/rxjs-observable-spy/commit/3e20f6fd252d8c2d9752393bd0a1e5de0341b17b))
+
+
+### Features
+
+* **chaijs:** Support complete keyword ([ee132e3](https://github.com/maklja/rxjs-observable-spy/commit/ee132e321df31a12c4f83d1df2b6d7d7a4879b20))
+* **chaijs:** Support register for chai extension ([f63486b](https://github.com/maklja/rxjs-observable-spy/commit/f63486b1149b3c29828a5f982fa23e7e5c243b8e))
+
+
+
+
+
 ## [0.1.1](https://github.com/maklja/rxjs-observable-spy/compare/v0.1.0...v0.1.1) (2022-09-12)
 
 
