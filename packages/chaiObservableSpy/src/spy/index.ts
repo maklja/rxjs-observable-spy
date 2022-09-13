@@ -8,6 +8,7 @@ import chaiSubscriberSpy from './chaiObservableSpy';
 import chaiNextCount from './chaiNextCount';
 import chaiError from './chaiError';
 import chaiVerify from './chaiVerify';
+import chaiComplete from './chaiComplete';
 import chaiAwaitComplete from './chaiAwaitComplete';
 import createChaiObservableSpyPlugin from './chaiPlugin';
 import { ChaiObservableSpyPluginConfig } from './chaiPluginConfig';
@@ -23,6 +24,7 @@ export {
 	chaiSubscriberSpy,
 	chaiError,
 	chaiVerify,
+	chaiComplete,
 	chaiAwaitComplete,
 	createChaiObservableSpyPlugin,
 };

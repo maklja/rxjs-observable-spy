@@ -36,6 +36,18 @@ describe('ChaiJS expect observable spy plugin test', function () {
 		expect(values).to.deep.equals(['Tom', 'Tina', 'Ana']);
 	});
 
+	it('should receive all values in proper order and then complete', async function () {
+		const string$ = from(['Tom', 'Tina', 'Ana']);
+
+		const values = await expect(string$)
+			.emit.next('Tom')
+			.next('Tina')
+			.next('Ana')
+			.complete()
+			.verify();
+		expect(values).to.deep.equals(['Tom', 'Tina', 'Ana']);
+	});
+
 	it('should fail if value does not match', async function () {
 		const string$ = from(['Tom', 'Ana']);
 

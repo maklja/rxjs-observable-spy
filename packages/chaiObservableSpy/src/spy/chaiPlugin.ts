@@ -6,6 +6,7 @@ import chaiNextCount from './chaiNextCount';
 import chaiNextMatches from './chaiNextMatches';
 import chaiNextMatchesUntil from './chaiNextMatchesUntil';
 import chaiSubscriberSpy from './chaiObservableSpy';
+import chaiComplete from './chaiComplete';
 import chaiVerify from './chaiVerify';
 import chaiVerifyComplete from './chaiVerifyComplete';
 import chaiAwaitComplete from './chaiAwaitComplete';
@@ -85,6 +86,10 @@ export default (config: ChaiObservableSpyPluginConfig = defaultConfiguration): C
 
 		Assertion.addMethod('verifyComplete', function () {
 			return chaiVerifyComplete.call(this, utils);
+		});
+
+		Assertion.addMethod('complete', function () {
+			chaiComplete.call(this, utils);
 		});
 
 		Assertion.addMethod('verify', function () {
