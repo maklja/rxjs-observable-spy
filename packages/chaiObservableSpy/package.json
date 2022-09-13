@@ -1,6 +1,6 @@
 {
 	"name": "@maklja90/chaijs-rxjs-observable-spy",
-	"version": "0.2.0",
+	"version": "0.2.1",
 	"description": "ChaiJS extension for testing RxJS observables",
 	"main": "dist/index.js",
 	"types": "dist/index.d.ts",
