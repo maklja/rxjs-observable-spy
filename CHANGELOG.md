@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.2.3](https://github.com/maklja/rxjs-observable-spy/compare/v0.2.2...v0.2.3) (2022-09-13)
+
+
+### Bug Fixes
+
+* **chaijs:** Fix register types path ([b7398b9](https://github.com/maklja/rxjs-observable-spy/commit/b7398b9eab5f3b4fc018260b034e245d34104453))
+
+
+
+
+
 ## [0.2.2](https://github.com/maklja/rxjs-observable-spy/compare/v0.2.1...v0.2.2) (2022-09-13)
 
 
