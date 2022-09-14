@@ -24,10 +24,19 @@ jobs:
       - name: Run tests with coverage
         run: npm run coverage
 
-      - name: Upload coverage to Codecov
+      - name: Upload core observable spy coverage
         uses: codecov/codecov-action@v3
         with:
           name: observable-spy-coverage
           token: ${{ secrets.CODECOV_TOKEN }}
-          files: ./packages/observableSpy/coverage/cobertura-coverage.xml,./packages/chaiObservableSpy/coverage/cobertura-coverage.xml
+          flags: observable-spy
+          files: ./packages/observableSpy/coverage/cobertura-coverage.xml
+
+      - name: Upload ChaiJS observable spy coverage
+        uses: codecov/codecov-action@v3
+        with:
+          name: chaijs-observable-spy-coverage
+          token: ${{ secrets.CODECOV_TOKEN }}
+          flags: chaijs-observable-spy
+          files: ./packages/chaiObservableSpy/coverage/cobertura-coverage.xml
 
