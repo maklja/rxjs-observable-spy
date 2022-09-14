@@ -4,6 +4,7 @@ A simple little library that helps testing RxJS observables.
 
 [![npm version](https://img.shields.io/npm/v/@maklja90/rxjs-observable-spy.svg?style=flat-square)](https://www.npmjs.org/package/@maklja90/rxjs-observable-spy)
 [![release](https://github.com/maklja/rxjs-observable-spy/actions/workflows/release.yml/badge.svg?branch=master)](https://github.com/maklja/rxjs-observable-spy/actions/workflows/release.yml)
+[![codecov](https://codecov.io/gh/maklja/rxjs-observable-spy/branch/master/graph/badge.svg?token=0N9BOURO5J&flag=observable-spy)](https://codecov.io/gh/maklja/rxjs-observable-spy)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 
 ## Installation
