@@ -15,7 +15,7 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Build link project packages
+      - name: Link project packages
         run: npm run bootstrap
 
       - name: Build packages

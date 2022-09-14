@@ -5,6 +5,7 @@
 		"packages/*"
 	],
 	"devDependencies": {
+		"@istanbuljs/nyc-config-typescript": "^1.0.2",
 		"@types/mocha": "^9.0.0",
 		"@typescript-eslint/eslint-plugin": "^5.23.0",
 		"@typescript-eslint/parser": "^5.23.0",
@@ -14,14 +15,18 @@
 		"eslint-plugin-prettier": "^4.0.0",
 		"lerna": "^5.4.2",
 		"mocha": "^9.0.3",
+		"nyc": "^15.1.0",
 		"prettier": "^2.7.1",
-		"rimraf": "^3.0.2"
+		"rimraf": "^3.0.2",
+		"source-map-support": "^0.5.21",
+		"ts-node": "^10.9.1"
 	},
 	"scripts": {
 		"bootstrap": "lerna bootstrap",
 		"build": "lerna run build",
 		"clean": "lerna run clean",
 		"test": "lerna run test",
+		"coverage": "lerna run coverage",
 		"format": "lerna run format",
 		"lint": "lerna run lint",
 		"version": "lerna version --conventional-commits --changelog-preset angular --no-private --yes",

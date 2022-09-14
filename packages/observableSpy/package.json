@@ -11,7 +11,8 @@
 	"scripts": {
 		"clean": "rimraf dist/",
 		"build": "npm run clean && tsc",
-		"test": "mocha --trace-warnings --recursive ./dist/**/*.test.js --sort",
+		"test": "mocha --config ./.mocharc.json",
+		"coverage": "nyc npm run test",
 		"lint": "eslint src/**/*.ts",
 		"format": "prettier --write src/**/*.ts --config .prettierrc"
 	},
@@ -41,3 +42,4 @@
 		"typescript": ">=4.0.0"
 	}
 }
+

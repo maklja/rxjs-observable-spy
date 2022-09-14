@@ -14,5 +14,7 @@
 		"declaration": true,
 		"declarationMap": true,
 		"sourceMap": false
-	}
+	},
+	"exclude": ["**/*.test.ts"]
 }
+

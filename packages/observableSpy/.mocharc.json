@@ -1,0 +1,8 @@
+{
+	"spec": "./src/**/*.test.ts",
+	"require": ["ts-node/register", "source-map-support/register"],
+	"trace-warnings": true,
+	"recursive": true,
+	"sort": true
+}
+
