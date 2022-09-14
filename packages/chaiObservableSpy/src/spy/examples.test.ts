@@ -7,28 +7,29 @@ chai.should();
 chai.use(createChaiObservableSpyPlugin());
 
 describe('ChaiJS observable spy example test', function () {
-	it('should receive strings in expected order with the complete event', async () => {
-		const string$ = of('Tom', 'Tina', 'Ana');
+	it('should receive ordered strings with the complete event', async () => {
+		const strings$ = of('Tom', 'Tina', 'Ana');
 
-		// verify complete will return Promise that will resolve with
+		// verifyComplete will return Promise that will resolve with
 		// received values from observable
-		const values = await expect(string$)
+		const values = await expect(strings$)
 			// alternative to 'emit' is to use word 'observableSpy'
 			.emit.next('Tom')
 			.next('Tina')
 			.next('Ana')
 			// start a verification and
 			// expect to observable ends with complete event
+			// alternative is to call complete and then verify
 			.verifyComplete();
 
 		expect(values).to.deep.equals(['Tom', 'Tina', 'Ana']);
 	});
 
 	it('should receive proper values count', async () => {
-		const string$ = of('Tom', 'Ana');
+		const strings$ = of('Tom', 'Ana');
 
 		// expect to receive 2 values and then complete the event
-		const values = await expect(string$).emit.nextCount(2).verifyComplete();
+		const values = await expect(strings$).emit.nextCount(2).verifyComplete();
 		expect(values).to.deep.equals(['Tom', 'Ana']);
 	});
 
@@ -60,6 +61,8 @@ describe('ChaiJS observable spy example test', function () {
 			.emit.nextMatchesUntil<number>(
 				conditionMatch,
 				// condition that indicates if the current verification step is over
+				// when a false is returned, the library will proceed
+				// with the next verification step.
 				(_, index) => index < sourceNumbers.length - 1,
 			)
 			.verifyComplete();
@@ -89,7 +92,7 @@ describe('ChaiJS observable spy example test', function () {
 				expect(val).to.be.a('number').and.to.be.equal(sourceValues[index]);
 				// if true is returned the verification step is still not over,
 				// otherwise the next verification step will start with execution
-				return index < 2;
+				return index < sourceValues.length - 1;
 			})
 			.verifyComplete();
 
@@ -97,9 +100,9 @@ describe('ChaiJS observable spy example test', function () {
 	});
 
 	it('should skip values', async () => {
-		const string$ = of('Tom', 'Ana', 'John');
+		const strings$ = of('Tom', 'Ana', 'John');
 
-		const values = await expect(string$)
+		const values = await expect(strings$)
 			.emit.skipCount(2) // skip next 2 values
 			.next('John')
 			.verifyComplete();
@@ -115,14 +118,15 @@ describe('ChaiJS observable spy example test', function () {
 		await expect(error$).emit.errorMessage('Upss').verify();
 	});
 
-	it('should receive all values in proper order', async () => {
-		const string$ = from(['Tom', 'Tina', 'Ana']);
+	it('should receive values in proper order with complete event', async () => {
+		const strings$ = from(['Tom', 'Tina', 'Ana']);
 
-		const values = await string$.should.emit
+		const values = await strings$.should.emit
 			.next('Tom')
 			.next('Tina')
 			.next('Ana')
 			.verifyComplete<string>();
+
 		values.should.be.deep.equals(['Tom', 'Tina', 'Ana']);
 	});
 

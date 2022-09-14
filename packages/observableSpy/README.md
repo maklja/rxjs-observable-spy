@@ -160,7 +160,10 @@ it('should spy on Observable', async () => {
 Instance of ObservableSpy has support for registering event listeners in order to track next, error or complete events that are coming from observable.
 
 ```ts
-import { ObservableSpy, NextListener } from '@maklja90/rxjs-observable-spy';
+import {
+  ObservableSpy,
+  NextListener,
+} from '@maklja90/rxjs-observable-spy';
 
 const targetValues = [1, 3, 5, 7];
 const observableSpy = new ObservableSpy(
@@ -239,7 +242,9 @@ it('will fail with error if any value is not a number', async function () {
   const numbersObservable = from([1, 2, 'three', 4]);
 
   try {
-    await verifyObservable(numbersObservable, [allNumbersVerificationStep]);
+    await verifyObservable(numbersObservable, [
+      allNumbersVerificationStep,
+    ]);
   } catch (e) {
     const error = e as Error;
     expect(error).to.be.instanceof(Error);

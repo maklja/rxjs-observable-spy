@@ -2,7 +2,7 @@
 
 ChaiJS extension for testing RxJS observables
 
-[![npm version](https://img.shields.io/npm/v/@maklja90/rxjs-observable-spy.svg?style=flat-square)](https://www.npmjs.org/package/@maklja90/rxjs-observable-spy)
+[![npm version](https://img.shields.io/npm/v/@maklja90/chaijs-rxjs-observable-spy.svg?style=flat-square)](https://www.npmjs.org/package/@maklja90/rxjs-observable-spy)
 [![release](https://github.com/maklja/rxjs-observable-spy/actions/workflows/release.yml/badge.svg?branch=master)](https://github.com/maklja/rxjs-observable-spy/actions/workflows/release.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 
@@ -56,12 +56,12 @@ Library offers an `emit` or `observableSpy` keywords to indicate that the value 
 Keyword `next` indicates the next value that will be received from observable, note that order here matters. Keyword `next` is doing deep equals of received value and expected value.
 
 ```js
-it('should receive strings in expected order with the complete event', async () => {
-  const string$ = of('Tom', 'Tina', 'Ana');
+it('should receive ordered strings with the complete event', async () => {
+  const strings$ = of('Tom', 'Tina', 'Ana');
 
-  // verify complete will return Promise that will resolve with
+  // verifyComplete will return Promise that will resolve with
   // received values from observable
-  const values = await expect(string$)
+  const values = await expect(strings$)
     // alternative to 'emit' is to use word 'observableSpy'
     .emit.next('Tom')
     .next('Tina')
@@ -79,16 +79,18 @@ Keyword `nextCount` should be used to count values without actually checking the
 
 ```ts
 it('should receive proper values count', async () => {
-  const string$ = of('Tom', 'Ana');
+  const strings$ = of('Tom', 'Ana');
 
   // expect to receive 2 values and then complete the event
-  const values = await expect(string$).emit.nextCount(2).verifyComplete();
+  const values = await expect(strings$)
+    .emit.nextCount(2)
+    .verifyComplete();
   expect(values).to.deep.equals(['Tom', 'Ana']);
 });
 ```
 
 Keyword `nextMatches` should be used to create a validation condition for value that will yield
-a true or false value depending if the value is valid or not. This keyword is useful if you are using a third party assertion library or custom made assertion functions.
+a true or false, depending if the value is valid or not. This keyword is useful if you are using a third party assertion library or custom made assertion functions.
 
 ```ts
 it('should next value match a condition', async () => {
@@ -123,6 +125,8 @@ it('should next value match a condition until', async () => {
     .emit.nextMatchesUntil<number>(
       conditionMatch,
       // condition that indicates if the current verification step is over
+      // when a false is returned, the library will proceed
+      // with the next verification step.
       (_, index) => index < sourceNumbers.length - 1,
     )
     .verifyComplete();
@@ -165,10 +169,12 @@ it('should consume next value until satisfies condition', async () => {
 
   const values = await expect(numbers$)
     .emit.consumeNextUntil<number>((val, index) => {
-      expect(val).to.be.a('number').and.to.be.equal(sourceValues[index]);
+      expect(val)
+        .to.be.a('number')
+        .and.to.be.equal(sourceValues[index]);
       // if true is returned the verification step is still not over,
       // otherwise the next verification step will start with execution
-      return index < 2;
+      return index < sourceValues.length - 1;
     })
     .verifyComplete();
 
@@ -182,9 +188,9 @@ Keyword `skipCount` can be used to skip N next values.
 
 ```ts
 it('should skip values', async () => {
-  const string$ = of('Tom', 'Ana', 'John');
+  const strings$ = of('Tom', 'Ana', 'John');
 
-  const values = await expect(string$)
+  const values = await expect(strings$)
     .emit.skipCount(2) // skip next 2 values
     .next('John')
     .verifyComplete();
@@ -195,15 +201,17 @@ it('should skip values', async () => {
 
 ### awaitSingle keyword
 
-Should be used when a single result from the tested observable.
+Should be used when a single result is expected from the tested observable.
 
 ```ts
 it('should receive a single next value and complete', async () => {
   const string$ = of('John');
 
   // result will be a single value instead of array of values
-  const singleString = await expect(string$).emit.awaitSingle<string>();
-  expect(singleString).to.be.equals('John');
+  const singleString = await expect(
+    string$,
+  ).emit.awaitSingle<string>();
+  expect(singleString).to.be.equal('John');
 });
 ```
 
@@ -233,23 +241,23 @@ Useful when it is required to just verify that an observable ends with a complet
 
 ## Forgot to call verify keyword
 
-In case we forgot to call the `verify` keyword the tests will look like they are passing. The reason for this is simple: without a call to the `verify` the observable spy does not subscribe to the tested observable and in that case there is nothing received from the observable and so nothing to test.
+In case we forgot to call the `verify` keyword the tests will look like they are passing. The reason for this is simple: without a call to the `verify` the observable spy does not subscribe to the tested observable and in that case no values are received and so there is nothing to test.
 <br />
-Library has a safe guard that will throw an error if some language chain ends without proper `verify` keyword end.
+Library has a safe guard that will throw an error if some language chain ends without proper `verify` keyword.
 
 ```ts
 it('verify is not call at the end', async () => {
-  const string$ = from(['Tom', 'Ana']);
+  const strings$ = from(['Tom', 'Ana']);
 
   // there is no call to verify or verifyComplete
   // because of this spy will not be subscribed
-  // to tested string$ observable, as result the error will be thrown
-  // AssertionError: You need to invoke verify, verifyComplete or awaitComplete in order to subscribe to observable
-  expect(string$).emit.next('Tom').next('Tina').next('Ana');
+  // to tested strings$ observable, as result the error will be thrown
+  // AssertionError: You need to invoke verify, verifyComplete...
+  await expect(strings$).emit.next('Tom').next('Tina').next('Ana');
 });
 ```
 
-Under a hood the library awaits 2 seconds to test call verify keyword, if in that time window the verify method is not called the error is thrown. It is possible to configure time on the plugin, also it is possible to to disable this behavior if required.
+Under a hood the library awaits 2 seconds for a test to call verify keyword, if in that time window the verify method is not called the error is thrown. It is possible to configure timeout when creating the plugin, also it is possible to to disable this behavior if required.
 
 ```ts
 import chai from 'chai';
@@ -266,7 +274,7 @@ chai.use(
 
 ## ChaiJS should assertion type
 
-This library also extends ChaiJS's assertion style of writing tests.
+This library also extends ChaiJS's should assertion style of writing tests.
 
 ```ts
 import chai from 'chai';
@@ -277,10 +285,10 @@ chai.should();
 
 chai.use(createChaiObservableSpyPlugin());
 
-it('should receive all values in proper order', async () => {
-  const string$ = from(['Tom', 'Tina', 'Ana']);
+it('should receive values in proper order with complete event', async () => {
+  const strings$ = from(['Tom', 'Tina', 'Ana']);
 
-  const values = await string$.should.emit
+  const values = await strings$.should.emit
     .next('Tom')
     .next('Tina')
     .next('Ana')
