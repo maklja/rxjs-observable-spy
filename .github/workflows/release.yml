@@ -40,7 +40,12 @@ jobs:
           flags: chaijs-observable-spy
           files: ./packages/chaiObservableSpy/coverage/cobertura-coverage.xml
 
-      - name: New Version Release
+      - name: Configure CI Git user
+        run: |
+          git config --global user.name 'CI_observable-spy'
+          git config --global user.email 'observableSpy@ci.noreply.github.com'
+
+      - name: New version release
         run: npm run version
 
       - name: Publish new version to npm
