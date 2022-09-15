@@ -46,6 +46,12 @@ import { createChaiObservableSpyPlugin } from '@maklja90/chaijs-rxjs-observable-
 chai.use(createChaiObservableSpyPlugin());
 ```
 
+If you are using the **mocha** test framework, you could use the `register` function to set up a plugin before tests start execution.
+
+```console
+mocha --require @maklja90/chaijs-rxjs-observable-spy/register ./src/**/*.spec.ts
+```
+
 ## Language use cases
 
 Library offers an `emit` or `observableSpy` keywords to indicate that the value that is tested is observable and to access the rest of language chains.
