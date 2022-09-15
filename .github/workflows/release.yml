@@ -40,3 +40,12 @@ jobs:
           flags: chaijs-observable-spy
           files: ./packages/chaiObservableSpy/coverage/cobertura-coverage.xml
 
+      - name: New Version Release
+        run: npm run version
+
+      - name: Publish new version to npm
+        run: npm run publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+
