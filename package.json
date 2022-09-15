@@ -25,10 +25,10 @@
 		"bootstrap": "lerna bootstrap",
 		"build": "lerna run build",
 		"clean": "lerna run clean",
-		"test": "lerna run test",
-		"coverage": "lerna run coverage",
+		"test": "lerna run test --parallel",
+		"coverage": "lerna run coverage --parallel",
 		"format": "lerna run format",
-		"lint": "lerna run lint",
+		"lint": "lerna run lint --parallel",
 		"version": "lerna version --conventional-commits --changelog-preset angular --no-private --yes",
 		"publish": "lerna publish from-git --ignore-scripts --no-private --yes"
 	},
