@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 0.3.4 (2022-09-15)
+
+
+### Bug Fixes
+
+* Release workflow update ([fe3d272](https://github.com/maklja/rxjs-observable-spy/commit/fe3d272ffe51148fb7be3e0dd215ae7684ef1b34))
+
+
+
+
+
 ## [0.3.3](https://github.com/maklja/rxjs-observable-spy/compare/v0.3.2...v0.3.3) (2022-09-15)
 
 **Note:** Version bump only for package @maklja90/chaijs-rxjs-observable-spy
