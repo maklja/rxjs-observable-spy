@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 0.3.5 (2022-09-15)
+
+
+### Bug Fixes
+
+* Fix workflow yml ([56bcc90](https://github.com/maklja/rxjs-observable-spy/commit/56bcc90c43d093d3282cfdc81cae544abe638d59))
+
+
+
+
+
 ## 0.3.4 (2022-09-15)
 
 
