@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 0.3.8 (2022-09-15)
+
+
+### Bug Fixes
+
+* FIx ESlint configuration ([#4](https://github.com/maklja/rxjs-observable-spy/issues/4)) ([9a2edb3](https://github.com/maklja/rxjs-observable-spy/commit/9a2edb311143cf856c20f639365c564b68d8577b))
+
+
+
+
+
 ## 0.3.7 (2022-09-15)
 
 **Note:** Version bump only for package @maklja90/chaijs-rxjs-observable-spy
