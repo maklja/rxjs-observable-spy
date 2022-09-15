@@ -23,9 +23,7 @@ export default function chaiAwaitComplete<T = unknown>(
 				error,
 			);
 			this.assert(false, errorMessage, '', EventType.Complete, EventType.Error);
-			return true;
 		},
-		complete: () => true,
 	});
 
 	return verifyObservable(observable, verificationSteps);

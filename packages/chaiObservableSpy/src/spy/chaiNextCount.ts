@@ -17,7 +17,7 @@ export default function chaiNextCount<T>(
 
 	let currentCount = 0;
 	verificationSteps.push({
-		next: () => (++currentCount < expectedCount ? false : true),
+		next: () => !(++currentCount < expectedCount),
 		error: (error) => {
 			const errorMessage = expectedNextActualOther(
 				'nextCount',
@@ -27,8 +27,6 @@ export default function chaiNextCount<T>(
 				error,
 			);
 			this.assert(false, errorMessage, '', EventType.Next, EventType.Error);
-
-			return true;
 		},
 		complete: () => {
 			const errorMessage = expectedNextActualOther(
@@ -38,8 +36,6 @@ export default function chaiNextCount<T>(
 				currentCount + 1,
 			);
 			this.assert(false, errorMessage, '', EventType.Next, EventType.Complete);
-
-			return true;
 		},
 	});
 }

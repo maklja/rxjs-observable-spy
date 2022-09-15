@@ -25,7 +25,6 @@ export default function chaiError<T = unknown, E extends Error = Error>(
 				value,
 			);
 			this.assert(false, errorMessage, '', EventType.Error, EventType.Next);
-			return true;
 		},
 		error: (error) => {
 			if (expectedErrorType !== undefined) {
@@ -55,8 +54,6 @@ export default function chaiError<T = unknown, E extends Error = Error>(
 					error,
 				);
 			}
-
-			return true;
 		},
 		complete: () => {
 			const errorMessage = expectedSignalMessage(
@@ -65,7 +62,6 @@ export default function chaiError<T = unknown, E extends Error = Error>(
 				EventType.Complete,
 			);
 			this.assert(false, errorMessage, '', EventType.Error, EventType.Next);
-			return true;
 		},
 	});
 }

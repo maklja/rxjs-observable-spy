@@ -25,8 +25,6 @@ export default function chaiConsumeNextUntil<T = unknown>(
 				error,
 			);
 			this.assert(false, errorMessage, '', EventType.Next, EventType.Error);
-
-			return true;
 		},
 		complete: () => {
 			const errorMessage = expectedSignalMessage(
@@ -35,8 +33,6 @@ export default function chaiConsumeNextUntil<T = unknown>(
 				EventType.Complete,
 			);
 			this.assert(false, errorMessage, '', EventType.Next, EventType.Complete);
-
-			return true;
 		},
 	});
 }

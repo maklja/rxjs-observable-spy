@@ -41,7 +41,6 @@ export default async function chaiAwaitSingle<T = unknown>(
 							error,
 					  );
 			this.assert(false, errorMessage, '', EventType.Complete, EventType.Error);
-			return true;
 		},
 		complete: (spy) => {
 			this.assert(
@@ -59,8 +58,6 @@ export default async function chaiAwaitSingle<T = unknown>(
 				EventType.Complete,
 				EventType.Next,
 			);
-
-			return true;
 		},
 	});
 

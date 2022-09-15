@@ -32,8 +32,6 @@ export default function chaiNextMatchesUntil<T = unknown>(
 				error,
 			);
 			this.assert(false, errorMessage, '', EventType.Next, EventType.Error);
-
-			return true;
 		},
 		complete: () => {
 			const errorMessage = expectedSignalMessage(
@@ -42,8 +40,6 @@ export default function chaiNextMatchesUntil<T = unknown>(
 				EventType.Complete,
 			);
 			this.assert(false, errorMessage, '', EventType.Next, EventType.Complete);
-
-			return true;
 		},
 	});
 }

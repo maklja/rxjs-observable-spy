@@ -16,10 +16,7 @@ export default function chaiConsumeNext<T = unknown>(
 	refreshInvokeTimeout.call(this, chai, this._obj, utils);
 
 	verificationSteps.push({
-		next: (value, index) => {
-			expectedCallback(value, index);
-			return true;
-		},
+		next: (value, index) => expectedCallback(value, index),
 		error: (error) => {
 			const errorMessage = expectedSignalActualError(
 				'consumeNext',
@@ -28,8 +25,6 @@ export default function chaiConsumeNext<T = unknown>(
 				error,
 			);
 			this.assert(false, errorMessage, '', EventType.Next, EventType.Error);
-
-			return true;
 		},
 		complete: () => {
 			const errorMessage = expectedSignalMessage(
@@ -38,8 +33,6 @@ export default function chaiConsumeNext<T = unknown>(
 				EventType.Complete,
 			);
 			this.assert(false, errorMessage, '', EventType.Next, EventType.Complete);
-
-			return true;
 		},
 	});
 }

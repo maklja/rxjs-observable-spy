@@ -217,6 +217,7 @@ const allNumbersVerificationStep: VerificationStep<number> = {
 
     // false value indicates that this verification step is not done
     // when we return true, the next verification step will be able to proceed
+    // also if we omit a return value it is considered that the verification step is done
     return false;
   },
   error(e) {
@@ -224,15 +225,14 @@ const allNumbersVerificationStep: VerificationStep<number> = {
   },
   complete() {
     // we received complete event from observable, so this verification step is finished
-    return true;
   },
 };
 
 it('will verify that all observable values are numbers', async function () {
   const numbersObservable = from([1, 2, 3, 4]);
   const receivedValues = await verifyObservable(numbersObservable, [
-    // register a single verification step that will check if
-    // all incoming values are numbers
+    // register a single verification step that will check
+    // if all incoming values are numbers
     allNumbersVerificationStep,
   ]);
 
@@ -240,10 +240,10 @@ it('will verify that all observable values are numbers', async function () {
 });
 
 it('will fail with error if any value is not a number', async function () {
-  const numbersObservable = from([1, 2, 'three', 4]);
+  const numbersObservable = from<any>([1, 2, 'three', 4]);
 
   try {
-    await verifyObservable(numbersObservable, [
+    await verifyObservable<any>(numbersObservable, [
       allNumbersVerificationStep,
     ]);
   } catch (e) {

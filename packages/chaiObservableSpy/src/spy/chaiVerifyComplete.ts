@@ -22,7 +22,6 @@ export default function chaiVerifyComplete<T = unknown>(
 				value,
 			);
 			this.assert(false, errorMessage, '', EventType.Complete, EventType.Next);
-			return true;
 		},
 		error: (error) => {
 			const errorMessage = expectedSignalActualError(
@@ -32,9 +31,7 @@ export default function chaiVerifyComplete<T = unknown>(
 				error,
 			);
 			this.assert(false, errorMessage, '', EventType.Complete, EventType.Error);
-			return true;
 		},
-		complete: () => true,
 	});
 
 	return verifyObservable(observable, verificationSteps);

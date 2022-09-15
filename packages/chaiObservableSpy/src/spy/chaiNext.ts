@@ -17,16 +17,14 @@ export default function chaiNext<T = unknown>(
 	refreshInvokeTimeout.call(this, chai, this._obj, utils);
 
 	verificationSteps.push({
-		next: (value) => {
+		next: (value) =>
 			this.assert(
 				deepEql(expectedNextValue, value),
 				'Expected next value: #{exp}, actual value #{act}',
 				'',
 				expectedNextValue,
 				value,
-			);
-			return true;
-		},
+			),
 		error: (error) => {
 			const errorMessage = expectedNextActualOther(
 				'next',
@@ -36,7 +34,6 @@ export default function chaiNext<T = unknown>(
 				error,
 			);
 			this.assert(false, errorMessage, '', EventType.Next, EventType.Error);
-			return true;
 		},
 		complete: () => {
 			const errorMessage = expectedNextActualOther(
@@ -46,7 +43,6 @@ export default function chaiNext<T = unknown>(
 				expectedNextValue,
 			);
 			this.assert(false, errorMessage, '', EventType.Next, EventType.Complete);
-			return true;
 		},
 	});
 }

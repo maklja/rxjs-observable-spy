@@ -11,34 +11,35 @@ import { SubscribedSpy, EventType } from './SubscribedSpy';
  */
 export interface VerificationStep<T> {
 	/**
-	 * Function is invoked on the next event received from the observable.
+	 * If a function is defined, the function is invoked on the next event received from the observable.
 	 *
 	 * @param val - Received value on the next event.
 	 * @param index - Index of the received next value.
 	 * @param observableSpy - Spy that is subscribed to the tested observable.
 	 *
 	 * @returns True if this step is completed and should proceed the check of the next verification step, otherwise false.
+	 * If no value is returned from function, this step by default is considered completed.
 	 */
-	next(val: T, index: number, observableSpy: SubscribedSpy<T>): boolean;
+	next?: (val: T, index: number, observableSpy: SubscribedSpy<T>) => boolean | void;
 
 	/**
-	 * Function is invoked on the error event received from the observable.
+	 * If a function is defined, the function is invoked on the error event received from the observable.
 	 *
 	 * @param error - Received error on the error event.
 	 * @param observableSpy - Spy that is subscribed to the tested observable.
 	 *
-	 * @returns True if this step is completed and should proceed the check of the next verification step, otherwise false.
+	 * @returns
 	 */
-	error(e: unknown, observableSpy: SubscribedSpy<T>): boolean;
+	error?: (e: unknown, observableSpy: SubscribedSpy<T>) => void;
 
 	/**
-	 * Function is invoked on the complete event received from the observable.
+	 * If a function is defined, the function is invoked on the complete event received from the observable.
 	 *
 	 * @param observableSpy - Spy that is subscribed to the tested observable.
 	 *
-	 * @returns True if this step is completed and should proceed the check of the next step, otherwise false.
+	 * @returns
 	 */
-	complete(observableSpy: SubscribedSpy<T>): boolean;
+	complete?: (observableSpy: SubscribedSpy<T>) => void;
 }
 
 const failAssertVefificationStep: VerificationStep<unknown> = {
@@ -74,7 +75,13 @@ export function verifyObservable<T>(
 		observableSpy.addNextListener((value, index, o) => {
 			try {
 				const { next } = steps[0] ?? failAssertVefificationStep;
-				const isDone = next(value, index, o);
+				if (!next) {
+					steps.splice(0, 1);
+					return;
+				}
+
+				const result = next(value, index, o);
+				const isDone = result === undefined ? true : result;
 				isDone && steps.splice(0, 1);
 			} catch (e) {
 				o.unsubscribe();
@@ -85,8 +92,8 @@ export function verifyObservable<T>(
 		observableSpy.addErrorListener((e, o) => {
 			try {
 				const { error } = steps[0] ?? failAssertVefificationStep;
-				const isDone = error(e, o);
-				isDone && steps.splice(0, 1);
+				error && error(e, o);
+				steps.splice(0, 1);
 				resolve(o.getValues());
 			} catch (assertError) {
 				o.unsubscribe();
@@ -97,8 +104,8 @@ export function verifyObservable<T>(
 		observableSpy.addCompleteListener((o) => {
 			try {
 				const { complete } = steps[0] ?? failAssertVefificationStep;
-				const isDone = complete(o);
-				isDone && steps.splice(0, 1);
+				complete && complete(o);
+				steps.splice(0, 1);
 				resolve(o.getValues());
 			} catch (e) {
 				o.unsubscribe();

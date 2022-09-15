@@ -20,8 +20,6 @@ export default function chaiNextMatches<T = unknown>(
 			const matchResult = expectedCallback(value, index);
 			const errorMessage = `[nextMatches] - match failed for value ${value}`;
 			this.assert(matchResult, errorMessage, errorMessage, null);
-
-			return true;
 		},
 		error: (error) => {
 			const errorMessage = expectedSignalActualError(
@@ -31,8 +29,6 @@ export default function chaiNextMatches<T = unknown>(
 				error,
 			);
 			this.assert(false, errorMessage, '', EventType.Next, EventType.Error);
-
-			return true;
 		},
 		complete: () => {
 			const errorMessage = expectedSignalMessage(
@@ -41,8 +37,6 @@ export default function chaiNextMatches<T = unknown>(
 				EventType.Complete,
 			);
 			this.assert(false, errorMessage, '', EventType.Next, EventType.Complete);
-
-			return true;
 		},
 	});
 }
