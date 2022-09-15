@@ -4,7 +4,7 @@
 	"description": "ChaiJS extension for testing RxJS observables",
 	"main": "dist/index.js",
 	"types": "dist/index.d.ts",
-	"type": "commonjs",
+	"type": "module",
 	"exports": {
 		".": "./dist/index.js",
 		"./package": "./package.json",
@@ -57,3 +57,4 @@
 		"typescript": ">=4.0.0"
 	}
 }
+
