@@ -37,6 +37,9 @@
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/maklja/rxjs-observable-spy"
+	},
+	"bugs": {
+		"url": "https://github.com/maklja/rxjs-observable-spy/issues"
 	}
 }
 

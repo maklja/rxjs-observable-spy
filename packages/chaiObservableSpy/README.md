@@ -105,12 +105,12 @@ it('should next value match a condition', async () => {
 
   // assert that verifies a value
   // if false is returned the assertion inside a library will throw an error
-  const customAssertation = (val: number): boolean => val > 1;
+  const customAssertion = (val: number): boolean => val > 1;
 
   const values = await expect(numbers$)
-    .emit.nextMatches(customAssertation)
-    .nextMatches(customAssertation)
-    .nextMatches(customAssertation)
+    .emit.nextMatches(customAssertion)
+    .nextMatches(customAssertion)
+    .nextMatches(customAssertion)
     .verifyComplete();
 
   expect(values).to.deep.equals([2, 2, 3]);
@@ -229,11 +229,11 @@ Note that here we are using only the keyword `verify` to indicate that verificat
 
 ```ts
 it('should catch an error from observable', async () => {
-  const error$ = throwError(() => new Error('Upss'));
+  const error$ = throwError(() => new Error('Unexpected error'));
 
-  await expect(error$).emit.error(Error, 'Upss').verify();
+  await expect(error$).emit.error(Error, 'Unexpected error').verify();
   await expect(error$).emit.errorType(Error).verify();
-  await expect(error$).emit.errorMessage('Upss').verify();
+  await expect(error$).emit.errorMessage('Unexpected error').verify();
 });
 ```
 

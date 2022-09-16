@@ -46,8 +46,8 @@ export class ObservableSpy<T> implements SubscribedSpy<T> {
 		}
 
 		return this.config?.useTestScheduler
-			? this.subcribeSpyWithTestScheduler()
-			: this.subcribeSpy();
+			? this.subscribeSpyWithTestScheduler()
+			: this.subscribeSpy();
 	}
 
 	public getValues(): T[] {
@@ -79,18 +79,16 @@ export class ObservableSpy<T> implements SubscribedSpy<T> {
 	 *
 	 * @param listener - Listener function to register.
 	 *
-	 * @returns
+	 * @returns True if the {@link listener} is successfully registered within the spy, otherwise false.
 	 */
-	public addNextListener(listener: NextListener<T>) {
-		if (this.nextListeners.includes(listener)) {
-			return;
-		}
-
-		if (this.receivedComplete() || this.receivedError()) {
-			return;
+	public addNextListener(listener: NextListener<T>): boolean {
+		if (this.nextListeners.includes(listener) || this.isClosed()) {
+			return false;
 		}
 
 		this.nextListeners.push(listener);
+
+		return true;
 	}
 
 	/**
@@ -99,15 +97,17 @@ export class ObservableSpy<T> implements SubscribedSpy<T> {
 	 *
 	 * @param listener - Listener function to unregister.
 	 *
-	 * @returns
+	 * @returns True if the {@link listener} is successfully removed from the spy, otherwise false.
 	 */
-	public removeNextListener(listener: NextListener<T>) {
+	public removeNextListener(listener: NextListener<T>): boolean {
 		const listenerIndex = this.nextListeners.indexOf(listener);
 		if (listenerIndex === -1) {
-			return;
+			return false;
 		}
 
 		this.nextListeners.splice(listenerIndex, 1);
+
+		return true;
 	}
 
 	/**
@@ -115,18 +115,16 @@ export class ObservableSpy<T> implements SubscribedSpy<T> {
 	 *
 	 * @param listener - Listener function to register.
 	 *
-	 * @returns
+	 * @returns True if the {@link listener} is successfully registered within the spy, otherwise false.
 	 */
-	public addErrorListener(listener: ErrorListener<T>) {
-		if (this.errorListeners.includes(listener)) {
-			return;
-		}
-
-		if (this.receivedError()) {
-			return listener(this.getError<T>(), this);
+	public addErrorListener(listener: ErrorListener<T>): boolean {
+		if (this.errorListeners.includes(listener) || this.isClosed()) {
+			return false;
 		}
 
 		this.errorListeners.push(listener);
+
+		return true;
 	}
 
 	/**
@@ -135,15 +133,17 @@ export class ObservableSpy<T> implements SubscribedSpy<T> {
 	 *
 	 * @param listener - Listener function to unregister.
 	 *
-	 * @returns
+	 * @returns True if the {@link listener} is successfully removed from the spy, otherwise false.
 	 */
-	public removeErrorListener(listener: ErrorListener<T>) {
+	public removeErrorListener(listener: ErrorListener<T>): boolean {
 		const listenerIndex = this.errorListeners.indexOf(listener);
 		if (listenerIndex === -1) {
-			return;
+			return false;
 		}
 
 		this.errorListeners.splice(listenerIndex, 1);
+
+		return true;
 	}
 
 	/**
@@ -151,18 +151,16 @@ export class ObservableSpy<T> implements SubscribedSpy<T> {
 	 *
 	 * @param listener - Listener function to register.
 	 *
-	 * @returns
+	 * @returns True if the {@link listener} is successfully registered within the spy, otherwise false.
 	 */
-	public addCompleteListener(listener: CompleteListener<T>) {
-		if (this.completeListeners.includes(listener)) {
-			return;
-		}
-
-		if (this.receivedComplete()) {
-			return listener(this);
+	public addCompleteListener(listener: CompleteListener<T>): boolean {
+		if (this.completeListeners.includes(listener) || this.isClosed()) {
+			return false;
 		}
 
 		this.completeListeners.push(listener);
+
+		return true;
 	}
 
 	/**
@@ -171,15 +169,17 @@ export class ObservableSpy<T> implements SubscribedSpy<T> {
 	 *
 	 * @param listener - Listener function to unregister.
 	 *
-	 * @returns
+	 * @returns True if the {@link listener} is successfully removed from the spy, otherwise false.
 	 */
-	public removeCompleteListener(listener: CompleteListener<T>) {
+	public removeCompleteListener(listener: CompleteListener<T>): boolean {
 		const listenerIndex = this.completeListeners.indexOf(listener);
 		if (listenerIndex === -1) {
-			return;
+			return false;
 		}
 
 		this.completeListeners.splice(listenerIndex, 1);
+
+		return true;
 	}
 
 	public onComplete(): Promise<T[]> {
@@ -188,6 +188,14 @@ export class ObservableSpy<T> implements SubscribedSpy<T> {
 		}
 
 		return new Promise((resolve, reject) => {
+			if (this.receivedComplete()) {
+				return resolve(this.getValues());
+			}
+
+			if (this.receivedError()) {
+				return reject(this.getError());
+			}
+
 			this.addCompleteListener(() => resolve(this.getValues()));
 			this.addErrorListener((e) => reject(e));
 		});
@@ -199,6 +207,14 @@ export class ObservableSpy<T> implements SubscribedSpy<T> {
 		}
 
 		return new Promise((resolve, reject) => {
+			if (this.receivedComplete()) {
+				return reject(new UnexpectedObservableCompleteError());
+			}
+
+			if (this.error != null) {
+				return resolve(this.error as T);
+			}
+
 			this.addCompleteListener(() => reject(new UnexpectedObservableCompleteError()));
 			this.addErrorListener((e) => resolve(e as T));
 		});
@@ -214,15 +230,22 @@ export class ObservableSpy<T> implements SubscribedSpy<T> {
 		this.completeListeners.splice(0, this.completeListeners.length);
 	}
 
-	private subcribeSpyWithTestScheduler() {
-		const testScheduler = new TestScheduler(() => {
-			return;
-		});
-
-		return testScheduler.run(() => this.subcribeSpy());
+	private isClosed(): boolean {
+		return this.receivedComplete() || this.receivedError();
 	}
 
-	private subcribeSpy() {
+	private subscribeSpyWithTestScheduler() {
+		const testScheduler = new TestScheduler(
+			/* istanbul ignore next */
+			() => {
+				return;
+			},
+		);
+
+		return testScheduler.run(() => this.subscribeSpy());
+	}
+
+	private subscribeSpy() {
 		this.subscription = this.observable.subscribe({
 			next: (val) => {
 				this.values.push(val);
@@ -255,3 +278,4 @@ export class ObservableSpy<T> implements SubscribedSpy<T> {
 		this.completeListeners.forEach((l) => l(this));
 	}
 }
+
