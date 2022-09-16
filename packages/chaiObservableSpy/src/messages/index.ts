@@ -2,7 +2,7 @@ import { EventType } from '@maklja90/rxjs-observable-spy';
 
 const errorFormatMessage = (e: unknown) => {
 	if (e instanceof Error) {
-		return `${e.name} - ${e.message} \n${e.stack}\n`;
+		return `${e.name} - ${e.message}`;
 	}
 
 	return `${e}`;

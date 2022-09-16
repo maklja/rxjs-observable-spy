@@ -1,15 +1,16 @@
 import { Observable } from 'rxjs';
 import { verifyObservable, EventType } from '@maklja90/rxjs-observable-spy';
-import { expectedSignalActualError, expectedSignalActualNext } from '../messages';
-import { retrieveVerificationSteps } from './retrieveVerificationSteps';
-import { clearInvokedTimeout } from './subscribeInvokedTimeout';
+import { expectedSignalActualError, expectedSignalActualNext } from '../../messages';
+import { retrieveVerificationSteps } from '../retrieveVerificationSteps';
+import { clearInvokedTimeout } from '../subscribeInvokedTimeout';
+import { ObservableSpyAssertionError } from '../common/error';
 
 export default function chaiVerifyComplete<T = unknown>(
 	this: Chai.AssertionStatic,
 	utils: Chai.ChaiUtils,
 ) {
 	const observable: Observable<T> = this._obj;
-	const verificationSteps = retrieveVerificationSteps(observable, utils);
+	const verificationSteps = retrieveVerificationSteps<T>(this, utils);
 
 	clearInvokedTimeout(observable, utils);
 
@@ -18,10 +19,13 @@ export default function chaiVerifyComplete<T = unknown>(
 			const errorMessage = expectedSignalActualNext(
 				'complete',
 				EventType.Complete,
-				EventType.Error,
+				EventType.Next,
 				value,
 			);
-			this.assert(false, errorMessage, '', EventType.Complete, EventType.Next);
+			throw new ObservableSpyAssertionError(errorMessage, {
+				expectedEvent: EventType.Complete,
+				receivedEvent: EventType.Next,
+			});
 		},
 		error: (error) => {
 			const errorMessage = expectedSignalActualError(
@@ -30,7 +34,11 @@ export default function chaiVerifyComplete<T = unknown>(
 				EventType.Error,
 				error,
 			);
-			this.assert(false, errorMessage, '', EventType.Complete, EventType.Error);
+			throw new ObservableSpyAssertionError(errorMessage, {
+				error,
+				expectedEvent: EventType.Complete,
+				receivedEvent: EventType.Error,
+			});
 		},
 	});
 

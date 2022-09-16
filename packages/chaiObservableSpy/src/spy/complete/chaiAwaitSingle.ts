@@ -1,15 +1,15 @@
 import { Observable } from 'rxjs';
 import { verifyObservable, EventType } from '@maklja90/rxjs-observable-spy';
-import { expectedSignalActualError } from '../messages';
-import { retrieveVerificationSteps } from './retrieveVerificationSteps';
-import { clearInvokedTimeout } from './subscribeInvokedTimeout';
+import { expectedSignalActualError } from '../../messages';
+import { retrieveVerificationSteps } from '../retrieveVerificationSteps';
+import { clearInvokedTimeout } from '../subscribeInvokedTimeout';
 
 export default async function chaiAwaitSingle<T = unknown>(
 	this: Chai.AssertionStatic,
 	utils: Chai.ChaiUtils,
 ): Promise<T> {
 	const observable: Observable<T> = this._obj;
-	const verificationSteps = retrieveVerificationSteps(observable, utils);
+	const verificationSteps = retrieveVerificationSteps<T>(this, utils);
 
 	clearInvokedTimeout(observable, utils);
 

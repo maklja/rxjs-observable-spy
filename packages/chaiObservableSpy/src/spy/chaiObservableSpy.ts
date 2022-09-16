@@ -13,5 +13,5 @@ export default function chaiSubscriberSpy(
 		Observable.name,
 	);
 
-	refreshInvokeTimeout.call(this, chai, this._obj, utils);
+	refreshInvokeTimeout(this, chai, this._obj, utils);
 }

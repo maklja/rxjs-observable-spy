@@ -4,7 +4,7 @@ import { OBSERVABLE_SPY_CONFIG_KEY, ChaiObservableSpyPluginConfig } from './chai
 const TIMEOUT_ID_KEY = '_timeoutId';
 
 export function refreshInvokeTimeout(
-	this: Chai.AssertionStatic,
+	assertionStatic: Chai.AssertionStatic,
 	chai: Chai.ChaiStatic,
 	observable: Observable<unknown>,
 	utils: Chai.ChaiUtils,
@@ -18,7 +18,7 @@ export function refreshInvokeTimeout(
 	clearInvokedTimeout(observable, utils);
 
 	const newTimeout = setTimeout(() => {
-		this.assert(
+		assertionStatic.assert(
 			false,
 			'You need to invoke verify, verifyComplete or awaitComplete in order to subscribe to observable',
 			'',

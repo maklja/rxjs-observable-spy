@@ -1,34 +1,6 @@
-import chaiNext from './chaiNext';
-import chaiVerifyComplete from './chaiVerifyComplete';
-import chaiNextMatches from './chaiNextMatches';
-import chaiNextMatchesUntil from './chaiNextMatchesUntil';
-import chaiConsumeNext from './chaiConsumeNext';
-import chaiConsumeNextUntil from './chaiConsumeNextUntil';
-import chaiSubscriberSpy from './chaiObservableSpy';
-import chaiNextCount from './chaiNextCount';
-import chaiError from './chaiError';
-import chaiVerify from './chaiVerify';
-import chaiComplete from './chaiComplete';
-import chaiAwaitComplete from './chaiAwaitComplete';
-import chaiAwaitSingle from './chaiAwaitSingle';
 import createChaiObservableSpyPlugin from './chaiPlugin';
 import { ChaiObservableSpyPluginConfig } from './chaiPluginConfig';
 
-export {
-	chaiNext,
-	chaiNextCount,
-	chaiNextMatches,
-	chaiNextMatchesUntil,
-	chaiConsumeNext,
-	chaiConsumeNextUntil,
-	chaiVerifyComplete,
-	chaiSubscriberSpy,
-	chaiError,
-	chaiVerify,
-	chaiComplete,
-	chaiAwaitComplete,
-	chaiAwaitSingle,
-	createChaiObservableSpyPlugin,
-};
+export { createChaiObservableSpyPlugin };
 
 export type { ChaiObservableSpyPluginConfig };
