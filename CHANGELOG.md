@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 0.3.9 (2022-09-16)
+
+
+### Bug Fixes
+
+* Bump test coverage of observable spy ([#5](https://github.com/maklja/rxjs-observable-spy/issues/5)) ([91b6295](https://github.com/maklja/rxjs-observable-spy/commit/91b6295ea9bc6cf23f73398be798abb26238caeb))
+
+
+
+
+
 ## 0.3.8 (2022-09-15)
 
 
