@@ -60,9 +60,9 @@ describe('subscribeSpyTo test', function () {
 		const observableSpy = subscribeSpyTo(throwError(() => new MockError()));
 
 		before(async function () {
-			const recievedError = await observableSpy.onError<MockError>();
-			expect(recievedError.name).to.be.equal(MockError.name);
-			expect(recievedError.message).to.be.equal('Mock error message');
+			const receivedError = await observableSpy.onError<MockError>();
+			expect(receivedError.name).to.be.equal(MockError.name);
+			expect(receivedError.message).to.be.equal('Mock error message');
 		});
 
 		it('will receive error', function () {
@@ -112,9 +112,9 @@ describe('subscribeSpyTo test', function () {
 		const observableSpy = subscribeSpyTo(observable$, { useTestScheduler: true });
 
 		before(async function () {
-			const recievedError = await observableSpy.onError<MockError>();
-			expect(recievedError.name).to.be.equal(MockError.name);
-			expect(recievedError.message).to.be.equal('Mock error message');
+			const receivedError = await observableSpy.onError<MockError>();
+			expect(receivedError.name).to.be.equal(MockError.name);
+			expect(receivedError.message).to.be.equal('Mock error message');
 		});
 
 		it('will receive error', function () {

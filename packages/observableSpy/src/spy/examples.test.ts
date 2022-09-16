@@ -58,16 +58,16 @@ describe('ObservableSpy example test', function () {
 	});
 
 	it('should catch an error from observable', async () => {
-		const errorObservable = throwError(() => new Error('Upss'));
+		const errorObservable = throwError(() => new Error('Unexpected error'));
 
 		const observableSpy = subscribeSpyTo(errorObservable);
 
 		// onError method will return an error received from the error event
 		// if we are using a typescript we can set expected type of error
-		const recievedError = await observableSpy.onError<Error>();
+		const receivedError = await observableSpy.onError<Error>();
 
-		expect(recievedError).to.be.instanceof(Error);
-		expect(recievedError.message).to.be.equal('Upss');
+		expect(receivedError).to.be.instanceof(Error);
+		expect(receivedError.message).to.be.equal('Unexpected error');
 	});
 
 	it('should spy on Observable', async () => {

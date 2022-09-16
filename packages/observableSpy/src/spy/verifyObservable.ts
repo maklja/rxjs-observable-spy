@@ -42,7 +42,7 @@ export interface VerificationStep<T> {
 	complete?: (observableSpy: SubscribedSpy<T>) => void;
 }
 
-const failAssertVefificationStep: VerificationStep<unknown> = {
+const failAssertVerificationStep: VerificationStep<unknown> = {
 	next(): boolean {
 		throw new MissingVerificationStepError(EventType.Next);
 	},
@@ -74,7 +74,7 @@ export function verifyObservable<T>(
 		const observableSpy = new ObservableSpy(observable, config);
 		observableSpy.addNextListener((value, index, o) => {
 			try {
-				const { next } = steps[0] ?? failAssertVefificationStep;
+				const { next } = steps[0] ?? failAssertVerificationStep;
 				if (!next) {
 					steps.splice(0, 1);
 					return;
@@ -91,7 +91,7 @@ export function verifyObservable<T>(
 
 		observableSpy.addErrorListener((e, o) => {
 			try {
-				const { error } = steps[0] ?? failAssertVefificationStep;
+				const { error } = steps[0] ?? failAssertVerificationStep;
 				error && error(e, o);
 				steps.splice(0, 1);
 				resolve(o.getValues());
@@ -103,7 +103,7 @@ export function verifyObservable<T>(
 
 		observableSpy.addCompleteListener((o) => {
 			try {
-				const { complete } = steps[0] ?? failAssertVefificationStep;
+				const { complete } = steps[0] ?? failAssertVerificationStep;
 				complete && complete(o);
 				steps.splice(0, 1);
 				resolve(o.getValues());

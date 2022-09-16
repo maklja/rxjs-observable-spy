@@ -105,16 +105,18 @@ Sometimes errors happen and we need to handle them, so it would be a good idea t
 
 ```ts
 it('should catch an error from observable', async () => {
-  const errorObservable = throwError(() => new Error('Upss'));
+  const errorObservable = throwError(
+    () => new Error('Unexpected error'),
+  );
 
   const observableSpy = subscribeSpyTo(errorObservable);
 
   // onError method will return an error received from the error event
   // if we are using a typescript we can set expected type of error
-  const recievedError = await observableSpy.onError<Error>();
+  const receivedError = await observableSpy.onError<Error>();
 
-  expect(recievedError).to.be.instanceof(Error);
-  expect(recievedError.message).to.be.equal('Upss');
+  expect(receivedError).to.be.instanceOf(Error);
+  expect(receivedError.message).to.be.equal('Unexpected error');
 });
 ```
 
@@ -248,7 +250,7 @@ it('will fail with error if any value is not a number', async function () {
     ]);
   } catch (e) {
     const error = e as Error;
-    expect(error).to.be.instanceof(Error);
+    expect(error).to.be.instanceOf(Error);
     expect(error.message).to.be.equal('Value three is not a number');
   }
 });

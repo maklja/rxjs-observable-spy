@@ -1,6 +1,8 @@
 import { expect } from 'chai';
-import { filter, from, interval, map, Observable, tap, throwError } from 'rxjs';
-import { ObservableSpy } from '..';
+import { delay, filter, from, interval, map, Observable, of, tap, throwError } from 'rxjs';
+import { ObservableSpy } from './observableSpy';
+import { NotSubscribedError, UnexpectedObservableCompleteError } from './errors';
+import { CompleteListener, ErrorListener, NextListener } from './SubscribedSpy';
 
 class MockError extends Error {
 	constructor() {
@@ -10,11 +12,115 @@ class MockError extends Error {
 }
 
 describe('ObservableSpy test', function () {
+	describe('Test unsubscribed observable spy', function () {
+		const observableSpy = new ObservableSpy(of(1, 2, 3, 4));
+
+		it('will throw not subscribed error when calling onComplete', async function () {
+			try {
+				await observableSpy.onComplete();
+			} catch (e) {
+				const error = e as NotSubscribedError;
+				expect(error).to.be.an.instanceOf(Error);
+				expect(error.name).to.be.equal(NotSubscribedError.name);
+				expect(error.message).to.be.equal(
+					'Observable spy is not subscribed to the target observable',
+				);
+			}
+		});
+
+		it('will throw not subscribed error when calling onError', async function () {
+			try {
+				await observableSpy.onError();
+			} catch (e) {
+				const error = e as NotSubscribedError;
+				expect(error).to.be.an.instanceOf(Error);
+				expect(error.name).to.be.equal(NotSubscribedError.name);
+				expect(error.message).to.be.equal(
+					'Observable spy is not subscribed to the target observable',
+				);
+			}
+		});
+	});
+
+	describe('Test observable spy event listeners', function () {
+		it('will notify listener about next values', function (done) {
+			const sourceValues = [1, 2, 3, 4];
+			const observableSpy = new ObservableSpy(from(sourceValues));
+
+			observableSpy.addNextListener((val, index) => {
+				expect(val).to.be.equal(sourceValues[index]);
+			});
+
+			observableSpy.addCompleteListener(() => done());
+			observableSpy.addErrorListener((error) => done(error));
+
+			observableSpy.subscribe();
+			observableSpy.onComplete();
+		});
+
+		it('will notify listener about error', function (done) {
+			const observableSpy = new ObservableSpy(
+				throwError(() => new Error('Unexpected error')),
+			);
+
+			observableSpy.addCompleteListener(() => done('Should not receive complete event'));
+			observableSpy.addErrorListener((e) => {
+				const error = e as Error;
+				expect(error).to.be.an.instanceOf(Error);
+				expect(error.message).to.be.equal('Unexpected error');
+				done();
+			});
+
+			observableSpy.subscribe();
+			observableSpy.onComplete();
+		});
+
+		it('will register and unregister next listener function', function () {
+			const observableSpy = new ObservableSpy(of(1));
+
+			const nextListener: NextListener<number> = () => {
+				// for testing
+			};
+
+			expect(observableSpy.addNextListener(nextListener)).to.be.true;
+			expect(observableSpy.addNextListener(nextListener)).to.be.false;
+			expect(observableSpy.removeNextListener(nextListener)).to.be.true;
+			expect(observableSpy.removeNextListener(nextListener)).to.be.false;
+		});
+
+		it('will register and unregister error listener function', function () {
+			const observableSpy = new ObservableSpy(of(1));
+
+			const errorListener: ErrorListener<number> = () => {
+				// for testing
+			};
+
+			expect(observableSpy.addErrorListener(errorListener)).to.be.true;
+			expect(observableSpy.addErrorListener(errorListener)).to.be.false;
+			expect(observableSpy.removeErrorListener(errorListener)).to.be.true;
+			expect(observableSpy.removeErrorListener(errorListener)).to.be.false;
+		});
+
+		it('will register and unregister complete listener function', function () {
+			const observableSpy = new ObservableSpy(of(1));
+
+			const completeListener: CompleteListener<number> = () => {
+				// for testing
+			};
+
+			expect(observableSpy.addCompleteListener(completeListener)).to.be.true;
+			expect(observableSpy.addCompleteListener(completeListener)).to.be.false;
+			expect(observableSpy.removeCompleteListener(completeListener)).to.be.true;
+			expect(observableSpy.removeCompleteListener(completeListener)).to.be.false;
+		});
+	});
+
 	describe('Test numbers sequence with observable spy', function () {
 		const sourceValues = [1, 2, 3, 4, 5];
 		const targetValues = [2, 6, 10];
 		const observableSpy = new ObservableSpy(
 			from(sourceValues).pipe(
+				delay(10),
 				filter((val) => val % 2 != 0),
 				map((val) => val * 2),
 			),
@@ -26,7 +132,7 @@ describe('ObservableSpy test', function () {
 			expect(receivedValues).to.be.deep.equal(targetValues);
 		});
 
-		it('will receive all number in expected sequence', function () {
+		it('will receive number values in expected sequence', function () {
 			expect(observableSpy.getValues()).to.be.deep.equal(targetValues);
 		});
 
@@ -69,9 +175,9 @@ describe('ObservableSpy test', function () {
 
 		before(async function () {
 			observableSpy.subscribe();
-			const recievedError = await observableSpy.onError<MockError>();
-			expect(recievedError.name).to.be.equal(MockError.name);
-			expect(recievedError.message).to.be.equal('Mock error message');
+			const receivedError = await observableSpy.onError<MockError>();
+			expect(receivedError.name).to.be.equal(MockError.name);
+			expect(receivedError.message).to.be.equal('Mock error message');
 		});
 
 		it('will receive error', function () {
@@ -160,7 +266,7 @@ describe('ObservableSpy test', function () {
 		const targetValues = [0, 1, 2];
 		const observable$ = new Observable<number>((observer) => {
 			let value = 0;
-			return interval(5_000)
+			return interval(20)
 				.pipe(
 					tap(() => {
 						observer.next(value++);
@@ -171,13 +277,13 @@ describe('ObservableSpy test', function () {
 				)
 				.subscribe();
 		});
-		const observableSpy = new ObservableSpy(observable$, { useTestScheduler: true });
+		const observableSpy = new ObservableSpy(observable$);
 
 		before(async function () {
 			observableSpy.subscribe();
-			const recievedError = await observableSpy.onError<MockError>();
-			expect(recievedError.name).to.be.equal(MockError.name);
-			expect(recievedError.message).to.be.equal('Mock error message');
+			const receivedError = await observableSpy.onError<MockError>();
+			expect(receivedError.name).to.be.equal(MockError.name);
+			expect(receivedError.message).to.be.equal('Mock error message');
 		});
 
 		it('will receive error', function () {
@@ -212,6 +318,61 @@ describe('ObservableSpy test', function () {
 				const error = e as Error;
 				expect(error).to.be.instanceOf(Error);
 				expect(error.message).to.be.equal('Mock error message');
+			}
+		});
+	});
+
+	describe('Test unexpected event from observable', function () {
+		it('will throw an error if received complete instead of error', async function () {
+			const observable$ = new Observable<number>((observer) => {
+				let value = 0;
+				return interval(20)
+					.pipe(
+						tap(() => {
+							observer.next(value++);
+							if (value > 2) {
+								observer.complete();
+							}
+						}),
+					)
+					.subscribe();
+			});
+			const observableSpy = new ObservableSpy(observable$);
+
+			try {
+				observableSpy.subscribe();
+				await observableSpy.onError();
+			} catch (e) {
+				const error = e as UnexpectedObservableCompleteError;
+				expect(error).to.be.an.instanceOf(Error);
+				expect(error.name).to.be.equal(UnexpectedObservableCompleteError.name);
+				expect(error.message).to.be.equal('Unexpected observable complete event received');
+			}
+		});
+
+		it('will throw an error if received error instead of complete', async function () {
+			const observable$ = new Observable<number>((observer) => {
+				let value = 0;
+				return interval(20)
+					.pipe(
+						tap(() => {
+							observer.next(value++);
+							if (value > 2) {
+								observer.error(new Error('Unexpected error'));
+							}
+						}),
+					)
+					.subscribe();
+			});
+			const observableSpy = new ObservableSpy(observable$);
+
+			try {
+				observableSpy.subscribe();
+				await observableSpy.onComplete();
+			} catch (e) {
+				const error = e as Error;
+				expect(error).to.be.an.instanceOf(Error);
+				expect(error.message).to.be.equal('Unexpected error');
 			}
 		});
 	});

@@ -30,6 +30,9 @@
 		"url": "https://github.com/maklja/rxjs-observable-spy.git",
 		"directory": "packages/observableSpy"
 	},
+	"bugs": {
+		"url": "https://github.com/maklja/rxjs-observable-spy/issues"
+	},
 	"publishConfig": {
 		"access": "public",
 		"registry": "https://registry.npmjs.org"
@@ -43,3 +46,4 @@
 		"typescript": ">=4.0.0"
 	}
 }
+

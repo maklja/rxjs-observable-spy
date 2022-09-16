@@ -108,7 +108,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ### Bug Fixes
 
-* README documentation and formating for npl ([564eb52](https://github.com/maklja/rxjs-observable-spy/commit/564eb5299150b7d5e8255b60021ffc9a2a0d2feb))
+* README documentation and formatting for npl ([564eb52](https://github.com/maklja/rxjs-observable-spy/commit/564eb5299150b7d5e8255b60021ffc9a2a0d2feb))
 
 
 ### Features
