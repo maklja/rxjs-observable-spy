@@ -1,6 +1,6 @@
 import { VerificationStep } from '@maklja90/rxjs-observable-spy';
 
-const VERIFICATION_STEP_FLAG_KEY = 'verificationSteps';
+const VERIFICATION_STEP_FLAG_KEY = '__observable_spy_verification_steps__';
 
 export function retrieveVerificationSteps<T>(
 	assertionStatic: Chai.AssertionStatic,

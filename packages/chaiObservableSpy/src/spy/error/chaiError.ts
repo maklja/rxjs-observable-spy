@@ -14,7 +14,7 @@ export default function chaiError<T = unknown, E extends Error = Error>(
 ) {
 	const verificationSteps = retrieveVerificationSteps<T>(this, utils);
 
-	refreshInvokeTimeout(this, chai, this._obj, utils);
+	refreshInvokeTimeout(this, chai, utils);
 
 	verificationSteps.push({
 		next: (value) => {

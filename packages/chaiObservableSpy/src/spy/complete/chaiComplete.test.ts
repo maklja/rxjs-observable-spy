@@ -4,7 +4,7 @@ import { of, throwError } from 'rxjs';
 import '../../register';
 import { ObservableSpyAssertionError } from '../common/error';
 
-describe('Chai observable spy verifyComplete keyword', function () {
+describe('Chai observable spy complete keyword', function () {
 	it('should verify that observable has completed', async function () {
 		const strings$ = of('Tom', 'Tina', 'Ana');
 
@@ -12,7 +12,8 @@ describe('Chai observable spy verifyComplete keyword', function () {
 			.emit.next('Tom')
 			.next('Tina')
 			.next('Ana')
-			.verifyComplete();
+			.complete()
+			.verify();
 		expect(values).to.deep.equals(['Tom', 'Tina', 'Ana']);
 	});
 
@@ -20,7 +21,7 @@ describe('Chai observable spy verifyComplete keyword', function () {
 		const strings$ = of('Tom', 'Tina', 'Ana');
 
 		try {
-			await expect(strings$).emit.verifyComplete();
+			await expect(strings$).emit.complete().verify();
 		} catch (e) {
 			const error = e as ObservableSpyAssertionError;
 			expect(error.expectedEvent).to.be.equal(EventType.Complete);
@@ -35,7 +36,7 @@ describe('Chai observable spy verifyComplete keyword', function () {
 		const error$ = throwError(() => new Error('Unexpected error'));
 
 		try {
-			await expect(error$).emit.verifyComplete();
+			await expect(error$).emit.complete().verify();
 		} catch (e) {
 			const error = e as ObservableSpyAssertionError;
 			expect(error.expectedEvent).to.be.equal(EventType.Complete);

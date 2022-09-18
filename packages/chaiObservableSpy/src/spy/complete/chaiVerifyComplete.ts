@@ -12,7 +12,7 @@ export default function chaiVerifyComplete<T = unknown>(
 	const observable: Observable<T> = this._obj;
 	const verificationSteps = retrieveVerificationSteps<T>(this, utils);
 
-	clearInvokedTimeout(observable, utils);
+	clearInvokedTimeout(this, utils);
 
 	verificationSteps.push({
 		next: (value) => {

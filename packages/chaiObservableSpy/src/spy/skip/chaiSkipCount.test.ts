@@ -13,8 +13,9 @@ describe('Chai observable spy skipCount keyword', function () {
 	});
 
 	it('should fail if received less values then expected', async function () {
-		const strings$ = of('Tom', 'Tina', 'Ana');
 		try {
+			const strings$ = of('Tom', 'Tina', 'Ana');
+
 			await expect(strings$).emit.skipCount(10).verifyComplete();
 		} catch (e) {
 			const error = e as ObservableSpyAssertionError;
@@ -27,10 +28,10 @@ describe('Chai observable spy skipCount keyword', function () {
 	});
 
 	it('should work with zero count number', async function () {
-		const empty$ = of('Tom', 'Tina', 'Ana');
+		const strings$ = of('Tom', 'Tina', 'Ana');
 
 		try {
-			await expect(empty$).emit.skipCount(0).verifyComplete();
+			await expect(strings$).emit.skipCount(0).verifyComplete();
 		} catch (e) {
 			const error = e as ObservableSpyAssertionError;
 			expect(error.message).to.be.equal(
@@ -69,4 +70,3 @@ describe('Chai observable spy skipCount keyword', function () {
 		}
 	});
 });
-

@@ -13,7 +13,7 @@ export default function nextUntil<T = unknown>(
 ) {
 	const verificationSteps = retrieveVerificationSteps<T>(assertionStatic, utils);
 
-	refreshInvokeTimeout(assertionStatic, chai, assertionStatic._obj, utils);
+	refreshInvokeTimeout(assertionStatic, chai, utils);
 
 	verificationSteps.push({
 		next: (value, index) => !expectedCallback(value, index),
@@ -43,4 +43,3 @@ export default function nextUntil<T = unknown>(
 		},
 	});
 }
-

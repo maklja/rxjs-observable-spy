@@ -5,7 +5,6 @@ import chaiNext from './next/chaiNext';
 import chaiNextCount from './next/chaiNextCount';
 import chaiNextMatches from './next/chaiNextMatches';
 import chaiNextMatchesUntil from './next/chaiNextMatchesUntil';
-import chaiSubscriberSpy from './chaiObservableSpy';
 import chaiSkipCount from './skip/chaiSkipCount';
 import chaiSkipUntil from './skip/chaiSkipUntil';
 import chaiComplete from './complete/chaiComplete';
@@ -13,6 +12,8 @@ import chaiVerify from './verify/chaiVerify';
 import chaiVerifyComplete from './complete/chaiVerifyComplete';
 import chaiAwaitComplete from './complete/chaiAwaitComplete';
 import chaiAwaitSingle from './complete/chaiAwaitSingle';
+import { EMIT_KEYWORD, chaiEmit } from './emit/chaiEmit';
+import { OBSERVABLE_SPY_KEYWORD, chaiObservableSpy } from './emit/chaiObservableSpy';
 import { OBSERVABLE_SPY_CONFIG_KEY, ChaiObservableSpyPluginConfig } from './chaiPluginConfig';
 
 const defaultConfiguration: ChaiObservableSpyPluginConfig = {
@@ -114,11 +115,11 @@ export default (config: ChaiObservableSpyPluginConfig = defaultConfiguration): C
 			return chaiAwaitSingle.call(this, utils);
 		});
 
-		Assertion.addProperty('observableSpy', function () {
-			chaiSubscriberSpy.call(this, chai, utils);
+		Assertion.addProperty(OBSERVABLE_SPY_KEYWORD, function () {
+			chaiObservableSpy.call(this, chai, utils);
 		});
 
-		Assertion.addProperty('emit', function () {
-			chaiSubscriberSpy.call(this, chai, utils);
+		Assertion.addProperty(EMIT_KEYWORD, function () {
+			chaiEmit.call(this, chai, utils);
 		});
 	};

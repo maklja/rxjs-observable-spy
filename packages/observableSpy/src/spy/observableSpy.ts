@@ -4,7 +4,7 @@ import {
 	AlreadySubscribedError,
 	NotSubscribedError,
 	UnexpectedObservableCompleteError,
-} from './errors';
+} from '../errors';
 import { CompleteListener, ErrorListener, NextListener, SubscribedSpy } from './SubscribedSpy';
 
 export interface ObserverSpyConfig {
@@ -278,4 +278,3 @@ export class ObservableSpy<T> implements SubscribedSpy<T> {
 		this.completeListeners.forEach((l) => l(this));
 	}
 }
-

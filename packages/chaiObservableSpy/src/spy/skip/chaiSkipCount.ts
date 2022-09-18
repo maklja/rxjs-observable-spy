@@ -11,7 +11,7 @@ export default function chaiSkipCount<T>(
 	expectedCount: number,
 ) {
 	if (expectedCount <= 0) {
-		clearInvokedTimeout(this._obj, utils);
+		clearInvokedTimeout(this, utils);
 		throw new ObservableSpyAssertionError(
 			`[skipCount] - Skip number should be > 0, received value ${expectedCount}`,
 		);
@@ -19,7 +19,7 @@ export default function chaiSkipCount<T>(
 
 	const verificationSteps = retrieveVerificationSteps<T>(this, utils);
 
-	refreshInvokeTimeout(this, chai, this._obj, utils);
+	refreshInvokeTimeout(this, chai, utils);
 
 	let currentCount = 0;
 	verificationSteps.push({
@@ -52,4 +52,3 @@ export default function chaiSkipCount<T>(
 		},
 	});
 }
-

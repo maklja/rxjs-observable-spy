@@ -12,7 +12,7 @@ export default function chaiNextMatches<T = unknown>(
 ) {
 	const verificationSteps = retrieveVerificationSteps<T>(this, utils);
 
-	refreshInvokeTimeout(this, chai, this._obj, utils);
+	refreshInvokeTimeout(this, chai, utils);
 
 	verificationSteps.push({
 		next: (value, index) => {

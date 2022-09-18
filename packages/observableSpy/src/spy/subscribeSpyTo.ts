@@ -19,4 +19,3 @@ export function subscribeSpyTo<T>(
 
 	return observableSpy;
 }
-

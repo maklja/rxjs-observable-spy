@@ -38,7 +38,7 @@ describe('Chai observable spy skipUntil keyword', function () {
 	});
 
 	it('should fail if error event is received instead of next event', async function () {
-		const error$ = throwError(() => new Error('Unexpected error'));
+		const error$ = throwError(() => 'Unexpected error');
 
 		try {
 			await expect(error$)
@@ -49,7 +49,7 @@ describe('Chai observable spy skipUntil keyword', function () {
 			expect(error.expectedEvent).to.be.equal(EventType.Next);
 			expect(error.receivedEvent).to.be.equal(EventType.Error);
 			expect(error.message).to.be.equal(
-				'[skipUntil] - expected signal: next, actual signal: error, actual error: Error - Unexpected error',
+				'[skipUntil] - expected signal: next, actual signal: error, actual error: Unexpected error',
 			);
 		}
 	});
@@ -71,4 +71,3 @@ describe('Chai observable spy skipUntil keyword', function () {
 		}
 	});
 });
-

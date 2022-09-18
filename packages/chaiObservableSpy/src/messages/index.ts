@@ -45,25 +45,10 @@ const expectedNextActualOther = <T>(
 	)}, expected value: ${expectedValue}${errorMessage}`;
 };
 
-const expectedNextValueActualOther = <T>(
-	name: string,
-	expectedSignal: EventType,
-	actualSignal: EventType,
-	expectedValue: T,
-	actualValue: T,
-) => {
-	return `${expectedSignalMessage(
-		name,
-		expectedSignal,
-		actualSignal,
-	)}, expected value: ${expectedValue}, actual value: ${actualValue}`;
-};
-
 export {
 	errorFormatMessage,
 	expectedSignalActualError,
 	expectedSignalActualNext,
 	expectedSignalMessage,
 	expectedNextActualOther,
-	expectedNextValueActualOther,
 };

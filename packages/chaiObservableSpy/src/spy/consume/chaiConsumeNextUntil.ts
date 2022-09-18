@@ -8,4 +8,3 @@ export default function chaiConsumeNextUntil<T = unknown>(
 ) {
 	nextUntil('consumeNextUntil', this, chai, utils, expectedCallback);
 }
-

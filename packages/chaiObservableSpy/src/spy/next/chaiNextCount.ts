@@ -12,7 +12,7 @@ export default function chaiNextCount<T>(
 ) {
 	const verificationSteps = retrieveVerificationSteps<T>(this, utils);
 
-	refreshInvokeTimeout(this, chai, this._obj, utils);
+	refreshInvokeTimeout(this, chai, utils);
 
 	let currentCount = 0;
 	verificationSteps.push({

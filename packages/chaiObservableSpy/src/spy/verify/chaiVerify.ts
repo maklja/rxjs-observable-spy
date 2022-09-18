@@ -7,7 +7,7 @@ export default function chaiVerify<T = unknown>(this: Chai.AssertionStatic, util
 	const observable: Observable<T> = this._obj;
 	const verificationSteps = retrieveVerificationSteps(this, utils);
 
-	clearInvokedTimeout(observable, utils);
+	clearInvokedTimeout(this, utils);
 
 	return verifyObservable(observable, verificationSteps);
 }
