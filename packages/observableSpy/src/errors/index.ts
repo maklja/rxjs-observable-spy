@@ -1,4 +1,4 @@
-import { EventType } from './SubscribedSpy';
+import { EventType } from '../spy';
 
 /**
  * This error is thrown in case an observable spy is already subscribed to the tested observable.
@@ -48,4 +48,3 @@ export class MissingVerificationStepError extends Error {
 		this.name = MissingVerificationStepError.name;
 	}
 }
-

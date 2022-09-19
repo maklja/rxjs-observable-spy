@@ -1,12 +1,5 @@
-import { verifyObservable, VerificationStep } from './verifyObservable';
 import { ObservableSpy, ObserverSpyConfig } from './observableSpy';
 import { subscribeSpyTo } from './subscribeSpyTo';
-import {
-	AlreadySubscribedError,
-	NotSubscribedError,
-	UnexpectedObservableCompleteError,
-	MissingVerificationStepError,
-} from './errors';
 import {
 	CompleteListener,
 	ErrorListener,
@@ -15,22 +8,6 @@ import {
 	EventType,
 } from './SubscribedSpy';
 
-export {
-	verifyObservable,
-	subscribeSpyTo,
-	ObservableSpy,
-	AlreadySubscribedError,
-	NotSubscribedError,
-	UnexpectedObservableCompleteError,
-	MissingVerificationStepError,
-	EventType,
-};
+export { subscribeSpyTo, ObservableSpy, EventType };
 
-export type {
-	VerificationStep,
-	CompleteListener,
-	ErrorListener,
-	NextListener,
-	ObserverSpyConfig,
-	SubscribedSpy as SubscribeSpy,
-};
+export type { CompleteListener, ErrorListener, NextListener, ObserverSpyConfig, SubscribedSpy };

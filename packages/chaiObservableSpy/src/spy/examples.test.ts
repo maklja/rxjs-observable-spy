@@ -28,8 +28,8 @@ describe('ChaiJS observable spy example test', function () {
 	it('should receive proper values count', async () => {
 		const strings$ = of('Tom', 'Ana');
 
-		// expect to receive 2 values and then complete the event
-		const values = await expect(strings$).emit.nextCount(2).verifyComplete();
+		// expect to receive 2 values and then the complete event
+		const values = await expect(strings$).emit.nextCount(2).verify();
 		expect(values).to.deep.equals(['Tom', 'Ana']);
 	});
 
@@ -110,6 +110,17 @@ describe('ChaiJS observable spy example test', function () {
 		expect(values).to.deep.equals(['Tom', 'Ana', 'John']);
 	});
 
+	it('should skip values until condition', async () => {
+		const strings$ = of('Tom', 'Ana', 'John');
+
+		const values = await expect(strings$)
+			.emit.skipUntil((_, index) => index < 1) // skip while index < 1
+			.next('John')
+			.verifyComplete();
+
+		expect(values).to.deep.equals(['Tom', 'Ana', 'John']);
+	});
+
 	it('should catch an error from observable', async () => {
 		const error$ = throwError(() => new Error('Upss'));
 
@@ -137,5 +148,21 @@ describe('ChaiJS observable spy example test', function () {
 		const singleString = await expect(string$).emit.awaitSingle<string>();
 		expect(singleString).to.be.equals('John');
 	});
-});
 
+	it('should just await complete event and ignore next values', async () => {
+		const strings$ = of('Tom', 'Ana', 'John');
+
+		const values = await expect(strings$).emit.awaitComplete();
+		expect(values).to.deep.equals(['Tom', 'Ana', 'John']);
+	});
+
+	it('should just await complete event and assert next values', async () => {
+		const sourceValues = ['Tom', 'Ana', 'John'];
+		const strings$ = from(sourceValues);
+
+		const values = await expect(strings$).emit.awaitComplete((val, index) =>
+			expect(val).to.be.equal(sourceValues[index]),
+		);
+		expect(values).to.deep.equals(['Tom', 'Ana', 'John']);
+	});
+});

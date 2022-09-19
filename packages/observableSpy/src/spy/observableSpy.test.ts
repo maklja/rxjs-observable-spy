@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { delay, filter, from, interval, map, Observable, of, tap, throwError } from 'rxjs';
 import { ObservableSpy } from './observableSpy';
-import { NotSubscribedError, UnexpectedObservableCompleteError } from './errors';
+import { NotSubscribedError, UnexpectedObservableCompleteError } from '../errors';
 import { CompleteListener, ErrorListener, NextListener } from './SubscribedSpy';
 
 class MockError extends Error {
@@ -377,4 +377,3 @@ describe('ObservableSpy test', function () {
 		});
 	});
 });
-

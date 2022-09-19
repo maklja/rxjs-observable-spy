@@ -1,19 +1,20 @@
 import {
 	ObservableSpy,
-	SubscribeSpy,
-	verifyObservable,
-	VerificationStep,
+	SubscribedSpy,
 	subscribeSpyTo,
 	ObserverSpyConfig,
-	AlreadySubscribedError,
-	NotSubscribedError,
-	UnexpectedObservableCompleteError,
-	MissingVerificationStepError,
 	CompleteListener,
 	ErrorListener,
 	NextListener,
 	EventType,
 } from './spy';
+import {
+	AlreadySubscribedError,
+	NotSubscribedError,
+	UnexpectedObservableCompleteError,
+	MissingVerificationStepError,
+} from './errors';
+import { verifyObservable, VerificationStep } from './verify';
 
 export {
 	ObservableSpy,
@@ -27,11 +28,10 @@ export {
 };
 
 export type {
-	SubscribeSpy,
+	SubscribedSpy,
 	ObserverSpyConfig,
 	VerificationStep,
 	CompleteListener,
 	ErrorListener,
 	NextListener,
 };
-

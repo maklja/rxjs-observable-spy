@@ -1,16 +1,19 @@
-import chaiConsumeNext from './chaiConsumeNext';
-import chaiConsumeNextUntil from './chaiConsumeNextUntil';
-import chaiError from './chaiError';
-import chaiNext from './chaiNext';
-import chaiNextCount from './chaiNextCount';
-import chaiNextMatches from './chaiNextMatches';
-import chaiNextMatchesUntil from './chaiNextMatchesUntil';
-import chaiSubscriberSpy from './chaiObservableSpy';
-import chaiComplete from './chaiComplete';
-import chaiVerify from './chaiVerify';
-import chaiVerifyComplete from './chaiVerifyComplete';
-import chaiAwaitComplete from './chaiAwaitComplete';
-import chaiAwaitSingle from './chaiAwaitSingle';
+import chaiConsumeNext from './consume/chaiConsumeNext';
+import chaiConsumeNextUntil from './consume/chaiConsumeNextUntil';
+import chaiError from './error/chaiError';
+import chaiNext from './next/chaiNext';
+import chaiNextCount from './next/chaiNextCount';
+import chaiNextMatches from './next/chaiNextMatches';
+import chaiNextMatchesUntil from './next/chaiNextMatchesUntil';
+import chaiSkipCount from './skip/chaiSkipCount';
+import chaiSkipUntil from './skip/chaiSkipUntil';
+import chaiComplete from './complete/chaiComplete';
+import chaiVerify from './verify/chaiVerify';
+import chaiVerifyComplete from './complete/chaiVerifyComplete';
+import chaiAwaitComplete from './complete/chaiAwaitComplete';
+import chaiAwaitSingle from './complete/chaiAwaitSingle';
+import { EMIT_KEYWORD, chaiEmit } from './emit/chaiEmit';
+import { OBSERVABLE_SPY_KEYWORD, chaiObservableSpy } from './emit/chaiObservableSpy';
 import { OBSERVABLE_SPY_CONFIG_KEY, ChaiObservableSpyPluginConfig } from './chaiPluginConfig';
 
 const defaultConfiguration: ChaiObservableSpyPluginConfig = {
@@ -33,8 +36,15 @@ export default (config: ChaiObservableSpyPluginConfig = defaultConfiguration): C
 		});
 
 		Assertion.addMethod('skipCount', function (expectedCount: number) {
-			chaiNextCount.call(this, chai, utils, expectedCount);
+			chaiSkipCount.call(this, chai, utils, expectedCount);
 		});
+
+		Assertion.addMethod(
+			'skipUntil',
+			function (conditionCallback: (value: unknown, index: number) => boolean) {
+				chaiSkipUntil.call(this, chai, utils, conditionCallback);
+			},
+		);
 
 		Assertion.addMethod(
 			'nextMatches',
@@ -70,19 +80,19 @@ export default (config: ChaiObservableSpyPluginConfig = defaultConfiguration): C
 		Assertion.addMethod(
 			'error',
 			function (expectedErrorType: new (...args: unknown[]) => Error, errorMessage: string) {
-				chaiError.call(this, chai, utils, expectedErrorType, errorMessage);
+				chaiError.call(this, 'error', chai, utils, expectedErrorType, errorMessage);
 			},
 		);
 
 		Assertion.addMethod(
 			'errorType',
 			function (expectedErrorType: new (...args: unknown[]) => Error) {
-				chaiError.call(this, chai, utils, expectedErrorType);
+				chaiError.call(this, 'errorType', chai, utils, expectedErrorType);
 			},
 		);
 
 		Assertion.addMethod('errorMessage', function (errorMessage: string) {
-			chaiError.call(this, chai, utils, undefined, errorMessage);
+			chaiError.call(this, 'errorMessage', chai, utils, undefined, errorMessage);
 		});
 
 		Assertion.addMethod('verifyComplete', function () {
@@ -97,19 +107,22 @@ export default (config: ChaiObservableSpyPluginConfig = defaultConfiguration): C
 			return chaiVerify.call(this, utils);
 		});
 
-		Assertion.addMethod('awaitComplete', function () {
-			return chaiAwaitComplete.call(this, utils);
-		});
+		Assertion.addMethod(
+			'awaitComplete',
+			function (callback?: (value: unknown, index: number) => void) {
+				return chaiAwaitComplete.call(this, utils, callback);
+			},
+		);
 
 		Assertion.addMethod('awaitSingle', function () {
 			return chaiAwaitSingle.call(this, utils);
 		});
 
-		Assertion.addProperty('observableSpy', function () {
-			chaiSubscriberSpy.call(this, chai, utils);
+		Assertion.addProperty(OBSERVABLE_SPY_KEYWORD, function () {
+			chaiObservableSpy.call(this, chai, utils);
 		});
 
-		Assertion.addProperty('emit', function () {
-			chaiSubscriberSpy.call(this, chai, utils);
+		Assertion.addProperty(EMIT_KEYWORD, function () {
+			chaiEmit.call(this, chai, utils);
 		});
 	};

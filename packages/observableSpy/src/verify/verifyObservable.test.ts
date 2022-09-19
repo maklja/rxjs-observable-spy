@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { of, throwError } from 'rxjs';
-import { MissingVerificationStepError } from './errors';
+import { MissingVerificationStepError } from '../errors';
 import { verifyObservable } from './verifyObservable';
 
 describe('Test verifyObservable function', function () {
@@ -80,4 +80,3 @@ describe('Test verifyObservable function', function () {
 		expect(values).to.be.empty;
 	});
 });
-
