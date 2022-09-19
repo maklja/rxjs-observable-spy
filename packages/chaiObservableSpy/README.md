@@ -88,10 +88,8 @@ Keyword `nextCount` should be used to count values without actually checking the
 it('should receive proper values count', async () => {
   const strings$ = of('Tom', 'Ana');
 
-  // expect to receive 2 values and then complete the event
-  const values = await expect(strings$)
-    .emit.nextCount(2)
-    .verifyComplete();
+  // expect to receive 2 values and then the complete event
+  const values = await expect(strings$).emit.nextCount(2).verify();
   expect(values).to.deep.equals(['Tom', 'Ana']);
 });
 ```
@@ -189,7 +187,7 @@ it('should consume next value until satisfies condition', async () => {
 });
 ```
 
-### skipCount keyword
+### skipCount and skipUntil keyword
 
 Keyword `skipCount` can be used to skip N next values.
 
@@ -199,6 +197,21 @@ it('should skip values', async () => {
 
   const values = await expect(strings$)
     .emit.skipCount(2) // skip next 2 values
+    .next('John')
+    .verifyComplete();
+
+  expect(values).to.deep.equals(['Tom', 'Ana', 'John']);
+});
+```
+
+Keyword `skipUntil` can be used to skip N next values by some condition.
+
+```ts
+it('should skip values until condition', async () => {
+  const strings$ = of('Tom', 'Ana', 'John');
+
+  const values = await expect(strings$)
+    .emit.skipUntil((_, index) => index < 1) // skip while index < 1
     .next('John')
     .verifyComplete();
 
@@ -245,6 +258,29 @@ Keyword `verifyComplete` is used as a shortcut of two keywords `complete` and `v
 <br />
 Keyword `awaitComplete` will just wait for a complete event from the observable and ignore all next values received from it.
 Useful when it is required to just verify that an observable ends with a completed event without bothering about the values that are sent from it.
+
+```ts
+it('should just await complete event and ignore next values', async () => {
+  const strings$ = of('Tom', 'Ana', 'John');
+
+  const values = await expect(strings$).emit.awaitComplete();
+  expect(values).to.deep.equals(['Tom', 'Ana', 'John']);
+});
+```
+
+`awaitComplete` can receive an callback to process next values.
+
+```ts
+it('should just await complete event and assert next values', async () => {
+  const sourceValues = ['Tom', 'Ana', 'John'];
+  const strings$ = from(sourceValues);
+
+  const values = await expect(strings$).emit.awaitComplete(
+    (val, index) => expect(val).to.be.equal(sourceValues[index]),
+  );
+  expect(values).to.deep.equals(['Tom', 'Ana', 'John']);
+});
+```
 
 ## Forgot to call verify keyword
 
@@ -308,4 +344,3 @@ it('should receive values in proper order with complete event', async () => {
 ## License
 
 MIT
-

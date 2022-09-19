@@ -1,6 +1,6 @@
 import { EventType } from '@maklja90/rxjs-observable-spy';
 import { expect } from 'chai';
-import { of, throwError } from 'rxjs';
+import { from, of, throwError } from 'rxjs';
 import '../../register';
 import { ObservableSpyAssertionError } from '../common/error';
 
@@ -9,6 +9,16 @@ describe('Chai observable spy awaitComplete keyword', function () {
 		const strings$ = of('Tom', 'Tina', 'Ana');
 
 		const values = await expect(strings$).emit.next('Tom').next('Tina').awaitComplete();
+		expect(values).to.deep.equals(['Tom', 'Tina', 'Ana']);
+	});
+
+	it('should receive next values and verify that observable has completed', async function () {
+		const sourceValues = ['Tom', 'Tina', 'Ana'];
+		const strings$ = from(sourceValues);
+
+		const values = await expect(strings$).emit.awaitComplete((val, i) =>
+			expect(val).to.be.equal(sourceValues[i]),
+		);
 		expect(values).to.deep.equals(['Tom', 'Tina', 'Ana']);
 	});
 

@@ -107,9 +107,12 @@ export default (config: ChaiObservableSpyPluginConfig = defaultConfiguration): C
 			return chaiVerify.call(this, utils);
 		});
 
-		Assertion.addMethod('awaitComplete', function () {
-			return chaiAwaitComplete.call(this, utils);
-		});
+		Assertion.addMethod(
+			'awaitComplete',
+			function (callback?: (value: unknown, index: number) => void) {
+				return chaiAwaitComplete.call(this, utils, callback);
+			},
+		);
 
 		Assertion.addMethod('awaitSingle', function () {
 			return chaiAwaitSingle.call(this, utils);

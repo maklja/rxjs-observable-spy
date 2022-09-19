@@ -8,6 +8,7 @@ import { ObservableSpyAssertionError } from '../common/error';
 export default function chaiAwaitComplete<T = unknown>(
 	this: Chai.AssertionStatic,
 	utils: Chai.ChaiUtils,
+	expectedCallback?: (value: T, index: number) => void,
 ) {
 	const observable: Observable<T> = this._obj;
 	const verificationSteps = retrieveVerificationSteps<T>(this, utils);
@@ -15,7 +16,10 @@ export default function chaiAwaitComplete<T = unknown>(
 	clearInvokedTimeout(this, utils);
 
 	verificationSteps.push({
-		next: () => false,
+		next: (val, index) => {
+			expectedCallback && expectedCallback(val, index);
+			return false;
+		},
 		error: (error) => {
 			const errorMessage = expectedSignalActualError(
 				'awaitComplete',
