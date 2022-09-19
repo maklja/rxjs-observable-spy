@@ -18,12 +18,12 @@ describe('Chai observable spy nextMatchesUntil keyword', function () {
 	});
 
 	it('should fail if any mismatch', async function () {
-		const sourceValues = ['Tom', 'Tina', 'Ana'];
-		const strings$ = from(sourceValues);
-
-		const condition = (_: string, index: number) => index < sourceValues.length - 1;
-
 		try {
+			const sourceValues = ['Tom', 'Tina', 'Ana'];
+			const strings$ = from(sourceValues);
+
+			const condition = (_: string, index: number) => index < sourceValues.length - 1;
+
 			await expect(strings$)
 				.emit.nextMatchesUntil(
 					(val, i) => (i < 1 ? sourceValues[i] === val : 'John' === val),
@@ -34,13 +34,16 @@ describe('Chai observable spy nextMatchesUntil keyword', function () {
 			const error = e as ObservableSpyAssertionError;
 			expect(error.receivedEvent).to.be.equal(EventType.Next);
 			expect(error.message).to.be.equal('[nextMatchesUntil] - match failed for value Tina');
+			return;
 		}
+
+		throw new Error('Error should be thrown from the observable');
 	});
 
 	it('should fail if error event is received instead of next event', async function () {
-		const error$ = throwError(() => new Error('Unexpected error'));
-
 		try {
+			const error$ = throwError(() => new Error('Unexpected error'));
+
 			await expect(error$)
 				.emit.nextMatchesUntil(
 					(x) => x != null,
@@ -54,14 +57,15 @@ describe('Chai observable spy nextMatchesUntil keyword', function () {
 			expect(error.message).to.be.equal(
 				'[nextMatchesUntil] - expected signal: next, actual signal: error, actual error: Error - Unexpected error',
 			);
+			return;
 		}
+
+		throw new Error('Error should be thrown from the observable');
 	});
 
 	it('should fail if complete event is received instead of next event', async function () {
-		const empty$ = EMPTY;
-
 		try {
-			await expect(empty$)
+			await expect(EMPTY)
 				.emit.nextMatchesUntil(
 					(x) => x != null,
 					() => true,
@@ -74,7 +78,10 @@ describe('Chai observable spy nextMatchesUntil keyword', function () {
 			expect(error.message).to.be.equal(
 				'[nextMatchesUntil] - expected signal: next, actual signal: complete',
 			);
+			return;
 		}
+
+		throw new Error('Error should be thrown from the observable');
 	});
 });
 

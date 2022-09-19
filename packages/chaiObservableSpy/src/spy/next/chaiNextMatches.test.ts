@@ -18,10 +18,10 @@ describe('Chai observable spy nextMatches keyword', function () {
 	});
 
 	it('should fail if any mismatch', async function () {
-		const sourceValues = ['Tom', 'Tina', 'Ana'];
-		const strings$ = from(sourceValues);
-
 		try {
+			const sourceValues = ['Tom', 'Tina', 'Ana'];
+			const strings$ = from(sourceValues);
+
 			await expect(strings$)
 				.emit.nextMatches((val, i) => sourceValues[i] === val)
 				.nextMatches((val) => val === 'John')
@@ -31,13 +31,17 @@ describe('Chai observable spy nextMatches keyword', function () {
 			const error = e as ObservableSpyAssertionError;
 			expect(error.receivedEvent).to.be.equal(EventType.Next);
 			expect(error.message).to.be.equal('[nextMatches] - match failed for value Tina');
+
+			return;
 		}
+
+		throw new Error('Error should be thrown from the observable');
 	});
 
 	it('should fail if error event is received instead of next event', async function () {
-		const error$ = throwError(() => new Error('Unexpected error'));
-
 		try {
+			const error$ = throwError(() => new Error('Unexpected error'));
+
 			await expect(error$)
 				.emit.nextMatches((val) => val === 'John')
 				.verifyComplete();
@@ -48,14 +52,15 @@ describe('Chai observable spy nextMatches keyword', function () {
 			expect(error.message).to.be.equal(
 				'[nextMatches] - expected signal: next, actual signal: error, actual error: Error - Unexpected error',
 			);
+			return;
 		}
+
+		throw new Error('Error should be thrown from the observable');
 	});
 
 	it('should fail if complete event is received instead of next event', async function () {
-		const empty$ = EMPTY;
-
 		try {
-			await expect(empty$)
+			await expect(EMPTY)
 				.emit.nextMatches((val) => val === 'John')
 				.verifyComplete();
 		} catch (e) {
@@ -65,7 +70,10 @@ describe('Chai observable spy nextMatches keyword', function () {
 			expect(error.message).to.be.equal(
 				'[nextMatches] - expected signal: next, actual signal: complete',
 			);
+			return;
 		}
+
+		throw new Error('Error should be thrown from the observable');
 	});
 });
 

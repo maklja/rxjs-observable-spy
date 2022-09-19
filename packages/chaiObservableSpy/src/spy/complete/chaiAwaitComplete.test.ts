@@ -41,6 +41,9 @@ describe('Chai observable spy awaitComplete keyword', function () {
 			expect(error.message).to.be.equal(
 				'[awaitComplete] - expected signal: complete, actual signal: error, actual error: Error - Unexpected error',
 			);
+			return;
 		}
+		throw new Error('Error should be thrown from the observable');
 	});
 });
+

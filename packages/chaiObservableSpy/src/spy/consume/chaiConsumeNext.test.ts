@@ -18,10 +18,10 @@ describe('Chai observable spy consumeNext keyword', function () {
 	});
 
 	it('should fail if any error occurs in consume callback', async function () {
-		const sourceValues = ['Tom', 'Tina', 'Ana'];
-		const strings$ = from(sourceValues);
-
 		try {
+			const sourceValues = ['Tom', 'Tina', 'Ana'];
+			const strings$ = from(sourceValues);
+
 			await expect(strings$)
 				.emit.consumeNext((val, i) => expect(val).to.be.equal(sourceValues[i]))
 				.consumeNext((val) => expect(val).to.be.equal('John'))
@@ -30,13 +30,16 @@ describe('Chai observable spy consumeNext keyword', function () {
 		} catch (e) {
 			const error = e as Chai.AssertionError;
 			expect(error.message).to.be.equal("expected 'Tina' to equal 'John'");
+			return;
 		}
+
+		throw new Error('Error should be thrown from the observable');
 	});
 
 	it('should fail if error event is received instead of next event', async function () {
-		const error$ = throwError(() => new Error('Unexpected error'));
-
 		try {
+			const error$ = throwError(() => new Error('Unexpected error'));
+
 			await expect(error$)
 				.emit.consumeNext((val) => expect(val).to.be.equal('John'))
 				.verifyComplete();
@@ -47,14 +50,15 @@ describe('Chai observable spy consumeNext keyword', function () {
 			expect(error.message).to.be.equal(
 				'[consumeNext] - expected signal: next, actual signal: error, actual error: Error - Unexpected error',
 			);
+			return;
 		}
+
+		throw new Error('Error should be thrown from the observable');
 	});
 
 	it('should fail if complete event is received instead of next event', async function () {
-		const empty$ = EMPTY;
-
 		try {
-			await expect(empty$)
+			await expect(EMPTY)
 				.emit.consumeNext((val) => expect(val).to.be.equal('John'))
 				.verifyComplete();
 		} catch (e) {
@@ -64,7 +68,10 @@ describe('Chai observable spy consumeNext keyword', function () {
 			expect(error.message).to.be.equal(
 				'[consumeNext] - expected signal: next, actual signal: complete',
 			);
+			return;
 		}
+
+		throw new Error('Error should be thrown from the observable');
 	});
 });
 

@@ -16,10 +16,10 @@ describe('Chai observable spy skipUntil keyword', function () {
 	});
 
 	it('should fail if any error occurs in skip until callback', async function () {
-		const sourceValues = ['Tom', 'Tina', 'Ana'];
-		const strings$ = from(sourceValues);
-
 		try {
+			const sourceValues = ['Tom', 'Tina', 'Ana'];
+			const strings$ = from(sourceValues);
+
 			await expect(strings$)
 				.emit.consumeNextUntil((val, i) => {
 					expect(val).to.be.equal(sourceValues[i]);
@@ -34,13 +34,16 @@ describe('Chai observable spy skipUntil keyword', function () {
 		} catch (e) {
 			const error = e as Error;
 			expect(error.message).to.be.equal('Unexpected error');
+			return;
 		}
+
+		throw new Error('Error should be thrown from the observable');
 	});
 
 	it('should fail if error event is received instead of next event', async function () {
-		const error$ = throwError(() => 'Unexpected error');
-
 		try {
+			const error$ = throwError(() => 'Unexpected error');
+
 			await expect(error$)
 				.emit.skipUntil((x) => x != null)
 				.verifyComplete();
@@ -51,14 +54,15 @@ describe('Chai observable spy skipUntil keyword', function () {
 			expect(error.message).to.be.equal(
 				'[skipUntil] - expected signal: next, actual signal: error, actual error: Unexpected error',
 			);
+			return;
 		}
+
+		throw new Error('Error should be thrown from the observable');
 	});
 
 	it('should fail if complete event is received instead of next event', async function () {
-		const empty$ = EMPTY;
-
 		try {
-			await expect(empty$)
+			await expect(EMPTY)
 				.emit.skipUntil((x) => x != null)
 				.verifyComplete();
 		} catch (e) {
@@ -68,6 +72,10 @@ describe('Chai observable spy skipUntil keyword', function () {
 			expect(error.message).to.be.equal(
 				'[skipUntil] - expected signal: next, actual signal: complete',
 			);
+			return;
 		}
+
+		throw new Error('Error should be thrown from the observable');
 	});
 });
+

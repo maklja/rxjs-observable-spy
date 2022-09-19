@@ -17,9 +17,9 @@ describe('Chai observable spy next keyword', function () {
 	});
 
 	it('should fail if receive unexpected next value', async function () {
-		const strings$ = of('Tom', 'Tina', 'Ana');
-
 		try {
+			const strings$ = of('Tom', 'Tina', 'Ana');
+
 			await expect(strings$).emit.next('Tom').next('Mike').next('Ana').verifyComplete();
 		} catch (e) {
 			const error = e as ObservableSpyAssertionError;
@@ -28,13 +28,16 @@ describe('Chai observable spy next keyword', function () {
 			expect(error.message).to.be.equal(
 				'[next] - expected next value: Mike, actual value Tina',
 			);
+			return;
 		}
+
+		throw new Error('Error should be thrown from the observable');
 	});
 
 	it('should fail if error event is received instead of next event', async function () {
-		const error$ = throwError(() => new Error('Unexpected error'));
-
 		try {
+			const error$ = throwError(() => new Error('Unexpected error'));
+
 			await expect(error$).emit.next('Tom').next('Tina').next('Ana').verifyComplete();
 		} catch (e) {
 			const error = e as ObservableSpyAssertionError;
@@ -43,14 +46,15 @@ describe('Chai observable spy next keyword', function () {
 			expect(error.message).to.be.equal(
 				'[next] - expected signal: next, actual signal: error, expected value: Tom, actual error: Error - Unexpected error',
 			);
+			return;
 		}
+
+		throw new Error('Error should be thrown from the observable');
 	});
 
 	it('should fail if complete event is received instead of next event', async function () {
-		const empty$ = EMPTY;
-
 		try {
-			await expect(empty$).emit.next('Tom').next('Tina').next('Ana').verifyComplete();
+			await expect(EMPTY).emit.next('Tom').next('Tina').next('Ana').verifyComplete();
 		} catch (e) {
 			const error = e as ObservableSpyAssertionError;
 			expect(error.expectedEvent).to.be.equal(EventType.Next);
@@ -58,7 +62,10 @@ describe('Chai observable spy next keyword', function () {
 			expect(error.message).to.be.equal(
 				'[next] - expected signal: next, actual signal: complete, expected value: Tom',
 			);
+			return;
 		}
+
+		throw new Error('Error should be thrown from the observable');
 	});
 });
 

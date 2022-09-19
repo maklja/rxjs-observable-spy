@@ -82,7 +82,7 @@ it('should receive ordered strings with the complete event', async () => {
 });
 ```
 
-Keyword `nextCount` should be used to count values without actually checking their value.
+Keyword `nextCount` should be used to count values without actually checking their value. **Note** that this keyword expects to receive an complete event and because of that we are using `verify` instead of `verifyComplete` keyword.
 
 ```ts
 it('should receive proper values count', async () => {
@@ -344,3 +344,4 @@ it('should receive values in proper order with complete event', async () => {
 ## License
 
 MIT
+

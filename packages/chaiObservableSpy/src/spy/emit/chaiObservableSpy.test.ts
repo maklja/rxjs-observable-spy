@@ -6,8 +6,7 @@ import { ObservableSpyAssertionError } from '../common/error';
 describe('Chai observable spy observableSpy keyword', function () {
 	it('should fail if tested object is not instance of Observable', async function () {
 		try {
-			const enotObservable$ = 'Not observable';
-			await expect(enotObservable$)
+			await expect('Not observable')
 				.observableSpy.consumeNext((val) => expect(val).to.be.equal('John'))
 				.verifyComplete();
 		} catch (e) {
@@ -17,7 +16,10 @@ describe('Chai observable spy observableSpy keyword', function () {
 			expect(error.message).to.be.equal(
 				'[observableSpy] - expected string to be a Observable',
 			);
+			return;
 		}
+
+		throw new Error('Error should be thrown from the observable');
 	});
 
 	it('should consume received values in proper order', async function () {
@@ -32,3 +34,4 @@ describe('Chai observable spy observableSpy keyword', function () {
 		expect(values).to.deep.equals(['Tom', 'Tina', 'Ana']);
 	});
 });
+

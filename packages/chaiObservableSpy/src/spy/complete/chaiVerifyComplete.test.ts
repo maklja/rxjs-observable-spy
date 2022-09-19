@@ -17,9 +17,9 @@ describe('Chai observable spy verifyComplete keyword', function () {
 	});
 
 	it('should fail if receive unexpected next value', async function () {
-		const strings$ = of('Tom', 'Tina', 'Ana');
-
 		try {
+			const strings$ = of('Tom', 'Tina', 'Ana');
+
 			await expect(strings$).emit.verifyComplete();
 		} catch (e) {
 			const error = e as ObservableSpyAssertionError;
@@ -28,13 +28,16 @@ describe('Chai observable spy verifyComplete keyword', function () {
 			expect(error.message).to.be.equal(
 				'[complete] - expected signal: complete, actual signal: next, actual value: Tom',
 			);
+			return;
 		}
+
+		throw new Error('Error should be thrown from the observable');
 	});
 
 	it('should fail if error event is received instead of complete event', async function () {
-		const error$ = throwError(() => new Error('Unexpected error'));
-
 		try {
+			const error$ = throwError(() => new Error('Unexpected error'));
+
 			await expect(error$).emit.verifyComplete();
 		} catch (e) {
 			const error = e as ObservableSpyAssertionError;
@@ -43,6 +46,10 @@ describe('Chai observable spy verifyComplete keyword', function () {
 			expect(error.message).to.be.equal(
 				'[complete] - expected signal: complete, actual signal: error, actual error: Error - Unexpected error',
 			);
+			return;
 		}
+
+		throw new Error('Error should be thrown from the observable');
 	});
 });
+
