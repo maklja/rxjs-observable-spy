@@ -6,7 +6,7 @@ import { VerificationStep } from '../../verifyObservable';
 export default function createNextStep<T>(
 	stepName: string,
 	expectedNextValue: T,
-	assertEquals: (obj1: T, obj2: T) => boolean,
+	assertEquals = (obj1: T, obj2: T) => obj1 === obj2,
 	observableName?: string,
 ): VerificationStep<T> {
 	return {

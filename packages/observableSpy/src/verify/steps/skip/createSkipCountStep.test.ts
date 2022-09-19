@@ -1,13 +1,21 @@
-import { EventType, ObservableSpyAssertionError } from '@maklja90/rxjs-observable-spy';
 import { expect } from 'chai';
 import { EMPTY, of, throwError } from 'rxjs';
-import '../../register';
+import createSkipCountStep from './createSkipCountStep';
+import { verifyObservable } from '../../verifyObservable';
+import createNextStep from '../next/createNextStep';
+import createCompleteStep from '../complete/createCompleteStep';
+import { ObservableSpyAssertionError } from '../../../errors';
+import { EventType } from '../../../spy';
 
-describe('Chai observable spy skipCount keyword', function () {
+describe('Observable spy - createSkipCountStep', function () {
 	it('should skip next two values in proper order', async function () {
 		const strings$ = of('Tom', 'Tina', 'Ana');
 
-		const values = await expect(strings$).emit.skipCount(2).next('Ana').verifyComplete();
+		const values = await verifyObservable(strings$, [
+			createSkipCountStep('skipCount', 2),
+			createNextStep('next', 'Ana'),
+			createCompleteStep('complete'),
+		]);
 		expect(values).to.deep.equals(['Tom', 'Tina', 'Ana']);
 	});
 
@@ -15,7 +23,10 @@ describe('Chai observable spy skipCount keyword', function () {
 		try {
 			const strings$ = of('Tom', 'Tina', 'Ana');
 
-			await expect(strings$).emit.skipCount(10).verifyComplete();
+			await verifyObservable(strings$, [
+				createSkipCountStep('skipCount', 10),
+				createCompleteStep('complete'),
+			]);
 		} catch (e) {
 			const error = e as ObservableSpyAssertionError;
 			expect(error.expectedEvent).to.be.equal(EventType.Next);
@@ -33,7 +44,10 @@ describe('Chai observable spy skipCount keyword', function () {
 		try {
 			const strings$ = of('Tom', 'Tina', 'Ana');
 
-			await expect(strings$).emit.skipCount(0).verifyComplete();
+			await verifyObservable(strings$, [
+				createSkipCountStep('skipCount', 0),
+				createCompleteStep('complete'),
+			]);
 		} catch (e) {
 			const error = e as ObservableSpyAssertionError;
 			expect(error.message).to.be.equal(
@@ -49,7 +63,10 @@ describe('Chai observable spy skipCount keyword', function () {
 		try {
 			const error$ = throwError(() => new Error('Unexpected error'));
 
-			await expect(error$).emit.skipCount(3).verifyComplete();
+			await verifyObservable(error$, [
+				createSkipCountStep('skipCount', 3),
+				createCompleteStep('complete'),
+			]);
 		} catch (e) {
 			const error = e as ObservableSpyAssertionError;
 			expect(error.expectedEvent).to.be.equal(EventType.Next);
@@ -65,7 +82,10 @@ describe('Chai observable spy skipCount keyword', function () {
 
 	it('should fail if complete event is received instead of next event', async function () {
 		try {
-			await expect(EMPTY).emit.skipCount(1).verifyComplete();
+			await verifyObservable(EMPTY, [
+				createSkipCountStep('skipCount', 1),
+				createCompleteStep('complete'),
+			]);
 		} catch (e) {
 			const error = e as ObservableSpyAssertionError;
 			expect(error.expectedEvent).to.be.equal(EventType.Next);

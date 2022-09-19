@@ -1,21 +1,24 @@
-import { EventType, ObservableSpyAssertionError } from '@maklja90/rxjs-observable-spy';
 import { expect } from 'chai';
 import { EMPTY, Observable, of, throwError } from 'rxjs';
-import '../../register';
+import { ObservableSpyAssertionError } from '../../../errors';
+import { EventType } from '../../../spy';
+import { verifyObservable } from '../../verifyObservable';
+import createNextStep from '../next/createNextStep';
+import createAwaitSingleStep from './createAwaitSingleStep';
 
-describe('Chai observable spy awaitSingle keyword', function () {
+describe('Observable spy - createAwaitSingleStep', function () {
 	it('should await single value and verify complete event', async function () {
 		const string$ = of('Tom');
 
-		const value = await expect(string$).emit.awaitSingle();
-		expect(value).to.be.equal('Tom');
+		const values = await verifyObservable(string$, [createAwaitSingleStep('awaitSingle')]);
+		expect(values).to.be.deep.equal(['Tom']);
 	});
 
 	it('should fail if receive multiple next values', async function () {
 		try {
 			const strings$ = of('Tom', 'Ana');
 
-			await expect(strings$).emit.awaitSingle();
+			await verifyObservable(strings$, [createAwaitSingleStep('awaitSingle')]);
 		} catch (e) {
 			const error = e as ObservableSpyAssertionError;
 			expect(error.expectedEvent).to.be.equal(EventType.Complete);
@@ -31,7 +34,7 @@ describe('Chai observable spy awaitSingle keyword', function () {
 
 	it('should fail if no values are received', async function () {
 		try {
-			await expect(EMPTY).emit.awaitSingle();
+			await verifyObservable(EMPTY, [createAwaitSingleStep('awaitSingle')]);
 		} catch (e) {
 			const error = e as ObservableSpyAssertionError;
 			expect(error.expectedEvent).to.be.equal(EventType.Next);
@@ -48,13 +51,11 @@ describe('Chai observable spy awaitSingle keyword', function () {
 	it('should fail if receive multiple next values and then complete', async function () {
 		try {
 			const strings$ = of('Tom', 'Ana');
-			await (
-				expect(strings$)
-					.emit.next('Tom')
-					// hack to force call to the awaitSingle, because TS will not allowed this
-					// but plain JS will
-					.next('Ana') as unknown as Chai.ObservableSingleLanguageChains
-			).awaitSingle();
+			await verifyObservable(strings$, [
+				createNextStep('next', 'Tom'),
+				createNextStep('next', 'Ana'),
+				createAwaitSingleStep('awaitSingle'),
+			]);
 		} catch (e) {
 			const error = e as ObservableSpyAssertionError;
 			expect(error.expectedEvent).to.be.null;
@@ -71,7 +72,7 @@ describe('Chai observable spy awaitSingle keyword', function () {
 	it('should fail if error event is received instead of next event', async function () {
 		try {
 			const error$ = throwError(() => new Error('Unexpected error'));
-			await expect(error$).emit.awaitSingle();
+			await verifyObservable(error$, [createAwaitSingleStep('awaitSingle')]);
 		} catch (e) {
 			const error = e as ObservableSpyAssertionError;
 			expect(error.expectedEvent).to.be.equal(EventType.Next);
@@ -91,7 +92,7 @@ describe('Chai observable spy awaitSingle keyword', function () {
 				observer.next('Tom');
 				observer.error(new Error('Unexpected error'));
 			});
-			await expect(error$).emit.awaitSingle();
+			await verifyObservable(error$, [createAwaitSingleStep('awaitSingle')]);
 		} catch (e) {
 			const error = e as ObservableSpyAssertionError;
 			expect(error.expectedEvent).to.be.equal(EventType.Complete);

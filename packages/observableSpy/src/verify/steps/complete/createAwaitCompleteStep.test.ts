@@ -1,13 +1,20 @@
-import { EventType, ObservableSpyAssertionError } from '@maklja90/rxjs-observable-spy';
 import { expect } from 'chai';
 import { from, of, throwError } from 'rxjs';
-import '../../register';
+import createNextStep from '../next/createNextStep';
+import createAwaitCompleteStep from './createAwaitCompleteStep';
+import { verifyObservable } from '../../verifyObservable';
+import { ObservableSpyAssertionError } from '../../../errors';
+import { EventType } from '../../../spy';
 
-describe('Chai observable spy awaitComplete keyword', function () {
+describe('Observable spy - createAwaitCompleteStep', function () {
 	it('should verify that observable has completed', async function () {
 		const strings$ = of('Tom', 'Tina', 'Ana');
 
-		const values = await expect(strings$).emit.next('Tom').next('Tina').awaitComplete();
+		const values = await verifyObservable(strings$, [
+			createNextStep('next', 'Tom'),
+			createNextStep('next', 'Tina'),
+			createAwaitCompleteStep('awaitComplete'),
+		]);
 		expect(values).to.deep.equals(['Tom', 'Tina', 'Ana']);
 	});
 
@@ -15,16 +22,18 @@ describe('Chai observable spy awaitComplete keyword', function () {
 		const sourceValues = ['Tom', 'Tina', 'Ana'];
 		const strings$ = from(sourceValues);
 
-		const values = await expect(strings$).emit.awaitComplete((val, i) =>
-			expect(val).to.be.equal(sourceValues[i]),
-		);
+		const values = await verifyObservable(strings$, [
+			createAwaitCompleteStep('awaitComplete', (val, i) =>
+				expect(val).to.be.equal(sourceValues[i]),
+			),
+		]);
 		expect(values).to.deep.equals(['Tom', 'Tina', 'Ana']);
 	});
 
 	it('should skip all next values and await complete', async function () {
 		const strings$ = of('Tom', 'Tina', 'Ana');
 
-		const values = await expect(strings$).emit.awaitComplete();
+		const values = await verifyObservable(strings$, [createAwaitCompleteStep('awaitComplete')]);
 		expect(values).to.deep.equals(['Tom', 'Tina', 'Ana']);
 	});
 
@@ -32,7 +41,7 @@ describe('Chai observable spy awaitComplete keyword', function () {
 		try {
 			const error$ = throwError(() => new Error('Unexpected error'));
 
-			await expect(error$).emit.awaitComplete();
+			await verifyObservable(error$, [createAwaitCompleteStep('awaitComplete')]);
 		} catch (e) {
 			const error = e as ObservableSpyAssertionError;
 			expect(error.expectedEvent).to.be.equal(EventType.Complete);

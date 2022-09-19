@@ -134,8 +134,7 @@ declare namespace Chai {
 		 * @returns observable language chains for testing.
 		 */
 		error: <E = unknown>(
-			// eslint-disable-next-line @typescript-eslint/no-explicit-any
-			expectedErrorType: new (...args: any[]) => E,
+			expectedErrorType: new (...args: never[]) => E,
 			errorMessage: string,
 		) => ObservableVerifyLanguageChains;
 
@@ -149,8 +148,7 @@ declare namespace Chai {
 		 * @returns observable language chains for testing.
 		 */
 		errorType: <E = unknown>(
-			// eslint-disable-next-line @typescript-eslint/no-explicit-any
-			expectedErrorType: new (...args: any[]) => E,
+			expectedErrorType: new (...args: never[]) => E,
 		) => ObservableVerifyLanguageChains;
 
 		/**

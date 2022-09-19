@@ -5,7 +5,7 @@ import { VerificationStep } from '../../verifyObservable';
 
 export default function createErrorStep<T, E>(
 	stepName: string,
-	expectedErrorType: (new (...args: unknown[]) => E) | undefined,
+	expectedErrorType: (new (...args: never[]) => E) | undefined,
 	expectedMessage?: string,
 	observableName?: string,
 ): VerificationStep<T> {
