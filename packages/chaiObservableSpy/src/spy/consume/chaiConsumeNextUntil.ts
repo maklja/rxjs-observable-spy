@@ -1,10 +1,13 @@
 import nextUntil from '../common/nextUntil';
 
-export default function chaiConsumeNextUntil<T = unknown>(
+export const CONSUME_NEXT_UNTIL_KEYWORD = 'consumeNextUntil';
+
+export function chaiConsumeNextUntil<T = unknown>(
 	this: Chai.AssertionStatic,
 	chai: Chai.ChaiStatic,
 	utils: Chai.ChaiUtils,
 	expectedCallback: (value: T, index: number) => boolean,
 ) {
-	nextUntil('consumeNextUntil', this, chai, utils, expectedCallback);
+	nextUntil(CONSUME_NEXT_UNTIL_KEYWORD, this, chai, utils, expectedCallback);
 }
+

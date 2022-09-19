@@ -1,10 +1,15 @@
 import { EventType } from '@maklja90/rxjs-observable-spy';
-import { expectedSignalActualNext, expectedSignalMessage } from '../../messages';
+import { expectedSignalActualNext, expectedSignalMessage, formatMessage } from '../../messages';
 import { ObservableSpyAssertionError } from '../common/error';
-import { retrieveVerificationSteps } from '../retrieveVerificationSteps';
-import { refreshInvokeTimeout } from '../subscribeInvokedTimeout';
+import { retrieveVerificationSteps, refreshInvokeTimeout } from '../utils';
 
-export default function chaiError<T = unknown, E extends Error = Error>(
+export const ERROR_KEYWORD = 'error';
+
+export const ERROR_TYPE_KEYWORD = 'errorType';
+
+export const ERROR_MESSAGE_KEYWORD = 'errorMessage';
+
+export function chaiError<T = unknown, E extends Error = Error>(
 	this: Chai.AssertionStatic,
 	name: string,
 	chai: Chai.ChaiStatic,
@@ -32,9 +37,12 @@ export default function chaiError<T = unknown, E extends Error = Error>(
 		error: (error) => {
 			if (expectedErrorType !== undefined && !(error instanceof expectedErrorType)) {
 				throw new ObservableSpyAssertionError(
-					`[${name}] - expected error type: ${
-						expectedErrorType.name
-					}, actual error type: ${error instanceof Error ? error.name : typeof error}`,
+					formatMessage(
+						name,
+						`expected error type: ${expectedErrorType.name}, actual error type: ${
+							error instanceof Error ? error.name : typeof error
+						}`,
+					),
 					{
 						expectedEvent: EventType.Error,
 						receivedEvent: EventType.Error,
@@ -47,7 +55,10 @@ export default function chaiError<T = unknown, E extends Error = Error>(
 
 				if (expectedMessage !== message) {
 					throw new ObservableSpyAssertionError(
-						`[${name}] - expected error message: ${expectedMessage}, actual error message: ${message}`,
+						formatMessage(
+							name,
+							`expected error message: ${expectedMessage}, actual error message: ${message}`,
+						),
 						{
 							expectedEvent: EventType.Error,
 							receivedEvent: EventType.Error,

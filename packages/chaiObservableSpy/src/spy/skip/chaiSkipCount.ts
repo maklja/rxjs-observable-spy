@@ -1,10 +1,11 @@
 import { EventType } from '@maklja90/rxjs-observable-spy';
-import { expectedNextActualOther } from '../../messages';
+import { expectedNextActualOther, formatMessage } from '../../messages';
 import { ObservableSpyAssertionError } from '../common/error';
-import { retrieveVerificationSteps } from '../retrieveVerificationSteps';
-import { clearInvokedTimeout, refreshInvokeTimeout } from '../subscribeInvokedTimeout';
+import { retrieveVerificationSteps, clearInvokedTimeout, refreshInvokeTimeout } from '../utils';
 
-export default function chaiSkipCount<T>(
+export const SKIP_COUNT_KEYWORD = 'skipCount';
+
+export function chaiSkipCount<T>(
 	this: Chai.AssertionStatic,
 	chai: Chai.ChaiStatic,
 	utils: Chai.ChaiUtils,
@@ -13,7 +14,10 @@ export default function chaiSkipCount<T>(
 	if (expectedCount <= 0) {
 		clearInvokedTimeout(this, utils);
 		throw new ObservableSpyAssertionError(
-			`[skipCount] - Skip number should be > 0, received value ${expectedCount}`,
+			formatMessage(
+				SKIP_COUNT_KEYWORD,
+				`skip number should be > 0, received value ${expectedCount}`,
+			),
 		);
 	}
 
@@ -26,7 +30,7 @@ export default function chaiSkipCount<T>(
 		next: () => !(++currentCount < expectedCount),
 		error: (error) => {
 			const errorMessage = expectedNextActualOther(
-				'skipCount',
+				SKIP_COUNT_KEYWORD,
 				EventType.Next,
 				EventType.Error,
 				expectedCount,
@@ -40,7 +44,7 @@ export default function chaiSkipCount<T>(
 		},
 		complete: () => {
 			const errorMessage = expectedNextActualOther(
-				'skipCount',
+				SKIP_COUNT_KEYWORD,
 				EventType.Next,
 				EventType.Complete,
 				expectedCount,
@@ -52,3 +56,4 @@ export default function chaiSkipCount<T>(
 		},
 	});
 }
+

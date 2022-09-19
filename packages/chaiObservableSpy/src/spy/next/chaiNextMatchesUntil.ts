@@ -1,10 +1,11 @@
 import { EventType } from '@maklja90/rxjs-observable-spy';
-import { expectedSignalActualError, expectedSignalMessage } from '../../messages';
+import { expectedSignalActualError, expectedSignalMessage, formatMessage } from '../../messages';
 import { ObservableSpyAssertionError } from '../common/error';
-import { retrieveVerificationSteps } from '../retrieveVerificationSteps';
-import { refreshInvokeTimeout } from '../subscribeInvokedTimeout';
+import { retrieveVerificationSteps, refreshInvokeTimeout } from '../utils';
 
-export default function chaiNextMatchesUntil<T = unknown>(
+export const NEXT_MATCHES_UNTIL_KEYWORD = 'nextMatchesUntil';
+
+export function chaiNextMatchesUntil<T = unknown>(
 	this: Chai.AssertionStatic,
 	chai: Chai.ChaiStatic,
 	utils: Chai.ChaiUtils,
@@ -19,17 +20,19 @@ export default function chaiNextMatchesUntil<T = unknown>(
 		next: (value, index) => {
 			const matchResult = expectedCallback(value, index);
 			if (!matchResult) {
-				const errorMessage = `[nextMatchesUntil] - match failed for value ${value}`;
-				throw new ObservableSpyAssertionError(errorMessage, {
-					receivedEvent: EventType.Next,
-				});
+				throw new ObservableSpyAssertionError(
+					formatMessage(NEXT_MATCHES_UNTIL_KEYWORD, `match failed for value ${value}`),
+					{
+						receivedEvent: EventType.Next,
+					},
+				);
 			}
 
 			return !untilCondition(value, index);
 		},
 		error: (error) => {
 			const errorMessage = expectedSignalActualError(
-				'nextMatchesUntil',
+				NEXT_MATCHES_UNTIL_KEYWORD,
 				EventType.Next,
 				EventType.Error,
 				error,
@@ -42,7 +45,7 @@ export default function chaiNextMatchesUntil<T = unknown>(
 		},
 		complete: () => {
 			const errorMessage = expectedSignalMessage(
-				'nextMatchesUntil',
+				NEXT_MATCHES_UNTIL_KEYWORD,
 				EventType.Next,
 				EventType.Complete,
 			);

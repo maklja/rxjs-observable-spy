@@ -1,60 +1,71 @@
-import chaiConsumeNext from './consume/chaiConsumeNext';
-import chaiConsumeNextUntil from './consume/chaiConsumeNextUntil';
-import chaiError from './error/chaiError';
-import chaiNext from './next/chaiNext';
-import chaiNextCount from './next/chaiNextCount';
-import chaiNextMatches from './next/chaiNextMatches';
-import chaiNextMatchesUntil from './next/chaiNextMatchesUntil';
-import chaiSkipCount from './skip/chaiSkipCount';
-import chaiSkipUntil from './skip/chaiSkipUntil';
-import chaiComplete from './complete/chaiComplete';
-import chaiVerify from './verify/chaiVerify';
-import chaiVerifyComplete from './complete/chaiVerifyComplete';
-import chaiAwaitComplete from './complete/chaiAwaitComplete';
-import chaiAwaitSingle from './complete/chaiAwaitSingle';
+import { CONSUME_NEXT_KEYWORD, chaiConsumeNext } from './consume/chaiConsumeNext';
+import { CONSUME_NEXT_UNTIL_KEYWORD, chaiConsumeNextUntil } from './consume/chaiConsumeNextUntil';
+import {
+	ERROR_KEYWORD,
+	ERROR_MESSAGE_KEYWORD,
+	ERROR_TYPE_KEYWORD,
+	chaiError,
+} from './error/chaiError';
+import { NEXT_KEYWORD, chaiNext } from './next/chaiNext';
+import { NEXT_COUNT_KEYWORD, chaiNextCount } from './next/chaiNextCount';
+import { NEXT_MATCHES_KEYWORD, chaiNextMatches } from './next/chaiNextMatches';
+import { NEXT_MATCHES_UNTIL_KEYWORD, chaiNextMatchesUntil } from './next/chaiNextMatchesUntil';
+import { SKIP_COUNT_KEYWORD, chaiSkipCount } from './skip/chaiSkipCount';
+import { SKIP_UNTIL_KEYWORD, chaiSkipUntil } from './skip/chaiSkipUntil';
+import { COMPLETE_KEYWORD, chaiComplete } from './complete/chaiComplete';
+import { VERIFY_KEYWORD, chaiVerify } from './verify/chaiVerify';
+import { VERIFY_COMPLETE_KEYWORD, chaiVerifyComplete } from './complete/chaiVerifyComplete';
+import { AWAIT_COMPLETE_KEYWORD, chaiAwaitComplete } from './complete/chaiAwaitComplete';
+import { AWAIT_SINGLE, chaiAwaitSingle } from './complete/chaiAwaitSingle';
 import { EMIT_KEYWORD, chaiEmit } from './emit/chaiEmit';
 import { OBSERVABLE_SPY_KEYWORD, chaiObservableSpy } from './emit/chaiObservableSpy';
-import { OBSERVABLE_SPY_CONFIG_KEY, ChaiObservableSpyPluginConfig } from './chaiPluginConfig';
 
-const defaultConfiguration: ChaiObservableSpyPluginConfig = {
-	forgottenSubscriptionError: true,
-	forgottenSubscriptionTimeout: 2_000,
-};
+export const OBSERVABLE_SPY_CONFIG_KEY = '_observableSpyPluginConfig';
 
-export default (config: ChaiObservableSpyPluginConfig = defaultConfiguration): Chai.ChaiPlugin =>
+export interface ChaiObservableSpyPluginConfig {
+	forgottenSubscriptionError: boolean;
+	forgottenSubscriptionTimeout: number;
+}
+
+export default (
+		config: ChaiObservableSpyPluginConfig = {
+			forgottenSubscriptionError: true,
+			forgottenSubscriptionTimeout: 2_000,
+		},
+	): Chai.ChaiPlugin =>
 	(chai: Chai.ChaiStatic, utils: Chai.ChaiUtils): void => {
 		const Assertion = chai.Assertion;
 
-		utils.flag(chai, OBSERVABLE_SPY_CONFIG_KEY, config);
+		utils.flag(chai, OBSERVABLE_SPY_CONFIG_KEY, { ...config });
 
-		Assertion.addMethod('next', function (expectedNextValue: unknown) {
+		Assertion.addMethod(NEXT_KEYWORD, function (expectedNextValue: unknown) {
 			chaiNext.call(this, chai, utils, expectedNextValue);
 		});
 
-		Assertion.addMethod('nextCount', function (expectedCount: number) {
+		Assertion.addMethod(NEXT_COUNT_KEYWORD, function (expectedCount: number) {
 			chaiNextCount.call(this, chai, utils, expectedCount);
 		});
 
-		Assertion.addMethod('skipCount', function (expectedCount: number) {
+		Assertion.addMethod(SKIP_COUNT_KEYWORD, function (expectedCount: number) {
 			chaiSkipCount.call(this, chai, utils, expectedCount);
 		});
 
 		Assertion.addMethod(
-			'skipUntil',
+			SKIP_UNTIL_KEYWORD,
 			function (conditionCallback: (value: unknown, index: number) => boolean) {
 				chaiSkipUntil.call(this, chai, utils, conditionCallback);
 			},
 		);
 
 		Assertion.addMethod(
-			'nextMatches',
+			NEXT_MATCHES_KEYWORD,
 			function (assertCallback: (value: unknown, index: number) => boolean) {
 				chaiNextMatches.call(this, chai, utils, assertCallback);
 			},
 		);
 
 		Assertion.addMethod(
-			'nextMatchesUntil',
+			NEXT_MATCHES_UNTIL_KEYWORD,
 			function (
 				assertCallback: (value: unknown, index: number) => boolean,
 				untilCondition: (value: unknown, index: number) => boolean,
@@ -64,65 +75,79 @@ export default (config: ChaiObservableSpyPluginConfig = defaultConfiguration): C
 		);
 
 		Assertion.addMethod(
-			'consumeNext',
+			CONSUME_NEXT_KEYWORD,
 			function (assertCallback: (value: unknown, index: number) => void) {
 				chaiConsumeNext.call(this, chai, utils, assertCallback);
 			},
 		);
 
 		Assertion.addMethod(
-			'consumeNextUntil',
+			CONSUME_NEXT_UNTIL_KEYWORD,
 			function (assertCallback: (value: unknown, index: number) => boolean) {
 				chaiConsumeNextUntil.call(this, chai, utils, assertCallback);
 			},
 		);
 
 		Assertion.addMethod(
-			'error',
+			ERROR_KEYWORD,
 			function (expectedErrorType: new (...args: unknown[]) => Error, errorMessage: string) {
-				chaiError.call(this, 'error', chai, utils, expectedErrorType, errorMessage);
+				chaiError.call(this, ERROR_KEYWORD, chai, utils, expectedErrorType, errorMessage);
 			},
 		);
 
 		Assertion.addMethod(
-			'errorType',
+			ERROR_TYPE_KEYWORD,
 			function (expectedErrorType: new (...args: unknown[]) => Error) {
-				chaiError.call(this, 'errorType', chai, utils, expectedErrorType);
+				chaiError.call(this, ERROR_TYPE_KEYWORD, chai, utils, expectedErrorType);
 			},
 		);
 
-		Assertion.addMethod('errorMessage', function (errorMessage: string) {
-			chaiError.call(this, 'errorMessage', chai, utils, undefined, errorMessage);
+		Assertion.addMethod(ERROR_MESSAGE_KEYWORD, function (errorMessage: string) {
+			chaiError.call(this, ERROR_MESSAGE_KEYWORD, chai, utils, undefined, errorMessage);
 		});
 
-		Assertion.addMethod('verifyComplete', function () {
+		Assertion.addMethod(VERIFY_COMPLETE_KEYWORD, function () {
 			return chaiVerifyComplete.call(this, utils);
 		});
 
-		Assertion.addMethod('complete', function () {
+		Assertion.addMethod(COMPLETE_KEYWORD, function () {
 			chaiComplete.call(this, utils);
 		});
 
-		Assertion.addMethod('verify', function () {
+		Assertion.addMethod(VERIFY_KEYWORD, function () {
 			return chaiVerify.call(this, utils);
 		});
 
 		Assertion.addMethod(
-			'awaitComplete',
+			AWAIT_COMPLETE_KEYWORD,
 			function (callback?: (value: unknown, index: number) => void) {
 				return chaiAwaitComplete.call(this, utils, callback);
 			},
 		);
 
-		Assertion.addMethod('awaitSingle', function () {
+		Assertion.addMethod(AWAIT_SINGLE, function () {
 			return chaiAwaitSingle.call(this, utils);
 		});
 
-		Assertion.addProperty(OBSERVABLE_SPY_KEYWORD, function () {
-			chaiObservableSpy.call(this, chai, utils);
-		});
+		Assertion.addChainableMethod(
+			OBSERVABLE_SPY_KEYWORD,
+			function (observableName: string) {
+				chaiObservableSpy.call(this, chai, utils, observableName);
+			},
+			function () {
+				// @ts-ignore type is missing in @types/chai dependency
+				chaiObservableSpy.call(this, chai, utils);
+			},
+		);
 
-		Assertion.addProperty(EMIT_KEYWORD, function () {
-			chaiEmit.call(this, chai, utils);
-		});
+		Assertion.addChainableMethod(
+			EMIT_KEYWORD,
+			function (observableName: string) {
+				chaiEmit.call(this, chai, utils, observableName);
+			},
+			function () {
+				// @ts-ignore type is missing in @types/chai dependency
+				chaiEmit.call(this, chai, utils);
+			},
+		);
 	};

@@ -1,5 +1,13 @@
 import { EventType } from '@maklja90/rxjs-observable-spy';
 
+const formatMessage = (name: string, message: string, observableName?: string | null) => {
+	if (!observableName) {
+		return `[${name}] - ${message}`;
+	}
+
+	return `[${name}(${observableName})] - ${message}`;
+};
+
 const errorFormatMessage = (e: unknown) => {
 	if (e instanceof Error) {
 		return `${e.name} - ${e.message}`;
@@ -9,7 +17,7 @@ const errorFormatMessage = (e: unknown) => {
 };
 
 const expectedSignalMessage = (name: string, expectedSignal: EventType, actualSignal: EventType) =>
-	`[${name}] - expected signal: ${expectedSignal}, actual signal: ${actualSignal}`;
+	formatMessage(name, `expected signal: ${expectedSignal}, actual signal: ${actualSignal}`);
 
 const expectedSignalActualNext = <T>(
 	name: string,
@@ -46,6 +54,7 @@ const expectedNextActualOther = <T>(
 };
 
 export {
+	formatMessage,
 	errorFormatMessage,
 	expectedSignalActualError,
 	expectedSignalActualNext,

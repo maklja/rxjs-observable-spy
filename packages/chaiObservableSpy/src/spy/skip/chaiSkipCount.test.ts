@@ -38,7 +38,7 @@ describe('Chai observable spy skipCount keyword', function () {
 		} catch (e) {
 			const error = e as ObservableSpyAssertionError;
 			expect(error.message).to.be.equal(
-				'[skipCount] - Skip number should be > 0, received value 0',
+				'[skipCount] - skip number should be > 0, received value 0',
 			);
 			return;
 		}

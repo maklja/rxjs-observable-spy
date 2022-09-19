@@ -1,10 +1,11 @@
 import { EventType } from '@maklja90/rxjs-observable-spy';
 import { expectedSignalActualError, expectedSignalMessage } from '../../messages';
 import { ObservableSpyAssertionError } from '../common/error';
-import { retrieveVerificationSteps } from '../retrieveVerificationSteps';
-import { refreshInvokeTimeout } from '../subscribeInvokedTimeout';
+import { retrieveVerificationSteps, refreshInvokeTimeout } from '../utils';
 
-export default function chaiConsumeNext<T = unknown>(
+export const CONSUME_NEXT_KEYWORD = 'consumeNext';
+
+export function chaiConsumeNext<T = unknown>(
 	this: Chai.AssertionStatic,
 	chai: Chai.ChaiStatic,
 	utils: Chai.ChaiUtils,
@@ -18,7 +19,7 @@ export default function chaiConsumeNext<T = unknown>(
 		next: (value, index) => expectedCallback(value, index),
 		error: (error) => {
 			const errorMessage = expectedSignalActualError(
-				'consumeNext',
+				CONSUME_NEXT_KEYWORD,
 				EventType.Next,
 				EventType.Error,
 				error,
@@ -31,7 +32,7 @@ export default function chaiConsumeNext<T = unknown>(
 		},
 		complete: () => {
 			const errorMessage = expectedSignalMessage(
-				'consumeNext',
+				CONSUME_NEXT_KEYWORD,
 				EventType.Next,
 				EventType.Complete,
 			);

@@ -1,11 +1,12 @@
 import { Observable } from 'rxjs';
 import { verifyObservable, EventType } from '@maklja90/rxjs-observable-spy';
-import { expectedSignalActualError } from '../../messages';
-import { retrieveVerificationSteps } from '../retrieveVerificationSteps';
-import { clearInvokedTimeout } from '../subscribeInvokedTimeout';
+import { expectedSignalActualError, formatMessage } from '../../messages';
+import { retrieveVerificationSteps, clearInvokedTimeout } from '../utils';
 import { ObservableSpyAssertionError } from '../common/error';
 
-export default async function chaiAwaitSingle<T = unknown>(
+export const AWAIT_SINGLE = 'awaitSingle';
+
+export async function chaiAwaitSingle<T = unknown>(
 	this: Chai.AssertionStatic,
 	utils: Chai.ChaiUtils,
 ): Promise<T> {
@@ -18,7 +19,10 @@ export default async function chaiAwaitSingle<T = unknown>(
 		next: (_, index) => {
 			if (index > 0) {
 				throw new ObservableSpyAssertionError(
-					'[awaitSingle] - received multiple values, when single one was expected',
+					formatMessage(
+						AWAIT_SINGLE,
+						'received multiple values, when single one was expected',
+					),
 					{
 						expectedEvent: EventType.Complete,
 						receivedEvent: EventType.Next,
@@ -31,9 +35,9 @@ export default async function chaiAwaitSingle<T = unknown>(
 		error: (error, spy) => {
 			const hasAnyValue = spy.getValuesLength() === 0;
 			const errorMessage = hasAnyValue
-				? expectedSignalActualError('awaitSingle', EventType.Next, EventType.Error, error)
+				? expectedSignalActualError(AWAIT_SINGLE, EventType.Next, EventType.Error, error)
 				: expectedSignalActualError(
-						'awaitSingle',
+						AWAIT_SINGLE,
 						EventType.Complete,
 						EventType.Error,
 						error,
@@ -47,7 +51,10 @@ export default async function chaiAwaitSingle<T = unknown>(
 		complete: (spy) => {
 			if (spy.getValuesLength() > 1) {
 				throw new ObservableSpyAssertionError(
-					'[awaitSingle] - received multiple values, when single one was expected',
+					formatMessage(
+						AWAIT_SINGLE,
+						'received multiple values, when single one was expected',
+					),
 					{
 						receivedEvent: EventType.Complete,
 					},
@@ -56,7 +63,10 @@ export default async function chaiAwaitSingle<T = unknown>(
 
 			if (spy.getValuesLength() < 1) {
 				throw new ObservableSpyAssertionError(
-					'[awaitSingle] - expected to receive a single value, but received zero',
+					formatMessage(
+						AWAIT_SINGLE,
+						'expected to receive a single value, but received zero',
+					),
 					{
 						expectedEvent: EventType.Next,
 						receivedEvent: EventType.Complete,
@@ -68,3 +78,4 @@ export default async function chaiAwaitSingle<T = unknown>(
 
 	return (await verifyObservable(observable, verificationSteps))[0];
 }
+

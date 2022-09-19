@@ -1,6 +1,11 @@
-import { OBSERVABLE_SPY_CONFIG_KEY, ChaiObservableSpyPluginConfig } from './chaiPluginConfig';
+import { formatMessage } from '../../messages';
+import { OBSERVABLE_SPY_CONFIG_KEY, ChaiObservableSpyPluginConfig } from '../chaiPlugin';
+import { ObservableSpyAssertionError } from '../common/error';
+import { retrieveObservableName } from './observableName';
 
 const TIMEOUT_ID_KEY = '__observable_spy_timeoutId__';
+
+const GUARD_NAME = 'observableSpyGuard';
 
 export function refreshInvokeTimeout(
 	assertionStatic: Chai.AssertionStatic,
@@ -16,11 +21,12 @@ export function refreshInvokeTimeout(
 	clearInvokedTimeout(assertionStatic, utils);
 
 	const newTimeout = setTimeout(() => {
-		assertionStatic.assert(
-			false,
-			'You need to invoke verify, verifyComplete or awaitComplete in order to subscribe to observable',
-			'',
-			null,
+		throw new ObservableSpyAssertionError(
+			formatMessage(
+				GUARD_NAME,
+				'found not subscribed observable in test',
+				retrieveObservableName(assertionStatic, utils),
+			),
 		);
 	}, spyConfig.forgottenSubscriptionTimeout);
 
@@ -38,3 +44,4 @@ export function clearInvokedTimeout(
 		utils.flag(assertionStatic, TIMEOUT_ID_KEY, null);
 	}
 }
+

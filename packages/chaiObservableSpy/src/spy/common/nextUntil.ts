@@ -1,7 +1,6 @@
 import { EventType } from '@maklja90/rxjs-observable-spy';
 import { expectedSignalActualError, expectedSignalMessage } from '../../messages';
-import { retrieveVerificationSteps } from '../retrieveVerificationSteps';
-import { refreshInvokeTimeout } from '../subscribeInvokedTimeout';
+import { retrieveVerificationSteps, refreshInvokeTimeout } from '../utils';
 import { ObservableSpyAssertionError } from './error';
 
 export default function nextUntil<T = unknown>(
@@ -43,3 +42,4 @@ export default function nextUntil<T = unknown>(
 		},
 	});
 }
+

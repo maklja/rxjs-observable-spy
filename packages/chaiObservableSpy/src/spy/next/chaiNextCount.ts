@@ -1,10 +1,11 @@
 import { EventType } from '@maklja90/rxjs-observable-spy';
-import { expectedNextActualOther } from '../../messages';
+import { expectedNextActualOther, formatMessage } from '../../messages';
 import { ObservableSpyAssertionError } from '../common/error';
-import { retrieveVerificationSteps } from '../retrieveVerificationSteps';
-import { refreshInvokeTimeout } from '../subscribeInvokedTimeout';
+import { retrieveVerificationSteps, refreshInvokeTimeout } from '../utils';
 
-export default function chaiNextCount<T>(
+export const NEXT_COUNT_KEYWORD = 'nextCount';
+
+export function chaiNextCount<T>(
 	this: Chai.AssertionStatic,
 	chai: Chai.ChaiStatic,
 	utils: Chai.ChaiUtils,
@@ -22,7 +23,7 @@ export default function chaiNextCount<T>(
 		},
 		error: (error) => {
 			const errorMessage = expectedNextActualOther(
-				'nextCount',
+				NEXT_COUNT_KEYWORD,
 				EventType.Next,
 				EventType.Error,
 				currentCount + 1,
@@ -37,7 +38,10 @@ export default function chaiNextCount<T>(
 		complete: () => {
 			if (currentCount < expectedCount) {
 				throw new ObservableSpyAssertionError(
-					`[nextCount] - missing next values, expected count ${expectedCount}, actual count ${currentCount}`,
+					formatMessage(
+						NEXT_COUNT_KEYWORD,
+						`missing next values, expected count ${expectedCount}, actual count ${currentCount}`,
+					),
 					{
 						receivedEvent: EventType.Complete,
 					},
@@ -46,7 +50,10 @@ export default function chaiNextCount<T>(
 
 			if (currentCount > expectedCount) {
 				throw new ObservableSpyAssertionError(
-					`[nextCount] - too many next values, expected count ${expectedCount}, actual count ${currentCount}`,
+					formatMessage(
+						NEXT_COUNT_KEYWORD,
+						`too many next values, expected count ${expectedCount}, actual count ${currentCount}`,
+					),
 					{
 						receivedEvent: EventType.Complete,
 					},

@@ -295,7 +295,7 @@ it('verify is not call at the end', async () => {
   // there is no call to verify or verifyComplete
   // because of this spy will not be subscribed
   // to tested strings$ observable, as result the error will be thrown
-  // AssertionError: You need to invoke verify, verifyComplete...
+  // [observableSpyGuard]: found not subscribed observable in test
   await expect(strings$).emit.next('Tom').next('Tina').next('Ana');
 });
 ```

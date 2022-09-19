@@ -1,11 +1,12 @@
 import deepEql from 'deep-eql';
 import { EventType } from '@maklja90/rxjs-observable-spy';
-import { expectedNextActualOther } from '../../messages';
-import { retrieveVerificationSteps } from '../retrieveVerificationSteps';
-import { refreshInvokeTimeout } from '../subscribeInvokedTimeout';
+import { expectedNextActualOther, formatMessage } from '../../messages';
+import { retrieveVerificationSteps, refreshInvokeTimeout } from '../utils';
 import { ObservableSpyAssertionError } from '../common/error';
 
-export default function chaiNext<T = unknown>(
+export const NEXT_KEYWORD = 'next';
+
+export function chaiNext<T = unknown>(
 	this: Chai.AssertionStatic,
 	chai: Chai.ChaiStatic,
 	utils: Chai.ChaiUtils,
@@ -19,7 +20,10 @@ export default function chaiNext<T = unknown>(
 		next: (value) => {
 			if (!deepEql(expectedNextValue, value)) {
 				throw new ObservableSpyAssertionError(
-					`[next] - expected next value: ${expectedNextValue}, actual value ${value}`,
+					formatMessage(
+						NEXT_KEYWORD,
+						`expected next value: ${expectedNextValue}, actual value ${value}`,
+					),
 					{
 						expectedEvent: EventType.Next,
 						receivedEvent: EventType.Next,
@@ -29,7 +33,7 @@ export default function chaiNext<T = unknown>(
 		},
 		error: (error) => {
 			const errorMessage = expectedNextActualOther(
-				'next',
+				NEXT_KEYWORD,
 				EventType.Next,
 				EventType.Error,
 				expectedNextValue,
@@ -43,7 +47,7 @@ export default function chaiNext<T = unknown>(
 		},
 		complete: () => {
 			const errorMessage = expectedNextActualOther(
-				'next',
+				NEXT_KEYWORD,
 				EventType.Next,
 				EventType.Complete,
 				expectedNextValue,

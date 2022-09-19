@@ -1,5 +1,4 @@
-import createChaiObservableSpyPlugin from './chaiPlugin';
-import { ChaiObservableSpyPluginConfig } from './chaiPluginConfig';
+import createChaiObservableSpyPlugin, { ChaiObservableSpyPluginConfig } from './chaiPlugin';
 
 export { createChaiObservableSpyPlugin };
 
