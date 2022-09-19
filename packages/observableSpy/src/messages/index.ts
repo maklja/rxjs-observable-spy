@@ -1,6 +1,6 @@
-import { EventType } from '@maklja90/rxjs-observable-spy';
+import { EventType } from '../spy';
 
-const formatMessage = (name: string, message: string, observableName?: string | null) => {
+const formatMessage = (name: string, message: string, observableName?: string) => {
 	if (!observableName) {
 		return `[${name}] - ${message}`;
 	}
@@ -16,26 +16,44 @@ const errorFormatMessage = (e: unknown) => {
 	return `${e}`;
 };
 
-const expectedSignalMessage = (name: string, expectedSignal: EventType, actualSignal: EventType) =>
-	formatMessage(name, `expected signal: ${expectedSignal}, actual signal: ${actualSignal}`);
+const expectedSignalMessage = (
+	name: string,
+	expectedSignal: EventType,
+	actualSignal: EventType,
+	observableName?: string,
+) =>
+	formatMessage(
+		name,
+		`expected signal: ${expectedSignal}, actual signal: ${actualSignal}`,
+		observableName,
+	);
 
 const expectedSignalActualNext = <T>(
 	name: string,
 	expectedSignal: EventType,
 	actualSignal: EventType,
 	actualValue: T,
-) => `${expectedSignalMessage(name, expectedSignal, actualSignal)}, actual value: ${actualValue}`;
+	observableName?: string,
+) =>
+	`${expectedSignalMessage(
+		name,
+		expectedSignal,
+		actualSignal,
+		observableName,
+	)}, actual value: ${actualValue}`;
 
 const expectedSignalActualError = (
 	name: string,
 	expectedSignal: EventType,
 	actualSignal: EventType,
 	e: unknown,
+	observableName?: string,
 ) =>
 	`${expectedSignalMessage(
 		name,
 		expectedSignal,
 		actualSignal,
+		observableName,
 	)}, actual error: ${errorFormatMessage(e)}`;
 
 const expectedNextActualOther = <T>(
@@ -44,12 +62,14 @@ const expectedNextActualOther = <T>(
 	actualSignal: EventType,
 	expectedValue: T,
 	e?: unknown,
+	observableName?: string,
 ) => {
 	const errorMessage = e ? `, actual error: ${errorFormatMessage(e)}` : '';
 	return `${expectedSignalMessage(
 		name,
 		expectedSignal,
 		actualSignal,
+		observableName,
 	)}, expected value: ${expectedValue}${errorMessage}`;
 };
 

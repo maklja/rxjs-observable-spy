@@ -48,3 +48,31 @@ export class MissingVerificationStepError extends Error {
 		this.name = MissingVerificationStepError.name;
 	}
 }
+
+export interface ObservableSpyAssertionProps {
+	error?: unknown;
+	expectedEvent?: EventType;
+	receivedEvent?: EventType;
+}
+
+/**
+ * Error is thrown as an assertion error when the verification step fails.
+ * It contains a message about an error, expected event type and received event type.
+ */
+export class ObservableSpyAssertionError extends Error {
+	public readonly expectedEvent: EventType | null;
+	public readonly receivedEvent: EventType | null;
+
+	constructor(message: string, props?: ObservableSpyAssertionProps) {
+		super(message);
+
+		this.name = ObservableSpyAssertionError.name;
+		this.expectedEvent = props?.expectedEvent ?? null;
+		this.receivedEvent = props?.receivedEvent ?? null;
+
+		if (props?.error instanceof Error) {
+			this.stack = props?.error?.stack;
+		}
+	}
+}
+

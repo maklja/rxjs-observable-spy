@@ -1,8 +1,7 @@
-import { EventType } from '@maklja90/rxjs-observable-spy';
+import { EventType, ObservableSpyAssertionError } from '@maklja90/rxjs-observable-spy';
 import { expect } from 'chai';
 import { from, of, throwError } from 'rxjs';
 import '../../register';
-import { ObservableSpyAssertionError } from '../common/error';
 
 describe('Chai observable spy awaitComplete keyword', function () {
 	it('should verify that observable has completed', async function () {

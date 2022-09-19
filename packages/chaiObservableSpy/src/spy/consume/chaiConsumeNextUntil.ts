@@ -1,4 +1,5 @@
-import nextUntil from '../common/nextUntil';
+import { createNextUntilStep } from '@maklja90/rxjs-observable-spy';
+import { refreshInvokeTimeout, retrieveObservableName, retrieveVerificationSteps } from '../utils';
 
 export const CONSUME_NEXT_UNTIL_KEYWORD = 'consumeNextUntil';
 
@@ -8,6 +9,15 @@ export function chaiConsumeNextUntil<T = unknown>(
 	utils: Chai.ChaiUtils,
 	expectedCallback: (value: T, index: number) => boolean,
 ) {
-	nextUntil(CONSUME_NEXT_UNTIL_KEYWORD, this, chai, utils, expectedCallback);
+	const verificationSteps = retrieveVerificationSteps<T>(this, utils);
+	verificationSteps.push(
+		createNextUntilStep(
+			CONSUME_NEXT_UNTIL_KEYWORD,
+			expectedCallback,
+			retrieveObservableName(this, utils),
+		),
+	);
+
+	refreshInvokeTimeout(this, chai, utils);
 }
 

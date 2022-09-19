@@ -198,22 +198,29 @@ declare namespace Chai {
 		 * Usable only on RxJS Observables.
 		 * This property contains a language chain keywords that are required in order to test observables.
 		 *
-		 * @param name - Name of the tested observable.
+		 * @param name - Optional name of the tested observable.
 		 *
 		 * @returns observable language chains for testing.
 		 */
-		observableSpy: (ObservableLanguageChains & ObservableSingleLanguageChains) &
-			((name: string) => ObservableLanguageChains & ObservableSingleLanguageChains);
+		observableSpy: (name?: string) => ObservableLanguageChains & ObservableSingleLanguageChains;
+
 		/**
 		 * Usable only on RxJS Observables.
 		 * This property contains a language chain keywords that are required in order to test observables.
 		 *
-		 * @param name - Name of the tested observable.
+		 * @param name - Optional name of the tested observable.
 		 *
 		 * @returns observable language chains for testing.
 		 */
-		emit: (ObservableLanguageChains & ObservableSingleLanguageChains) &
-			((name: string) => ObservableLanguageChains & ObservableSingleLanguageChains);
+		oSpy: (name?: string) => ObservableLanguageChains & ObservableSingleLanguageChains;
+
+		/**
+		 * Usable only on RxJS Observables.
+		 * This property contains a language chain keywords that are required in order to test observables.
+		 *
+		 * @returns observable language chains for testing.
+		 */
+		emit: ObservableLanguageChains & ObservableSingleLanguageChains;
 	}
 }
 

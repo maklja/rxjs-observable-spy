@@ -1,8 +1,7 @@
-import { EventType } from '@maklja90/rxjs-observable-spy';
+import { EventType, ObservableSpyAssertionError } from '@maklja90/rxjs-observable-spy';
 import { expect } from 'chai';
 import { EMPTY, of, throwError } from 'rxjs';
 import '../../register';
-import { ObservableSpyAssertionError } from '../common/error';
 
 describe('Chai observable spy skipCount keyword', function () {
 	it('should skip next two values in proper order', async function () {
