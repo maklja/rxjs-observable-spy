@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 0.6.0 (2022-09-20)
+
+
+### Features
+
+* **chaijs:** Support isObservable assert ([7e87752](https://github.com/maklja/rxjs-observable-spy/commit/7e87752dd4b7b2f2fb64a74c221da3455d8506d4))
+
+
+
+
+
 # 0.5.0 (2022-09-20)
 
 
