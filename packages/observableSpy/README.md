@@ -42,6 +42,8 @@ Simplest way to use a spy is to import the helper `subscribeSpyTo` function.
 
 ```js
 import { subscribeSpyTo } from '@maklja90/rxjs-observable-spy';
+// if you use CommonJS
+// const { subscribeSpyTo } = require('@maklja90/rxjs-observable-spy');
 // other RxJS imports...
 
 it('should immediately subscribe and spy on Observable', () => {
