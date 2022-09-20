@@ -35,6 +35,10 @@ This library is fully covered with types and most of the methods can accept gene
 define what values will be received or what error is expected to be thrown.
 This library also packs types that extend the ChaiJS language chain.
 
+## Browsers
+
+Library transpile to ES5 and should work in all browsers that support that version of javascript.
+
 ## Setup ChaiJS plugin
 
 Before using the library features it is required to register a plugin with a ChaiJS.

@@ -36,6 +36,10 @@ This library allows you to investigate what was received from observables by usi
 This library is fully covered with types and most of the methods can accept generics in order to
 define what values will be received or what error is expected to be thrown.
 
+## Browsers
+
+Library transpile to ES5 and should work in all browsers that support that version of javascript.
+
 ## Basic use cases
 
 Simplest way to use a spy is to import the helper `subscribeSpyTo` function.
