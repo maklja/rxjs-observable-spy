@@ -56,6 +56,24 @@ mocha --require @maklja90/chaijs-rxjs-observable-spy/register ./src/**/*.spec.ts
 
 Library offers an `emit` or `observableSpy` keywords to indicate that the value that is tested is observable and to access the rest of language chains.
 <br />
+`observableSpy`, or short `oSpy`, is a function that can receive a name of the tested observable. This name will be printed out in the error messages that occur in tests and this can be helpful when debugging tests. Alternatively if this is not important to you you can use property `emit` instead.
+
+```ts
+it('should allow observableSpy to accept name argument', async () => {
+  const strings$ = of('Tom', 'Tina', 'Ana');
+
+  const values = await expect(strings$)
+    // short name is oSpy
+    .observableSpy('stringsObservable')
+    .next('Tom')
+    .next('Tina')
+    .next('Ana')
+    .verifyComplete();
+
+  expect(values).to.deep.equals(['Tom', 'Tina', 'Ana']);
+});
+```
+
 <br />
 
 ### next, nextCount, nextMatches and nextMatchesUntil keywords
@@ -344,4 +362,3 @@ it('should receive values in proper order with complete event', async () => {
 ## License
 
 MIT
-
