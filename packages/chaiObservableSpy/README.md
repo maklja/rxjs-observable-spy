@@ -302,7 +302,9 @@ Useful when it is required to just verify that an observable ends with a complet
 it('should just await complete event and ignore next values', async () => {
   const strings$ = of('Tom', 'Ana', 'John');
 
-  const values = await expect(strings$).emit.awaitComplete();
+  // 'then' keyword has no functionality,
+  // it is there just for readability :)
+  const values = await expect(strings$).emit.then.awaitComplete();
   expect(values).to.deep.equals(['Tom', 'Ana', 'John']);
 });
 ```
@@ -314,7 +316,7 @@ it('should just await complete event and assert next values', async () => {
   const sourceValues = ['Tom', 'Ana', 'John'];
   const strings$ = from(sourceValues);
 
-  const values = await expect(strings$).emit.awaitComplete(
+  const values = await expect(strings$).emit.then.awaitComplete(
     (val, index) => expect(val).to.be.equal(sourceValues[index]),
   );
   expect(values).to.deep.equals(['Tom', 'Ana', 'John']);
