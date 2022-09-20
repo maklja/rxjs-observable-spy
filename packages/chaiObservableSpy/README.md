@@ -35,6 +35,10 @@ This library is fully covered with types and most of the methods can accept gene
 define what values will be received or what error is expected to be thrown.
 This library also packs types that extend the ChaiJS language chain.
 
+## Browsers
+
+Library transpile to ES5 and should work in all browsers that support that version of javascript.
+
 ## Setup ChaiJS plugin
 
 Before using the library features it is required to register a plugin with a ChaiJS.
@@ -277,6 +281,14 @@ it('should catch an error from observable', async () => {
 });
 ```
 
+### observable keyword
+
+```ts
+it('should not throw an error when instance of Observable', function () {
+  expect(of(1, 2, 3)).to.be.an.observable();
+});
+```
+
 ### verify, complete, verifyComplete and awaitComplete keywords
 
 Keyword `verify` is always used after keywords `error`, `errorType`, `errorMessage` or `complete` and its purpose is to subscribe observable spy to the tested observable and start testing received values or errors.
@@ -290,7 +302,9 @@ Useful when it is required to just verify that an observable ends with a complet
 it('should just await complete event and ignore next values', async () => {
   const strings$ = of('Tom', 'Ana', 'John');
 
-  const values = await expect(strings$).emit.awaitComplete();
+  // 'then' keyword has no functionality,
+  // it is there just for readability :)
+  const values = await expect(strings$).emit.then.awaitComplete();
   expect(values).to.deep.equals(['Tom', 'Ana', 'John']);
 });
 ```
@@ -302,7 +316,7 @@ it('should just await complete event and assert next values', async () => {
   const sourceValues = ['Tom', 'Ana', 'John'];
   const strings$ = from(sourceValues);
 
-  const values = await expect(strings$).emit.awaitComplete(
+  const values = await expect(strings$).emit.then.awaitComplete(
     (val, index) => expect(val).to.be.equal(sourceValues[index]),
   );
   expect(values).to.deep.equals(['Tom', 'Ana', 'John']);

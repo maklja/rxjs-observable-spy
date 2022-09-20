@@ -30,6 +30,9 @@ jobs:
       - name: Run tests
         run: npm run test
 
+      - name: Run tests in browser
+        run: npm run test-browser
+
       - name: Run ESlint code quality checks
         run: npm run lint
 

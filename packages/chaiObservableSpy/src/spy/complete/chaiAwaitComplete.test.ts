@@ -7,7 +7,7 @@ describe('Chai observable spy awaitComplete keyword', function () {
 	it('should verify that observable has completed', async function () {
 		const strings$ = of('Tom', 'Tina', 'Ana');
 
-		const values = await expect(strings$).emit.next('Tom').next('Tina').awaitComplete();
+		const values = await expect(strings$).emit.next('Tom').next('Tina').then.awaitComplete();
 		expect(values).to.deep.equals(['Tom', 'Tina', 'Ana']);
 	});
 
