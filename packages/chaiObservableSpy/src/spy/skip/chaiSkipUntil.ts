@@ -1,4 +1,5 @@
-import nextUntil from '../common/nextUntil';
+import { createNextUntilStep } from '@maklja90/rxjs-observable-spy';
+import { refreshInvokeTimeout, retrieveObservableName, retrieveVerificationSteps } from '../utils';
 
 export const SKIP_UNTIL_KEYWORD = 'skipUntil';
 
@@ -8,6 +9,15 @@ export function chaiSkipUntil<T = unknown>(
 	utils: Chai.ChaiUtils,
 	expectedCallback: (value: T, index: number) => boolean,
 ) {
-	nextUntil(SKIP_UNTIL_KEYWORD, this, chai, utils, expectedCallback);
+	const verificationSteps = retrieveVerificationSteps<T>(this, utils);
+	verificationSteps.push(
+		createNextUntilStep(
+			SKIP_UNTIL_KEYWORD,
+			expectedCallback,
+			retrieveObservableName(this, utils),
+		),
+	);
+
+	refreshInvokeTimeout(this, chai, utils);
 }
 

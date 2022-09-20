@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs';
 import { verifyObservable } from '@maklja90/rxjs-observable-spy';
-import { retrieveVerificationSteps } from '../utils';
+import { clearInvokedTimeout, retrieveVerificationSteps } from '../utils';
 
 import { chaiComplete } from './chaiComplete';
 
@@ -11,6 +11,8 @@ export function chaiVerifyComplete<T = unknown>(this: Chai.AssertionStatic, util
 
 	const observable: Observable<T> = this._obj;
 	const verificationSteps = retrieveVerificationSteps<T>(this, utils);
+
+	clearInvokedTimeout(this, utils);
 
 	return verifyObservable(observable, verificationSteps);
 }

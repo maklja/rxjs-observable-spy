@@ -46,7 +46,16 @@ import { createChaiObservableSpyPlugin } from '@maklja90/chaijs-rxjs-observable-
 chai.use(createChaiObservableSpyPlugin());
 ```
 
-If you are using the **mocha** test framework, you could use the `register` function to set up a plugin before tests start execution.
+Using CommonJS:
+
+```js
+const chai = require('chai');
+const {
+  createChaiObservableSpyPlugin,
+} = require('@maklja90/chaijs-rxjs-observable-spy');
+```
+
+If you are using the **mocha** test framework with NodeJS, you could use the `register` function to set up a plugin before tests start execution.
 
 ```console
 mocha --require @maklja90/chaijs-rxjs-observable-spy/register ./src/**/*.spec.ts
@@ -54,8 +63,26 @@ mocha --require @maklja90/chaijs-rxjs-observable-spy/register ./src/**/*.spec.ts
 
 ## Language use cases
 
-Library offers an `emit` or `observableSpy` keywords to indicate that the value that is tested is observable and to access the rest of language chains.
+Library offers an `emit`, `observableSpy` or `oSpy` keywords to indicate that the value that is tested is observable and to access the rest of language chains.
 <br />
+`observableSpy`, or short `oSpy`, is a function that can receive a name of the tested observable. This name will be printed out in the error messages that occur in tests and this can be helpful when debugging tests. Alternatively if this is not important to you you can use property `emit` instead.
+
+```ts
+it('should allow observableSpy to accept name argument', async () => {
+  const strings$ = of('Tom', 'Tina', 'Ana');
+
+  // will fail with an error that has observable name in the message
+  // [next(stringsObservable)] - expected next value: John, actual value Tina
+  await expect(strings$)
+    // short name is oSpy
+    .observableSpy('stringsObservable')
+    .next('Tom')
+    .next('John') // expected values is 'John', but value 'Tina' is received
+    .next('Ana')
+    .verifyComplete();
+});
+```
+
 <br />
 
 ### next, nextCount, nextMatches and nextMatchesUntil keywords

@@ -1,8 +1,7 @@
-import { EventType } from '@maklja90/rxjs-observable-spy';
+import { EventType, ObservableSpyAssertionError } from '@maklja90/rxjs-observable-spy';
 import { expect } from 'chai';
 import { EMPTY, of, throwError } from 'rxjs';
 import '../../register';
-import { ObservableSpyAssertionError } from '../common/error';
 
 describe('Chai observable spy next keyword', function () {
 	it('should receive values in proper order', async function () {

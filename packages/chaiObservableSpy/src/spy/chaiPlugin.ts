@@ -18,7 +18,7 @@ import { VERIFY_COMPLETE_KEYWORD, chaiVerifyComplete } from './complete/chaiVeri
 import { AWAIT_COMPLETE_KEYWORD, chaiAwaitComplete } from './complete/chaiAwaitComplete';
 import { AWAIT_SINGLE, chaiAwaitSingle } from './complete/chaiAwaitSingle';
 import { EMIT_KEYWORD, chaiEmit } from './emit/chaiEmit';
-import { OBSERVABLE_SPY_KEYWORD, chaiObservableSpy } from './emit/chaiObservableSpy';
+import { OBSERVABLE_SPY_KEYWORD, O_SPY_KEYWORD, chaiObservableSpy } from './emit/chaiObservableSpy';
 
 export const OBSERVABLE_SPY_CONFIG_KEY = '_observableSpyPluginConfig';
 
@@ -129,25 +129,15 @@ export default (
 			return chaiAwaitSingle.call(this, utils);
 		});
 
-		Assertion.addChainableMethod(
-			OBSERVABLE_SPY_KEYWORD,
-			function (observableName: string) {
-				chaiObservableSpy.call(this, chai, utils, observableName);
-			},
-			function () {
-				// @ts-ignore type is missing in @types/chai dependency
-				chaiObservableSpy.call(this, chai, utils);
-			},
-		);
+		Assertion.addMethod(O_SPY_KEYWORD, function (name?: string) {
+			chaiObservableSpy.call(this, O_SPY_KEYWORD, chai, utils, name);
+		});
 
-		Assertion.addChainableMethod(
-			EMIT_KEYWORD,
-			function (observableName: string) {
-				chaiEmit.call(this, chai, utils, observableName);
-			},
-			function () {
-				// @ts-ignore type is missing in @types/chai dependency
-				chaiEmit.call(this, chai, utils);
-			},
-		);
+		Assertion.addMethod(OBSERVABLE_SPY_KEYWORD, function (name?: string) {
+			chaiObservableSpy.call(this, OBSERVABLE_SPY_KEYWORD, chai, utils, name);
+		});
+
+		Assertion.addProperty(EMIT_KEYWORD, function () {
+			chaiEmit.call(this, chai, utils);
+		});
 	};

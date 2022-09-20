@@ -3,15 +3,17 @@ const OBSERVABLE_NAME = '__observable_spy_name__';
 export function retrieveObservableName(
 	assertionStatic: Chai.AssertionStatic,
 	utils: Chai.ChaiUtils,
-): string | null {
+): string | undefined {
 	return utils.flag(assertionStatic, OBSERVABLE_NAME);
 }
 
 export function createObservableName(
-	name: string | null,
 	assertionStatic: Chai.AssertionStatic,
 	utils: Chai.ChaiUtils,
+	name?: string,
 ) {
-	utils.flag(assertionStatic, OBSERVABLE_NAME, name);
+	if (name) {
+		utils.flag(assertionStatic, OBSERVABLE_NAME, name);
+	}
 }
 

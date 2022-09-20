@@ -1,8 +1,7 @@
-import { EventType } from '@maklja90/rxjs-observable-spy';
+import { EventType, ObservableSpyAssertionError } from '@maklja90/rxjs-observable-spy';
 import { expect } from 'chai';
 import { from, of, throwError } from 'rxjs';
 import '../../register';
-import { ObservableSpyAssertionError } from '../common/error';
 
 describe('Chai observable spy awaitComplete keyword', function () {
 	it('should verify that observable has completed', async function () {
@@ -30,9 +29,9 @@ describe('Chai observable spy awaitComplete keyword', function () {
 	});
 
 	it('should fail if error event is received instead of next or complete event', async function () {
-		const error$ = throwError(() => new Error('Unexpected error'));
-
 		try {
+			const error$ = throwError(() => new Error('Unexpected error'));
+
 			await expect(error$).emit.awaitComplete();
 		} catch (e) {
 			const error = e as ObservableSpyAssertionError;

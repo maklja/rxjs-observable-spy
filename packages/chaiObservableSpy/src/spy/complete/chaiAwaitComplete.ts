@@ -1,8 +1,6 @@
 import { Observable } from 'rxjs';
-import { verifyObservable, EventType } from '@maklja90/rxjs-observable-spy';
-import { expectedSignalActualError } from '../../messages';
-import { retrieveVerificationSteps, clearInvokedTimeout } from '../utils';
-import { ObservableSpyAssertionError } from '../common/error';
+import { verifyObservable, createAwaitCompleteStep } from '@maklja90/rxjs-observable-spy';
+import { retrieveVerificationSteps, clearInvokedTimeout, retrieveObservableName } from '../utils';
 
 export const AWAIT_COMPLETE_KEYWORD = 'awaitComplete';
 
@@ -16,25 +14,13 @@ export function chaiAwaitComplete<T = unknown>(
 
 	clearInvokedTimeout(this, utils);
 
-	verificationSteps.push({
-		next: (val, index) => {
-			expectedCallback && expectedCallback(val, index);
-			return false;
-		},
-		error: (error) => {
-			const errorMessage = expectedSignalActualError(
-				AWAIT_COMPLETE_KEYWORD,
-				EventType.Complete,
-				EventType.Error,
-				error,
-			);
-			throw new ObservableSpyAssertionError(errorMessage, {
-				error,
-				expectedEvent: EventType.Complete,
-				receivedEvent: EventType.Error,
-			});
-		},
-	});
+	verificationSteps.push(
+		createAwaitCompleteStep(
+			AWAIT_COMPLETE_KEYWORD,
+			expectedCallback,
+			retrieveObservableName(this, utils),
+		),
+	);
 
 	return verifyObservable(observable, verificationSteps);
 }

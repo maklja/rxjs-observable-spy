@@ -1,8 +1,7 @@
-import { EventType } from '@maklja90/rxjs-observable-spy';
+import { EventType, ObservableSpyAssertionError } from '@maklja90/rxjs-observable-spy';
 import { expect } from 'chai';
 import { EMPTY, Observable, of, throwError } from 'rxjs';
 import '../../register';
-import { ObservableSpyAssertionError } from '../common/error';
 
 describe('Chai observable spy awaitSingle keyword', function () {
 	it('should await single value and verify complete event', async function () {
@@ -13,9 +12,9 @@ describe('Chai observable spy awaitSingle keyword', function () {
 	});
 
 	it('should fail if receive multiple next values', async function () {
-		const strings$ = of('Tom', 'Ana');
-
 		try {
+			const strings$ = of('Tom', 'Ana');
+
 			await expect(strings$).emit.awaitSingle();
 		} catch (e) {
 			const error = e as ObservableSpyAssertionError;

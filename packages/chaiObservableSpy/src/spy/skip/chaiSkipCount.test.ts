@@ -1,8 +1,7 @@
-import { EventType } from '@maklja90/rxjs-observable-spy';
+import { EventType, ObservableSpyAssertionError } from '@maklja90/rxjs-observable-spy';
 import { expect } from 'chai';
 import { EMPTY, of, throwError } from 'rxjs';
 import '../../register';
-import { ObservableSpyAssertionError } from '../common/error';
 
 describe('Chai observable spy skipCount keyword', function () {
 	it('should skip next two values in proper order', async function () {
@@ -30,7 +29,7 @@ describe('Chai observable spy skipCount keyword', function () {
 		throw new Error('Error should be thrown from the observable');
 	});
 
-	it('should work with zero count number', async function () {
+	it('should not work with values <= 0', async function () {
 		try {
 			const strings$ = of('Tom', 'Tina', 'Ana');
 

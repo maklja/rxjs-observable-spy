@@ -1,6 +1,5 @@
-import { formatMessage } from '../../messages';
+import { ObservableSpyAssertionError, formatMessage } from '@maklja90/rxjs-observable-spy';
 import { OBSERVABLE_SPY_CONFIG_KEY, ChaiObservableSpyPluginConfig } from '../chaiPlugin';
-import { ObservableSpyAssertionError } from '../common/error';
 import { retrieveObservableName } from './observableName';
 
 const TIMEOUT_ID_KEY = '__observable_spy_timeoutId__';

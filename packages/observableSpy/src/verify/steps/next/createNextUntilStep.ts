@@ -1,27 +1,22 @@
-import { EventType } from '@maklja90/rxjs-observable-spy';
-import { expectedSignalActualError, expectedSignalMessage } from '../../messages';
-import { retrieveVerificationSteps, refreshInvokeTimeout } from '../utils';
-import { ObservableSpyAssertionError } from './error';
+import { ObservableSpyAssertionError } from '../../../errors';
+import { expectedSignalActualError, expectedSignalMessage } from '../../../messages';
+import { EventType } from '../../../spy';
+import { VerificationStep } from '../../verifyObservable';
 
-export default function nextUntil<T = unknown>(
-	assertionName: string,
-	assertionStatic: Chai.AssertionStatic,
-	chai: Chai.ChaiStatic,
-	utils: Chai.ChaiUtils,
+export default function createNextUntilStep<T>(
+	stepName: string,
 	expectedCallback: (value: T, index: number) => boolean,
-) {
-	const verificationSteps = retrieveVerificationSteps<T>(assertionStatic, utils);
-
-	refreshInvokeTimeout(assertionStatic, chai, utils);
-
-	verificationSteps.push({
+	observableName?: string,
+): VerificationStep<T> {
+	return {
 		next: (value, index) => !expectedCallback(value, index),
 		error: (error) => {
 			const errorMessage = expectedSignalActualError(
-				assertionName,
+				stepName,
 				EventType.Next,
 				EventType.Error,
 				error,
+				observableName,
 			);
 			throw new ObservableSpyAssertionError(errorMessage, {
 				error,
@@ -31,15 +26,16 @@ export default function nextUntil<T = unknown>(
 		},
 		complete: () => {
 			const errorMessage = expectedSignalMessage(
-				assertionName,
+				stepName,
 				EventType.Next,
 				EventType.Complete,
+				observableName,
 			);
 			throw new ObservableSpyAssertionError(errorMessage, {
 				expectedEvent: EventType.Next,
 				receivedEvent: EventType.Complete,
 			});
 		},
-	});
+	};
 }
 

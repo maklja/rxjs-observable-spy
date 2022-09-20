@@ -8,13 +8,44 @@ import {
 	NextListener,
 	EventType,
 } from './spy';
-import { verifyObservable, VerificationStep } from './verify';
+import {
+	verifyObservable,
+	VerificationStep,
+	createAwaitCompleteStep,
+	createAwaitSingleStep,
+	createCompleteStep,
+	createConsumeNextStep,
+	createErrorStep,
+	createNextCountStep,
+	createNextMatchesStep,
+	createNextMatchesUntilStep,
+	createNextStep,
+	createNextUntilStep,
+	createSkipCountStep,
+	observableAssertion,
+} from './verify';
+import { ObservableSpyAssertionError, ObservableSpyAssertionProps } from './errors';
+import { formatMessage } from './messages';
 
 export {
 	ObservableSpy,
 	verifyObservable,
 	subscribeSpyTo,
 	EventType,
+	ObservableSpyAssertionError,
+	createAwaitCompleteStep,
+	createAwaitSingleStep,
+	createCompleteStep,
+	createConsumeNextStep,
+	createErrorStep,
+	createNextCountStep,
+	createNextMatchesStep,
+	createNextMatchesUntilStep,
+	createNextStep,
+	createNextUntilStep,
+	createSkipCountStep,
+	observableAssertion,
+	formatMessage,
 };
 
 export type {
@@ -24,4 +55,6 @@ export type {
 	CompleteListener,
 	ErrorListener,
 	NextListener,
+	ObservableSpyAssertionProps,
 };
+
