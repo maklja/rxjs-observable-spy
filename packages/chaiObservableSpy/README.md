@@ -277,6 +277,14 @@ it('should catch an error from observable', async () => {
 });
 ```
 
+### observable keyword
+
+```ts
+it('should not throw an error when instance of Observable', function () {
+  expect(of(1, 2, 3)).to.be.an.observable();
+});
+```
+
 ### verify, complete, verifyComplete and awaitComplete keywords
 
 Keyword `verify` is always used after keywords `error`, `errorType`, `errorMessage` or `complete` and its purpose is to subscribe observable spy to the tested observable and start testing received values or errors.

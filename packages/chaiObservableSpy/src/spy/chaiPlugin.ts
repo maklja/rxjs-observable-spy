@@ -19,6 +19,7 @@ import { AWAIT_COMPLETE_KEYWORD, chaiAwaitComplete } from './complete/chaiAwaitC
 import { AWAIT_SINGLE, chaiAwaitSingle } from './complete/chaiAwaitSingle';
 import { EMIT_KEYWORD, chaiEmit } from './emit/chaiEmit';
 import { OBSERVABLE_SPY_KEYWORD, O_SPY_KEYWORD, chaiObservableSpy } from './emit/chaiObservableSpy';
+import { OBSERVABLE_KEYWORD, chaiObservable } from './observable/isObservable';
 
 export const OBSERVABLE_SPY_CONFIG_KEY = '_observableSpyPluginConfig';
 
@@ -139,5 +140,13 @@ export default (
 
 		Assertion.addProperty(EMIT_KEYWORD, function () {
 			chaiEmit.call(this, chai, utils);
+		});
+
+		Assertion.addProperty('then', function () {
+			// not functional
+		});
+
+		Assertion.addMethod(OBSERVABLE_KEYWORD, function () {
+			chaiObservable.call(this);
 		});
 	};
