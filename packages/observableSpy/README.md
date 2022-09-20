@@ -256,6 +256,29 @@ it('will fail with error if any value is not a number', async function () {
 });
 ```
 
+Library has built-in verification steps that can be used in your tests. Purpose of these verification steps is to make it easy to create extensions for Observables that can be used in different testing frameworks.
+
+```ts
+import {
+  verifyObservable,
+  createNextStep,
+  createCompleteStep,
+} from '@maklja90/rxjs-observable-spy';
+// other RxJS imports...
+
+it('should receive values in proper order', async function () {
+  const strings$ = of('Tom', 'Tina', 'Ana');
+
+  const values = await verifyObservable(strings$, [
+    createNextStep('next', 'Tom'),
+    createNextStep('next', 'Tina'),
+    createNextStep('next', 'Ana'),
+    createCompleteStep('complete'),
+  ]);
+  expect(values).to.deep.equals(['Tom', 'Tina', 'Ana']);
+});
+```
+
 ## License
 
 MIT

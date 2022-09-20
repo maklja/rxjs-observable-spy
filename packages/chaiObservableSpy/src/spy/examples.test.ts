@@ -166,3 +166,4 @@ describe('ChaiJS observable spy example test', function () {
 		expect(values).to.deep.equals(['Tom', 'Ana', 'John']);
 	});
 });
+

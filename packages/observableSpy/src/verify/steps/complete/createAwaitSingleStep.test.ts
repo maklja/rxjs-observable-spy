@@ -71,14 +71,14 @@ describe('Observable spy - createAwaitSingleStep', function () {
 
 	it('should fail if error event is received instead of next event', async function () {
 		try {
-			const error$ = throwError(() => new Error('Unexpected error'));
+			const error$ = throwError(() => 'Unexpected error');
 			await verifyObservable(error$, [createAwaitSingleStep('awaitSingle')]);
 		} catch (e) {
 			const error = e as ObservableSpyAssertionError;
 			expect(error.expectedEvent).to.be.equal(EventType.Next);
 			expect(error.receivedEvent).to.be.equal(EventType.Error);
 			expect(error.message).to.be.equal(
-				'[awaitSingle] - expected signal: next, actual signal: error, actual error: Error - Unexpected error',
+				'[awaitSingle] - expected signal: next, actual signal: error, actual error: Unexpected error',
 			);
 			return;
 		}
