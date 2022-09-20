@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 0.5.0 (2022-09-20)
+
+
+### Features
+
+* Extract common verification steps ([6f87ad3](https://github.com/maklja/rxjs-observable-spy/commit/6f87ad37288d5d3963162671d42932b3d2af054b))
+
+
+
+
+
 # 0.4.0 (2022-09-19)
 
 
