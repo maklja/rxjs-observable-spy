@@ -2,5 +2,6 @@
 	"extends": "@istanbuljs/nyc-config-typescript",
 	"all": true,
 	"reporter": ["lcov", "cobertura"],
-	"exclude": ["dist", "**/*.test.ts", "coverage"]
+	"exclude": ["dist", "**/*.test.ts", "coverage", "karma_html", "karma.conf.js"]
 }
+

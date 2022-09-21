@@ -5,6 +5,7 @@ ChaiJS extension for testing RxJS observables
 [![npm version](https://img.shields.io/npm/v/@maklja90/chaijs-rxjs-observable-spy.svg?style=flat-square)](https://www.npmjs.org/package/@maklja90/rxjs-observable-spy)
 [![release](https://github.com/maklja/rxjs-observable-spy/actions/workflows/release.yml/badge.svg?branch=master)](https://github.com/maklja/rxjs-observable-spy/actions/workflows/release.yml)
 [![codecov](https://codecov.io/gh/maklja/rxjs-observable-spy/branch/master/graph/badge.svg?token=0N9BOURO5J&flag=chaijs-observable-spy)](https://codecov.io/gh/maklja/rxjs-observable-spy)
+[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 
 ## Installation
@@ -34,6 +35,7 @@ This library extends the ChaiJS language with support for testing RxJS observabl
 This library is fully covered with types and most of the methods can accept generics in order to
 define what values will be received or what error is expected to be thrown.
 This library also packs types that extend the ChaiJS language chain.
+Library contains source maps, so it is possible to debug a library from tests.
 
 ## Browsers
 
@@ -62,7 +64,7 @@ const {
 If you are using the **mocha** test framework with NodeJS, you could use the `register` function to set up a plugin before tests start execution.
 
 ```console
-mocha --require @maklja90/chaijs-rxjs-observable-spy/register ./src/**/*.spec.ts
+mocha --require @maklja90/chaijs-rxjs-observable-spy/register ./src/**/*.spec.js
 ```
 
 ## Language use cases
@@ -283,9 +285,32 @@ it('should catch an error from observable', async () => {
 
 ### observable keyword
 
+Check if the tested object is an instance of observable.
+
 ```ts
 it('should not throw an error when instance of Observable', function () {
   expect(of(1, 2, 3)).to.be.an.observable();
+});
+```
+
+### virtualTime keyword
+
+Setup a flag for the library to use TestScheduler from 'rxjs/testing'.
+This is useful when we want to use virtual time instead of real time.
+Useful when using interval, delay...
+
+```ts
+it('should use virtual time and receive values in proper order', async function () {
+  const interval$ = interval(1_000).pipe(
+    filter((val) => val % 2 === 1),
+    take(2),
+  );
+
+  const values = await expect(interval$)
+    .emit.virtualTime.next(1)
+    .next(3)
+    .verifyComplete();
+  expect(values).to.deep.equals([1, 3]);
 });
 ```
 

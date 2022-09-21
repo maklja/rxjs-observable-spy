@@ -15,7 +15,7 @@
 		"dist"
 	],
 	"scripts": {
-		"clean": "rimraf dist/",
+		"clean": "rimraf dist/ karma_html/ coverage/ .nyc_output/",
 		"build": "npm run clean && tsc",
 		"test": "mocha --config ./.mocharc.json",
 		"test-browser": "karma start karma.conf.js",
@@ -61,3 +61,4 @@
 		"typescript": ">=4.0.0"
 	}
 }
+

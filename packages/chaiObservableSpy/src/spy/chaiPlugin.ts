@@ -20,6 +20,7 @@ import { AWAIT_SINGLE, chaiAwaitSingle } from './complete/chaiAwaitSingle';
 import { EMIT_KEYWORD, chaiEmit } from './emit/chaiEmit';
 import { OBSERVABLE_SPY_KEYWORD, O_SPY_KEYWORD, chaiObservableSpy } from './emit/chaiObservableSpy';
 import { OBSERVABLE_KEYWORD, chaiObservable } from './observable/isObservable';
+import { VIRTUAL_TIME_KEYWORD, chaiVirtualTime } from './virtualTime/chaiVirtualTime';
 
 export const OBSERVABLE_SPY_CONFIG_KEY = '_observableSpyPluginConfig';
 
@@ -144,6 +145,10 @@ export default (
 
 		Assertion.addProperty('then', function () {
 			// not functional
+		});
+
+		Assertion.addProperty(VIRTUAL_TIME_KEYWORD, function () {
+			chaiVirtualTime.call(this, chai, utils);
 		});
 
 		Assertion.addMethod(OBSERVABLE_KEYWORD, function () {
