@@ -5,7 +5,7 @@ import { EventType } from '../../../spy';
 import { verifyObservable } from '../../verifyObservable';
 import createErrorStep from './createErrorStep';
 
-describe('Chai observable spy error, errorType and errorMessage keyword', function () {
+describe('Observable spy - createErrorStep', function () {
 	it('should catch expected error', async function () {
 		const error$ = throwError(() => new Error('This is an error'));
 
@@ -44,7 +44,7 @@ describe('Chai observable spy error, errorType and errorMessage keyword', functi
 			expect(error.expectedEvent).to.be.equal(EventType.Error);
 			expect(error.receivedEvent).to.be.equal(EventType.Error);
 			expect(error.message).to.be.equal(
-				'[errorType] - expected error type: Error, actual error type: string',
+				"[errorType] - expected error type: Error, actual error type: string with message 'Unexpected error'",
 			);
 			return;
 		}
@@ -62,7 +62,7 @@ describe('Chai observable spy error, errorType and errorMessage keyword', functi
 			expect(error.expectedEvent).to.be.equal(EventType.Error);
 			expect(error.receivedEvent).to.be.equal(EventType.Error);
 			expect(error.message).to.be.equal(
-				'[errorType] - expected error type: TypeError, actual error type: Error',
+				"[errorType] - expected error type: TypeError, actual error type: Error with message 'Unexpected error'",
 			);
 			return;
 		}

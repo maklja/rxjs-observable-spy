@@ -25,12 +25,13 @@ export default function createErrorStep<T, E>(
 		},
 		error: (error) => {
 			if (expectedErrorType !== undefined && !(error instanceof expectedErrorType)) {
+				const isError = error instanceof Error;
 				throw new ObservableSpyAssertionError(
 					formatMessage(
 						stepName,
 						`expected error type: ${expectedErrorType.name}, actual error type: ${
-							error instanceof Error ? error.name : typeof error
-						}`,
+							isError ? error.name : typeof error
+						} with message '${isError ? error.message : error}'`,
 						observableName,
 					),
 					{
