@@ -1,6 +1,6 @@
 {
 	"name": "@maklja90/rxjs-observable-spy",
-	"version": "0.6.3",
+	"version": "1.0.0",
 	"description": "A simple little library that helps testing RxJS observables",
 	"main": "dist/index.js",
 	"types": "dist/index.d.ts",
