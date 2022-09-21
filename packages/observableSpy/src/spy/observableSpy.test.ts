@@ -377,3 +377,4 @@ describe('ObservableSpy test', function () {
 		});
 	});
 });
+

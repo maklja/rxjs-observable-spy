@@ -9,6 +9,7 @@
 		"@types/mocha": "^9.0.0",
 		"@typescript-eslint/eslint-plugin": "^5.23.0",
 		"@typescript-eslint/parser": "^5.23.0",
+		"conventional-changelog-conventionalcommits": "^5.0.0",
 		"eslint": "^8.15.0",
 		"eslint-config-prettier": "^8.5.0",
 		"eslint-plugin-chai-expect": "^3.0.0",
@@ -36,7 +37,8 @@
 		"coverage": "lerna run coverage --parallel",
 		"format": "lerna run format",
 		"lint": "lerna run lint --parallel",
-		"version": "lerna version --conventional-commits --changelog-preset angular --no-private --yes",
+		"version": "lerna version --conventional-commits --changelog-preset conventionalcommits --no-private --yes",
+		"version-custom": "lerna version --ignore-scripts --no-push --no-private",
 		"publish": "lerna publish from-git --ignore-scripts --no-private --yes"
 	},
 	"author": "Bojan Makljenovic",
