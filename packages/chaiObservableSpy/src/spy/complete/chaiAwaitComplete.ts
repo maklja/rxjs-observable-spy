@@ -1,6 +1,6 @@
-import { Observable } from 'rxjs';
-import { verifyObservable, createAwaitCompleteStep } from '@maklja90/rxjs-observable-spy';
+import { createAwaitCompleteStep } from '@maklja90/rxjs-observable-spy';
 import { retrieveVerificationSteps, clearInvokedTimeout, retrieveObservableName } from '../utils';
+import { chaiVerify } from '../verify/chaiVerify';
 
 export const AWAIT_COMPLETE_KEYWORD = 'awaitComplete';
 
@@ -9,11 +9,7 @@ export function chaiAwaitComplete<T = unknown>(
 	utils: Chai.ChaiUtils,
 	expectedCallback?: (value: T, index: number) => void,
 ) {
-	const observable: Observable<T> = this._obj;
 	const verificationSteps = retrieveVerificationSteps<T>(this, utils);
-
-	clearInvokedTimeout(this, utils);
-
 	verificationSteps.push(
 		createAwaitCompleteStep(
 			AWAIT_COMPLETE_KEYWORD,
@@ -22,6 +18,8 @@ export function chaiAwaitComplete<T = unknown>(
 		),
 	);
 
-	return verifyObservable(observable, verificationSteps);
+	clearInvokedTimeout(this, utils);
+
+	return chaiVerify.call<Chai.AssertionStatic, Chai.ChaiUtils[], Promise<T[]>>(this, utils);
 }
 

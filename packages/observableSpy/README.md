@@ -5,6 +5,7 @@ A simple little library that helps testing RxJS observables.
 [![npm version](https://img.shields.io/npm/v/@maklja90/rxjs-observable-spy.svg?style=flat-square)](https://www.npmjs.org/package/@maklja90/rxjs-observable-spy)
 [![release](https://github.com/maklja/rxjs-observable-spy/actions/workflows/release.yml/badge.svg?branch=master)](https://github.com/maklja/rxjs-observable-spy/actions/workflows/release.yml)
 [![codecov](https://codecov.io/gh/maklja/rxjs-observable-spy/branch/master/graph/badge.svg?token=0N9BOURO5J&flag=observable-spy)](https://codecov.io/gh/maklja/rxjs-observable-spy)
+[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 
 ## Installation
@@ -35,6 +36,7 @@ This library allows you to investigate what was received from observables by usi
 
 This library is fully covered with types and most of the methods can accept generics in order to
 define what values will be received or what error is expected to be thrown.
+Library contains source maps, so it is possible to debug a library from tests.
 
 ## Browsers
 

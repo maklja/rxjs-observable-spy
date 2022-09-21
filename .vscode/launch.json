@@ -1,0 +1,26 @@
+{
+	"version": "0.2.0",
+	"configurations": [
+		{
+			"type": "node",
+			"request": "launch",
+			"name": "Observable spy tests",
+			"cwd": "${workspaceFolder}/packages/observableSpy",
+			"program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
+			"args": ["--config", ".mocharc.json"],
+			"console": "integratedTerminal",
+			"internalConsoleOptions": "neverOpen"
+		},
+		{
+			"type": "node",
+			"request": "launch",
+			"name": "Chai observable spy tests",
+			"cwd": "${workspaceFolder}/packages/chaiObservableSpy",
+			"program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
+			"args": ["--config", ".mocharc.json"],
+			"console": "integratedTerminal",
+			"internalConsoleOptions": "neverOpen"
+		}
+	]
+}
+

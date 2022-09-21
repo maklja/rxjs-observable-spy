@@ -16,6 +16,18 @@ module.exports = function (config) {
 			compilerOptions: {
 				esModuleInterop: true,
 				isolatedModules: false,
+				module: 'CommonJS',
+				target: 'ES5',
+				lib: ['es2015', 'es2016'],
+				allowJs: false,
+				strict: true,
+				noFallthroughCasesInSwitch: true,
+				allowSyntheticDefaultImports: true,
+				skipLibCheck: true,
+				forceConsistentCasingInFileNames: true,
+				declaration: true,
+				declarationMap: true,
+				sourceMap: false,
 			},
 		},
 	});

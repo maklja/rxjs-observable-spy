@@ -29,8 +29,19 @@ declare namespace Chai {
 	export interface ObservableLanguageChains {
 		/**
 		 * Then the keyword has no functional purpose, it is just there for readability.
+		 *
+		 * @returns observable language chains for testing.
 		 */
 		then: ObservableLanguageChains;
+
+		/**
+		 * Setup a flag for the library to use TestScheduler from 'rxjs/testing'.
+		 * This is useful when we want to use virtual time instead of real time.
+		 * Useful when using interval, delay...
+		 *
+		 * @returns observable language chains for testing.
+		 */
+		virtualTime: ObservableLanguageChains;
 
 		/**
 		 * Next expected values from the observable.
