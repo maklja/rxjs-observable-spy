@@ -8,10 +8,15 @@ export function chaiNextCount<T>(
 	chai: Chai.ChaiStatic,
 	utils: Chai.ChaiUtils,
 	expectedCount: number,
+	stepName?: string,
 ) {
 	const verificationSteps = retrieveVerificationSteps<T>(this, utils);
 	verificationSteps.push(
-		createNextCountStep(NEXT_COUNT_KEYWORD, expectedCount, retrieveObservableName(this, utils)),
+		createNextCountStep(
+			stepName ?? NEXT_COUNT_KEYWORD,
+			expectedCount,
+			retrieveObservableName(this, utils),
+		),
 	);
 
 	refreshInvokeTimeout(this, chai, utils);

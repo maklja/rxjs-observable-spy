@@ -15,13 +15,13 @@ describe('Chai observable spy skipCount keyword', function () {
 		try {
 			const strings$ = of('Tom', 'Tina', 'Ana');
 
-			await expect(strings$).emit.skipCount(10).verifyComplete();
+			await expect(strings$).emit.skipCount(10, 'skip10').verifyComplete();
 		} catch (e) {
 			const error = e as ObservableSpyAssertionError;
 			expect(error.expectedEvent).to.be.equal(EventType.Next);
 			expect(error.receivedEvent).to.be.equal(EventType.Complete);
 			expect(error.message).to.be.equal(
-				'[skipCount] - expected signal: next, actual signal: complete, expected value: 10',
+				'[skip10] - expected signal: next, actual signal: complete, expected value: 10',
 			);
 			return;
 		}

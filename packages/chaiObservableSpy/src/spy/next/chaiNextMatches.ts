@@ -8,11 +8,12 @@ export function chaiNextMatches<T = unknown>(
 	chai: Chai.ChaiStatic,
 	utils: Chai.ChaiUtils,
 	expectedCallback: (value: T, index: number) => boolean,
+	stepName?: string,
 ) {
 	const verificationSteps = retrieveVerificationSteps<T>(this, utils);
 	verificationSteps.push(
 		createNextMatchesStep(
-			NEXT_MATCHES_KEYWORD,
+			stepName ?? NEXT_MATCHES_KEYWORD,
 			expectedCallback,
 			retrieveObservableName(this, utils),
 		),

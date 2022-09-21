@@ -44,14 +44,14 @@ describe('Chai observable spy skipUntil keyword', function () {
 			const error$ = throwError(() => 'Unexpected error');
 
 			await expect(error$)
-				.emit.skipUntil((x) => x != null)
+				.emit.skipUntil((x) => x != null, 'skipUntilNotNull')
 				.verifyComplete();
 		} catch (e) {
 			const error = e as ObservableSpyAssertionError;
 			expect(error.expectedEvent).to.be.equal(EventType.Next);
 			expect(error.receivedEvent).to.be.equal(EventType.Error);
 			expect(error.message).to.be.equal(
-				'[skipUntil] - expected signal: next, actual signal: error, actual error: Unexpected error',
+				'[skipUntilNotNull] - expected signal: next, actual signal: error, actual error: Unexpected error',
 			);
 			return;
 		}

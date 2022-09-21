@@ -8,10 +8,11 @@ export const AWAIT_SINGLE = 'awaitSingle';
 export async function chaiAwaitSingle<T = unknown>(
 	this: Chai.AssertionStatic,
 	utils: Chai.ChaiUtils,
+	stepName?: string,
 ): Promise<T> {
 	const verificationSteps = retrieveVerificationSteps<T>(this, utils);
 	verificationSteps.push(
-		createAwaitSingleStep(AWAIT_SINGLE, retrieveObservableName(this, utils)),
+		createAwaitSingleStep(stepName ?? AWAIT_SINGLE, retrieveObservableName(this, utils)),
 	);
 
 	clearInvokedTimeout(this, utils);

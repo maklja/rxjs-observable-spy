@@ -8,11 +8,12 @@ export function chaiSkipUntil<T = unknown>(
 	chai: Chai.ChaiStatic,
 	utils: Chai.ChaiUtils,
 	expectedCallback: (value: T, index: number) => boolean,
+	stepName?: string,
 ) {
 	const verificationSteps = retrieveVerificationSteps<T>(this, utils);
 	verificationSteps.push(
 		createNextUntilStep(
-			SKIP_UNTIL_KEYWORD,
+			stepName ?? SKIP_UNTIL_KEYWORD,
 			expectedCallback,
 			retrieveObservableName(this, utils),
 		),

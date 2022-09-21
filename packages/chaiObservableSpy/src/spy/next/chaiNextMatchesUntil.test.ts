@@ -27,12 +27,13 @@ describe('Chai observable spy nextMatchesUntil keyword', function () {
 				.emit.nextMatchesUntil(
 					(val, i) => (i < 1 ? sourceValues[i] === val : 'John' === val),
 					condition,
+					'nextMatchUsers',
 				)
 				.verifyComplete();
 		} catch (e) {
 			const error = e as ObservableSpyAssertionError;
 			expect(error.receivedEvent).to.be.equal(EventType.Next);
-			expect(error.message).to.be.equal('[nextMatchesUntil] - match failed for value Tina');
+			expect(error.message).to.be.equal('[nextMatchUsers] - match failed for value Tina');
 			return;
 		}
 

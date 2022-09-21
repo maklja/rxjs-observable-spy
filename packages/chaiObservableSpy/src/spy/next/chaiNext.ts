@@ -9,6 +9,7 @@ export function chaiNext<T = unknown>(
 	chai: Chai.ChaiStatic,
 	utils: Chai.ChaiUtils,
 	expectedNextValue: T,
+	stepName?: string,
 ) {
 	const verificationSteps = retrieveVerificationSteps<T>(this, utils);
 
@@ -16,7 +17,7 @@ export function chaiNext<T = unknown>(
 
 	verificationSteps.push(
 		createNextStep(
-			NEXT_KEYWORD,
+			stepName ?? NEXT_KEYWORD,
 			expectedNextValue,
 			deepEql,
 			retrieveObservableName(this, utils),

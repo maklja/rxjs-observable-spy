@@ -40,29 +40,41 @@ export default (
 
 		utils.flag(chai, OBSERVABLE_SPY_CONFIG_KEY, { ...config });
 
-		Assertion.addMethod(NEXT_KEYWORD, function (expectedNextValue: unknown) {
-			chaiNext.call(this, chai, utils, expectedNextValue);
-		});
-
-		Assertion.addMethod(NEXT_COUNT_KEYWORD, function (expectedCount: number) {
-			chaiNextCount.call(this, chai, utils, expectedCount);
-		});
-
-		Assertion.addMethod(SKIP_COUNT_KEYWORD, function (expectedCount: number) {
-			chaiSkipCount.call(this, chai, utils, expectedCount);
+		Assertion.addMethod(NEXT_KEYWORD, function (expectedNextValue: unknown, stepName?: string) {
+			chaiNext.call(this, chai, utils, expectedNextValue, stepName);
 		});
 
 		Assertion.addMethod(
+			NEXT_COUNT_KEYWORD,
+			function (expectedCount: number, stepName?: string) {
+				chaiNextCount.call(this, chai, utils, expectedCount, stepName);
+			},
+		);
+
+		Assertion.addMethod(
+			SKIP_COUNT_KEYWORD,
+			function (expectedCount: number, stepName?: string) {
+				chaiSkipCount.call(this, chai, utils, expectedCount, stepName);
+			},
+		);
+
+		Assertion.addMethod(
 			SKIP_UNTIL_KEYWORD,
-			function (conditionCallback: (value: unknown, index: number) => boolean) {
-				chaiSkipUntil.call(this, chai, utils, conditionCallback);
+			function (
+				conditionCallback: (value: unknown, index: number) => boolean,
+				stepName?: string,
+			) {
+				chaiSkipUntil.call(this, chai, utils, conditionCallback, stepName);
 			},
 		);
 
 		Assertion.addMethod(
 			NEXT_MATCHES_KEYWORD,
-			function (assertCallback: (value: unknown, index: number) => boolean) {
-				chaiNextMatches.call(this, chai, utils, assertCallback);
+			function (
+				assertCallback: (value: unknown, index: number) => boolean,
+				stepName?: string,
+			) {
+				chaiNextMatches.call(this, chai, utils, assertCallback, stepName);
 			},
 		);
 
@@ -71,49 +83,87 @@ export default (
 			function (
 				assertCallback: (value: unknown, index: number) => boolean,
 				untilCondition: (value: unknown, index: number) => boolean,
+				stepName?: string,
 			) {
-				chaiNextMatchesUntil.call(this, chai, utils, assertCallback, untilCondition);
+				chaiNextMatchesUntil.call(
+					this,
+					chai,
+					utils,
+					assertCallback,
+					untilCondition,
+					stepName,
+				);
 			},
 		);
 
 		Assertion.addMethod(
 			CONSUME_NEXT_KEYWORD,
-			function (assertCallback: (value: unknown, index: number) => void) {
-				chaiConsumeNext.call(this, chai, utils, assertCallback);
+			function (assertCallback: (value: unknown, index: number) => void, stepName?: string) {
+				chaiConsumeNext.call(this, chai, utils, assertCallback, stepName);
 			},
 		);
 
 		Assertion.addMethod(
 			CONSUME_NEXT_UNTIL_KEYWORD,
-			function (assertCallback: (value: unknown, index: number) => boolean) {
-				chaiConsumeNextUntil.call(this, chai, utils, assertCallback);
+			function (
+				assertCallback: (value: unknown, index: number) => boolean,
+				stepName?: string,
+			) {
+				chaiConsumeNextUntil.call(this, chai, utils, assertCallback, stepName);
 			},
 		);
 
 		Assertion.addMethod(
 			ERROR_KEYWORD,
-			function (expectedErrorType: new (...args: unknown[]) => Error, errorMessage: string) {
-				chaiError.call(this, ERROR_KEYWORD, chai, utils, expectedErrorType, errorMessage);
+			function (
+				expectedErrorType: new (...args: unknown[]) => Error,
+				errorMessage: string,
+				stepName?: string,
+			) {
+				chaiError.call(
+					this,
+					stepName ?? ERROR_KEYWORD,
+					chai,
+					utils,
+					expectedErrorType,
+					errorMessage,
+				);
 			},
 		);
 
 		Assertion.addMethod(
 			ERROR_TYPE_KEYWORD,
-			function (expectedErrorType: new (...args: unknown[]) => Error) {
-				chaiError.call(this, ERROR_TYPE_KEYWORD, chai, utils, expectedErrorType);
+			function (expectedErrorType: new (...args: unknown[]) => Error, stepName?: string) {
+				chaiError.call(
+					this,
+					stepName ?? ERROR_TYPE_KEYWORD,
+					chai,
+					utils,
+					expectedErrorType,
+				);
 			},
 		);
 
-		Assertion.addMethod(ERROR_MESSAGE_KEYWORD, function (errorMessage: string) {
-			chaiError.call(this, ERROR_MESSAGE_KEYWORD, chai, utils, undefined, errorMessage);
+		Assertion.addMethod(
+			ERROR_MESSAGE_KEYWORD,
+			function (errorMessage: string, stepName?: string) {
+				chaiError.call(
+					this,
+					stepName ?? ERROR_MESSAGE_KEYWORD,
+					chai,
+					utils,
+					undefined,
+					errorMessage,
+				);
+			},
+		);
+
+		Assertion.addMethod(VERIFY_COMPLETE_KEYWORD, function (stepName?: string) {
+			return chaiVerifyComplete.call(this, utils, stepName);
 		});
 
-		Assertion.addMethod(VERIFY_COMPLETE_KEYWORD, function () {
-			return chaiVerifyComplete.call(this, utils);
-		});
-
-		Assertion.addMethod(COMPLETE_KEYWORD, function () {
-			chaiComplete.call(this, utils);
+		Assertion.addMethod(COMPLETE_KEYWORD, function (stepName?: string) {
+			chaiComplete.call(this, utils, stepName);
 		});
 
 		Assertion.addMethod(VERIFY_KEYWORD, function () {
@@ -122,13 +172,13 @@ export default (
 
 		Assertion.addMethod(
 			AWAIT_COMPLETE_KEYWORD,
-			function (callback?: (value: unknown, index: number) => void) {
-				return chaiAwaitComplete.call(this, utils, callback);
+			function (callback?: (value: unknown, index: number) => void, stepName?: string) {
+				return chaiAwaitComplete.call(this, utils, callback, stepName);
 			},
 		);
 
-		Assertion.addMethod(AWAIT_SINGLE, function () {
-			return chaiAwaitSingle.call(this, utils);
+		Assertion.addMethod(AWAIT_SINGLE, function (stepName?: string) {
+			return chaiAwaitSingle.call(this, utils, stepName);
 		});
 
 		Assertion.addMethod(O_SPY_KEYWORD, function (name?: string) {

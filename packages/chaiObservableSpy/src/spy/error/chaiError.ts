@@ -12,7 +12,7 @@ export function chaiError<T = unknown, E = unknown>(
 	name: string,
 	chai: Chai.ChaiStatic,
 	utils: Chai.ChaiUtils,
-	expectedErrorType: (new (...args: unknown[]) => E) | undefined,
+	expectedErrorType?: new (...args: unknown[]) => E,
 	expectedMessage?: string,
 ) {
 	const verificationSteps = retrieveVerificationSteps<T>(this, utils);

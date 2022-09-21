@@ -13,6 +13,7 @@ export function chaiSkipCount<T>(
 	chai: Chai.ChaiStatic,
 	utils: Chai.ChaiUtils,
 	expectedCount: number,
+	stepName?: string,
 ) {
 	if (expectedCount <= 0) {
 		clearInvokedTimeout(this, utils);
@@ -20,7 +21,11 @@ export function chaiSkipCount<T>(
 
 	const verificationSteps = retrieveVerificationSteps<T>(this, utils);
 	verificationSteps.push(
-		createSkipCountStep(SKIP_COUNT_KEYWORD, expectedCount, retrieveObservableName(this, utils)),
+		createSkipCountStep(
+			stepName ?? SKIP_COUNT_KEYWORD,
+			expectedCount,
+			retrieveObservableName(this, utils),
+		),
 	);
 
 	refreshInvokeTimeout(this, chai, utils);

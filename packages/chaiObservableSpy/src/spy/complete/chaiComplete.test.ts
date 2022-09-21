@@ -19,13 +19,13 @@ describe('Chai observable spy complete keyword', function () {
 		try {
 			const strings$ = of('Tom', 'Tina', 'Ana');
 
-			await expect(strings$).emit.complete().verify();
+			await expect(strings$).emit.complete('customComplete').verify();
 		} catch (e) {
 			const error = e as ObservableSpyAssertionError;
 			expect(error.expectedEvent).to.be.equal(EventType.Complete);
 			expect(error.receivedEvent).to.be.equal(EventType.Next);
 			expect(error.message).to.be.equal(
-				'[complete] - expected signal: complete, actual signal: next, actual value: Tom',
+				'[customComplete] - expected signal: complete, actual signal: next, actual value: Tom',
 			);
 			return;
 		}

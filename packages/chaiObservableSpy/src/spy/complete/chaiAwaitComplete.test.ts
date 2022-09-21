@@ -32,13 +32,13 @@ describe('Chai observable spy awaitComplete keyword', function () {
 		try {
 			const error$ = throwError(() => new Error('Unexpected error'));
 
-			await expect(error$).emit.awaitComplete();
+			await expect(error$).emit.awaitComplete(null, 'customAwaitComplete');
 		} catch (e) {
 			const error = e as ObservableSpyAssertionError;
 			expect(error.expectedEvent).to.be.equal(EventType.Complete);
 			expect(error.receivedEvent).to.be.equal(EventType.Error);
 			expect(error.message).to.be.equal(
-				'[awaitComplete] - expected signal: complete, actual signal: error, actual error: Error - Unexpected error',
+				'[customAwaitComplete] - expected signal: complete, actual signal: error, actual error: Error - Unexpected error',
 			);
 			return;
 		}
