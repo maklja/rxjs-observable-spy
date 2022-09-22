@@ -6,6 +6,7 @@ import {
 	ERROR_TYPE_KEYWORD,
 	chaiError,
 } from './error/chaiError';
+import { CONSUME_ERROR_KEYWORD, chaiConsumeError } from './error/chaiConsumeError';
 import { NEXT_KEYWORD, chaiNext } from './next/chaiNext';
 import { NEXT_COUNT_KEYWORD, chaiNextCount } from './next/chaiNextCount';
 import { NEXT_MATCHES_KEYWORD, chaiNextMatches } from './next/chaiNextMatches';
@@ -155,6 +156,13 @@ export default (
 					undefined,
 					errorMessage,
 				);
+			},
+		);
+
+		Assertion.addMethod(
+			CONSUME_ERROR_KEYWORD,
+			function (consumeErrorCallback: (error: unknown) => void, stepName?: string) {
+				chaiConsumeError.call(this, chai, utils, consumeErrorCallback, stepName);
 			},
 		);
 

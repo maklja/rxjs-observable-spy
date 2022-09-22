@@ -182,6 +182,22 @@ declare namespace Chai {
 		) => ObservableVerifyLanguageChains;
 
 		/**
+		 * Consume error from the observable.
+		 *
+		 * @typeParam E - Type of error that will be thrown by the observable.
+		 *
+		 * @param consumeErrorCallback - Callback for error handling.
+		 * @param stepName - Optional parameter for customizing a step name.
+		 * Useful for debugging purposes because it is going to be included in the error message.
+		 *
+		 * @returns observable language chains for testing.
+		 */
+		consumeError: <E = unknown>(
+			consumeErrorCallback: (error: E) => void,
+			stepName?: string,
+		) => ObservableVerifyLanguageChains;
+
+		/**
 		 * Expects observable to throw an error.
 		 *
 		 * @typeParam E - Type of error that will be thrown by the observable.

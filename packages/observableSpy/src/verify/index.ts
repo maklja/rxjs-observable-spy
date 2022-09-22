@@ -4,6 +4,7 @@ import createAwaitSingleStep from './steps/complete/createAwaitSingleStep';
 import createCompleteStep from './steps/complete/createCompleteStep';
 import createConsumeNextStep from './steps/consume/createConsumeNextStep';
 import createErrorStep from './steps/error/createErrorStep';
+import createConsumeErrorStep from './steps/error/createConsumeErrorStep';
 import createNextCountStep from './steps/next/createNextCountStep';
 import createNextMatchesStep from './steps/next/createNextMatchesStep';
 import createNextMatchesUntilStep from './steps/next/createNextMatchesUntilStep';
@@ -19,6 +20,7 @@ export {
 	createCompleteStep,
 	createConsumeNextStep,
 	createErrorStep,
+	createConsumeErrorStep,
 	createNextCountStep,
 	createNextMatchesStep,
 	createNextMatchesUntilStep,
