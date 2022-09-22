@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 1.2.0 (2022-09-22)
+
+
+### Features
+
+* Support consumeError keyword ([#11](https://github.com/maklja/rxjs-observable-spy/issues/11)) ([392bd10](https://github.com/maklja/rxjs-observable-spy/commit/392bd1048c877a2b7d5e0916a3227bd152c2e47d))
+
+
+
 ## 1.1.0 (2022-09-22)
 
 
