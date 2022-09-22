@@ -268,9 +268,9 @@ it('should receive a single next value and complete', async () => {
 });
 ```
 
-### error, errorType and errorMessage keywords
+### error, errorType, errorMessage and consumeError keywords
 
-Keywords `error`, `errorType` and `errorMessage` should be used when handling errors from observables.
+Keywords `error`, `errorType`, `errorMessage` and `consumeError` should be used when handling errors from observables.
 Note that here we are using only the keyword `verify` to indicate that verification should start, but that complete event is not expected to be received from the tested observable.
 
 ```ts
@@ -280,6 +280,12 @@ it('should catch an error from observable', async () => {
   await expect(error$).emit.error(Error, 'Unexpected error').verify();
   await expect(error$).emit.errorType(Error).verify();
   await expect(error$).emit.errorMessage('Unexpected error').verify();
+  await expect(error$)
+    .emit.consumeError<Error>((e) => {
+      expect(e).to.be.instanceOf(Error);
+      expect(e.message).to.be.equal('Unexpected error');
+    })
+    .verify();
 });
 ```
 

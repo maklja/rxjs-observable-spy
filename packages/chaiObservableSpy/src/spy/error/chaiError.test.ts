@@ -8,6 +8,7 @@ describe('Chai observable spy error, errorType and errorMessage keyword', functi
 		const error$ = throwError(() => new Error('This is an error'));
 
 		await expect(error$).emit.error(Error, 'This is an error').verify();
+		await expect(error$).emit.error(Error, 'This is an error', 'customErrorCheck').verify();
 		await expect(error$).emit.errorMessage('This is an error').verify();
 		await expect(error$).emit.errorType(Error).verify();
 	});
@@ -52,13 +53,13 @@ describe('Chai observable spy error, errorType and errorMessage keyword', functi
 		try {
 			const error$ = throwError(() => new Error('Unexpected error'));
 
-			await expect(error$).emit.errorType(TypeError).verify();
+			await expect(error$).emit.errorType(TypeError, 'invalidType').verify();
 		} catch (e) {
 			const error = e as ObservableSpyAssertionError;
 			expect(error.expectedEvent).to.be.equal(EventType.Error);
 			expect(error.receivedEvent).to.be.equal(EventType.Error);
 			expect(error.message).to.be.equal(
-				"[errorType] - expected error type: TypeError, actual error type: Error with message 'Unexpected error'",
+				"[invalidType] - expected error type: TypeError, actual error type: Error with message 'Unexpected error'",
 			);
 			return;
 		}
@@ -70,13 +71,13 @@ describe('Chai observable spy error, errorType and errorMessage keyword', functi
 		try {
 			const error$ = throwError(() => new Error('Unexpected error'));
 
-			await expect(error$).emit.errorMessage('Error').verify();
+			await expect(error$).emit.errorMessage('Error', 'unexpectedError').verify();
 		} catch (e) {
 			const error = e as ObservableSpyAssertionError;
 			expect(error.expectedEvent).to.be.equal(EventType.Error);
 			expect(error.receivedEvent).to.be.equal(EventType.Error);
 			expect(error.message).to.be.equal(
-				'[errorMessage] - expected error message: Error, actual error message: Unexpected error',
+				'[unexpectedError] - expected error message: Error, actual error message: Unexpected error',
 			);
 			return;
 		}
