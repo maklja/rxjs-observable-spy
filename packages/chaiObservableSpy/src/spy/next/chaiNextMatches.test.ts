@@ -23,13 +23,13 @@ describe('Chai observable spy nextMatches keyword', function () {
 
 			await expect(strings$)
 				.emit.nextMatches((val, i) => sourceValues[i] === val)
-				.nextMatches((val) => val === 'John')
+				.nextMatches((val) => val === 'John', 'nextMatchJohn')
 				.nextMatches((val, i) => sourceValues[i] === val)
 				.verifyComplete();
 		} catch (e) {
 			const error = e as ObservableSpyAssertionError;
 			expect(error.receivedEvent).to.be.equal(EventType.Next);
-			expect(error.message).to.be.equal('[nextMatches] - match failed for value Tina');
+			expect(error.message).to.be.equal('[nextMatchJohn] - match failed for value Tina');
 
 			return;
 		}

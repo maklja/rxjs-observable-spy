@@ -34,13 +34,13 @@ describe('Chai observable spy error, errorType and errorMessage keyword', functi
 		try {
 			const error$ = throwError(() => 'Unexpected error');
 
-			await expect(error$).emit.errorType(Error).verify();
+			await expect(error$).emit.errorType(Error, 'stringError').verify();
 		} catch (e) {
 			const error = e as ObservableSpyAssertionError;
 			expect(error.expectedEvent).to.be.equal(EventType.Error);
 			expect(error.receivedEvent).to.be.equal(EventType.Error);
 			expect(error.message).to.be.equal(
-				"[errorType] - expected error type: Error, actual error type: string with message 'Unexpected error'",
+				"[stringError] - expected error type: Error, actual error type: string with message 'Unexpected error'",
 			);
 			return;
 		}

@@ -15,13 +15,13 @@ describe('Chai observable spy nextCount keyword', function () {
 		try {
 			const strings$ = of('Tom', 'Tina', 'Ana');
 
-			await expect(strings$).emit.nextCount(4).verify();
+			await expect(strings$).emit.nextCount(4, 'expected4').verify();
 		} catch (e) {
 			const error = e as ObservableSpyAssertionError;
 			expect(error.expectedEvent).to.be.null;
 			expect(error.receivedEvent).to.be.equal(EventType.Complete);
 			expect(error.message).to.be.equal(
-				'[nextCount] - missing next values, expected count 4, actual count 3',
+				'[expected4] - missing next values, expected count 4, actual count 3',
 			);
 			return;
 		}

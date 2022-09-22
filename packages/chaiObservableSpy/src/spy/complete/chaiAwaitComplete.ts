@@ -7,12 +7,13 @@ export const AWAIT_COMPLETE_KEYWORD = 'awaitComplete';
 export function chaiAwaitComplete<T = unknown>(
 	this: Chai.AssertionStatic,
 	utils: Chai.ChaiUtils,
-	expectedCallback?: (value: T, index: number) => void,
+	expectedCallback?: null | ((value: T, index: number) => void),
+	stepName?: string,
 ) {
 	const verificationSteps = retrieveVerificationSteps<T>(this, utils);
 	verificationSteps.push(
 		createAwaitCompleteStep(
-			AWAIT_COMPLETE_KEYWORD,
+			stepName ?? AWAIT_COMPLETE_KEYWORD,
 			expectedCallback,
 			retrieveObservableName(this, utils),
 		),

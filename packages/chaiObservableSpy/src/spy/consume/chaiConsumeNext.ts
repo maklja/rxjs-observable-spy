@@ -8,11 +8,12 @@ export function chaiConsumeNext<T = unknown>(
 	chai: Chai.ChaiStatic,
 	utils: Chai.ChaiUtils,
 	expectedCallback: (value: T, index: number) => void,
+	stepName?: string,
 ) {
 	const verificationSteps = retrieveVerificationSteps<T>(this, utils);
 	verificationSteps.push(
 		createConsumeNextStep(
-			CONSUME_NEXT_KEYWORD,
+			stepName ?? CONSUME_NEXT_KEYWORD,
 			expectedCallback,
 			retrieveObservableName(this, utils),
 		),

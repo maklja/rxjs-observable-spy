@@ -15,13 +15,13 @@ describe('Chai observable spy awaitSingle keyword', function () {
 		try {
 			const strings$ = of('Tom', 'Ana');
 
-			await expect(strings$).emit.awaitSingle();
+			await expect(strings$).emit.awaitSingle('customAwaitSingle');
 		} catch (e) {
 			const error = e as ObservableSpyAssertionError;
 			expect(error.expectedEvent).to.be.equal(EventType.Complete);
 			expect(error.receivedEvent).to.be.equal(EventType.Next);
 			expect(error.message).to.be.equal(
-				'[awaitSingle] - received multiple values, when single one was expected',
+				'[customAwaitSingle] - received multiple values, when single one was expected',
 			);
 			return;
 		}

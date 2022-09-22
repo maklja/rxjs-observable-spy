@@ -9,11 +9,12 @@ export function chaiNextMatchesUntil<T = unknown>(
 	utils: Chai.ChaiUtils,
 	expectedCallback: (value: T, index: number) => boolean,
 	untilCondition: (value: T, index: number) => boolean,
+	stepName?: string,
 ) {
 	const verificationSteps = retrieveVerificationSteps<T>(this, utils);
 	verificationSteps.push(
 		createNextMatchesUntilStep(
-			NEXT_MATCHES_UNTIL_KEYWORD,
+			stepName ?? NEXT_MATCHES_UNTIL_KEYWORD,
 			expectedCallback,
 			untilCondition,
 			retrieveObservableName(this, utils),

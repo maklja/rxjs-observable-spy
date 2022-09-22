@@ -40,14 +40,14 @@ describe('Chai observable spy consumeNext keyword', function () {
 			const error$ = throwError(() => new Error('Unexpected error'));
 
 			await expect(error$)
-				.emit.consumeNext((val) => expect(val).to.be.equal('John'))
+				.emit.consumeNext((val) => expect(val).to.be.equal('John'), 'nextJohn')
 				.verifyComplete();
 		} catch (e) {
 			const error = e as ObservableSpyAssertionError;
 			expect(error.expectedEvent).to.be.equal(EventType.Next);
 			expect(error.receivedEvent).to.be.equal(EventType.Error);
 			expect(error.message).to.be.equal(
-				'[consumeNext] - expected signal: next, actual signal: error, actual error: Error - Unexpected error',
+				'[nextJohn] - expected signal: next, actual signal: error, actual error: Error - Unexpected error',
 			);
 			return;
 		}

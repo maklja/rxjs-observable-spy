@@ -5,7 +5,7 @@ import { VerificationStep } from '../../verifyObservable';
 
 export default function createAwaitCompleteStep<T>(
 	stepName: string,
-	expectedCallback?: (value: T, index: number) => void,
+	expectedCallback?: null | ((value: T, index: number) => void),
 	observableName?: string,
 ): VerificationStep<T> {
 	return {

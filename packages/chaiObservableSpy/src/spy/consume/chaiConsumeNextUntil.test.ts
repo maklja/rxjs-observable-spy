@@ -50,14 +50,14 @@ describe('Chai observable spy consumeNextUntil keyword', function () {
 			const error$ = throwError(() => new Error('Unexpected error'));
 
 			await expect(error$)
-				.emit.consumeNextUntil((x) => x != null)
+				.emit.consumeNextUntil((x) => x != null, 'consumeNextNotNull')
 				.verifyComplete();
 		} catch (e) {
 			const error = e as ObservableSpyAssertionError;
 			expect(error.expectedEvent).to.be.equal(EventType.Next);
 			expect(error.receivedEvent).to.be.equal(EventType.Error);
 			expect(error.message).to.be.equal(
-				'[consumeNextUntil] - expected signal: next, actual signal: error, actual error: Error - Unexpected error',
+				'[consumeNextNotNull] - expected signal: next, actual signal: error, actual error: Error - Unexpected error',
 			);
 			return;
 		}
